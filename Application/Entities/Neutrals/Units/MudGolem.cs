@@ -1,0 +1,26 @@
+﻿using Warcraft3PowerLevels.Entities.Enumerations;
+using Warcraft3PowerLevels.Entities.General;
+
+namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
+{
+    public class MudGolem : IUnit
+    {
+        public RaceEnum Race { get; set; } = RaceEnum.Neutral;
+        public string Name { get; set; } = "Mud Golem";
+        public int Tier { get; set; } = 1;
+        public int Gold { get; set; } = 75;
+        public int Wood { get; set; } = 0;
+        public int Food { get; set; } = 1;
+
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
+        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
+        public int Attack { get; set; } = 9;
+        public double AttackTime { get; set; } = 2.2;
+        public int Range { get; set; } = 600;
+
+        public int Health { get; set; } = 240;
+        public int Mana { get; set; } = 0;
+        public int Armor { get; set; } = 3;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Unarmored;
+    }
+}
