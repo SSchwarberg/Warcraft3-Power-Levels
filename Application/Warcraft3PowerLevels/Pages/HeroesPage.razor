@@ -1,0 +1,41 @@
+﻿@page "/heroes"
+@using Warcraft3PowerLevels.Components.Services
+@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+@using Warcraft3PowerLevels.Components
+
+@inject UnitRepository Repository
+
+<h3>Heroes</h3>
+
+<select @bind="selectedRace">
+    <option value="">All</option>
+    @foreach (var race in Enum.GetValues<RaceEnum>())
+    {
+        <option value="@race">@race</option>
+    }
+</select>
+
+<label>Level:</label>
+<input type="number" min="1" max="30" @bind="heroLevel" />
+
+<HeroTable Heroes="FilteredHeroes" Level="heroLevel" OnSort="HandleSort" SortState="sortState" />
+
+@code {
+    private string? selectedRace = "";
+    private int heroLevel = 1;
+    private SortState<IHero> sortState = new();
+
+    private IEnumerable<IHero> FilteredHeroes =>
+        string.IsNullOrEmpty(selectedRace)
+            ? Repository.Heroes
+            : Repository.Heroes.Where(h => h.Race.ToString() == selectedRace);
+
+    private void HandleSort(Func<IHero, object> selector)
+    {
+        if (sortState.KeySelector == selector)
+            sortState.Direction = sortState.Direction == SortDirectionEnum.Ascending ? SortDirectionEnum.Descending : SortDirectionEnum.Ascending;
+        else
+            sortState.KeySelector = selector;
+    }
+}

@@ -1,0 +1,230 @@
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+
+.loading-progress {
+    position: absolute;
+    display: block;
+    width: 8rem;
+    height: 8rem;
+    inset: 20vh 0 auto 0;
+    margin: 0 auto 0 auto;
+}
+
+    .loading-progress circle {
+        fill: none;
+        stroke: #e0e0e0;
+        stroke-width: 0.6rem;
+        transform-origin: 50% 50%;
+        transform: rotate(-90deg);
+    }
+
+        .loading-progress circle:last-child {
+            stroke: #1b6ec2;
+            stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+            transition: stroke-dasharray 0.05s ease-in-out;
+        }
+
+.loading-progress-text {
+    position: absolute;
+    text-align: center;
+    font-weight: bold;
+    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+}
+
+    .loading-progress-text:after {
+        content: var(--blazor-load-percentage-text, "Loading");
+    }
+
+:root {
+    --bg-color: #0e0e11;
+    --bg-panel: #18181c;
+    --text-color: #e0e0e0;
+    --text-muted: #777;
+    --accent: #3ea1ff;
+    --border-color: #2a2a2e;
+}
+
+/* Keep Blazor loader visible */
+.loading-progress,
+.loading-progress-text {
+    position: relative !important;
+    z-index: 9999 !important;
+}
+
+#blazor-error-ui {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a1a !important;
+    padding: 0.75rem;
+    color: #fff !important;
+    z-index: 9999 !important;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* Global dim overlay */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.15); /* adjust intensity (0–1) */
+    pointer-events: none; /* ensure clicks pass through */
+    z-index: -1; /* stays behind content */
+}
+
+/* Background and global styles */
+body {
+    background-image: url("../images/background.png");
+    background-repeat: no-repeat;
+    background-size: contain;       /* keep original proportions */
+    background-position: center top; /* anchor the image */
+    background-attachment: fixed;   /* keeps image static while content scrolls */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+}
+
+
+/* Layout AFTER Blazor loads */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 200px;
+    background: rgba(0, 0, 0, 0.25); /* slight transparency */
+    backdrop-filter: blur(10px); /* frosted glass effect */
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1rem;
+}
+
+    .sidebar a {
+        display: block;
+        padding: 0.6rem 0;
+        text-decoration: none;
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        transition: 0.2s ease;
+    }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            color: var(--accent);
+            text-shadow: 0 0 6px rgba(78,161,255,0.6);
+        }
+
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    background: transparent;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: transparent; /* cells now provide the glass effect */
+}
+
+/* Make Bootstrap table glassy / transparent */
+.glassy-table {
+    --bs-table-bg: rgba(0, 0, 0, 0.15); /* cell background */
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+    --bs-table-hover-bg: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+th {
+    cursor: pointer;
+    color: var(--accent);
+}
+
+tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Inputs */
+input, select {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem;
+    border-radius: 4px;
+}
+
+    input:focus,
+    select:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 4px var(--accent);
+    }
+
+    input[type="number"]::-webkit-inner-spin-button {
+        filter: invert(1);
+    }
+
+    input[type="number"] {
+        background: rgba(255, 255, 255, 0.07);
+        color: var(--text-color);
+        border: 1px solid var(--border-color);
+    }
+
+/* Bootstrap form overrides */
+.form-control,
+.form-select {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Race filter buttons */
+.race-filter {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.race-item {
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    transition: 0.2s ease;
+}
+
+    .race-item.active {
+        color: var(--accent);
+        text-shadow: 0 0 6px rgba(78,161,255,0.6);
+    }

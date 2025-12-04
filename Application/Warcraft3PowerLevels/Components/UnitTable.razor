@@ -1,0 +1,41 @@
+﻿@using Warcraft3PowerLevels.Entities.General
+<table class="glassy-table">
+    <thead>
+        <tr>
+            <th @onclick="() => Sort(u => u.Name)">Name</th>
+            <th @onclick="() => Sort(u => u.Race)">Race</th>
+            <th @onclick="() => Sort(u => u.Tier)">Tier</th>
+            <th @onclick="() => Sort(u => u.Gold)">Gold</th>
+            <th @onclick="() => Sort(u => u.Food)">Food</th>
+            <th @onclick="() => Sort(u => u.Attack)">Attack</th>
+            <th @onclick="() => Sort(u => u.Health)">Health</th>
+            <th @onclick="() => Sort(u => u.Armor)">Armor</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var unit in SortState.Apply(Units))
+        {
+            <tr>
+                <td>@unit.Name</td>
+                <td>@unit.Race</td>
+                <td>@unit.Tier</td>
+                <td>@unit.Gold</td>
+                <td>@unit.Food</td>
+                <td>@unit.Attack</td>
+                <td>@unit.Health</td>
+                <td>@unit.Armor</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    [Parameter] public IEnumerable<IUnit> Units { get; set; } = [];
+    [Parameter] public EventCallback<Func<IUnit, object>> OnSort { get; set; }
+    [Parameter] public SortState<IUnit> SortState { get; set; } = new();
+
+    private void Sort(Func<IUnit, object> selector)
+    {
+        OnSort.InvokeAsync(selector);
+    }
+}

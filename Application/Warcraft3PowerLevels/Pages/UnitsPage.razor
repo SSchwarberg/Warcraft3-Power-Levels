@@ -1,0 +1,48 @@
+﻿@page "/units"
+@using Warcraft3PowerLevels.Components.Services
+@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+@using Warcraft3PowerLevels.Components
+
+@inject UnitRepository Repository
+
+<h3>Units</h3>
+
+<div class="race-filter">
+    @foreach (var race in Enum.GetValues<RaceEnum>())
+    {
+        <span class="race-item @(IsEnabled(race) ? "active" : "")"
+              @onclick="@(() => ToggleRace(race))">
+            @race
+        </span>
+    }
+</div>
+
+
+<UnitTable Units="FilteredUnits" OnSort="HandleSort" SortState="sortState" />
+
+@code {
+    private HashSet<RaceEnum> enabledRaces = new(Enum.GetValues<RaceEnum>());
+    private bool IsEnabled(RaceEnum race) => enabledRaces.Contains(race);
+
+    private SortState<IUnit> sortState = new();
+
+    private void ToggleRace(RaceEnum race)
+    {
+        if (enabledRaces.Contains(race))
+            enabledRaces.Remove(race);
+        else
+            enabledRaces.Add(race);
+    }
+
+    private IEnumerable<IUnit> FilteredUnits =>
+        Repository.Units.Where(u => enabledRaces.Contains(u.Race));
+
+    private void HandleSort(Func<IUnit, object> selector)
+    {
+        if (sortState.KeySelector == selector)
+            sortState.Direction = sortState.Direction == SortDirectionEnum.Ascending ? SortDirectionEnum.Descending: SortDirectionEnum.Ascending;
+        else
+            sortState.KeySelector = selector;
+    }
+}
