@@ -1,12 +1,22 @@
 ﻿@using System.Globalization
+@using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
 
-<table class="table">
-    <thead>
+<table class="glassy-table">
+    <thead class="no-select">
         <tr>
-            <th @onclick="() => Sort(h => h.Name)">Name</th>
-            <th @onclick="() => Sort(h => h.Race)">Race</th>
-            <th @onclick="() => Sort(h => h.PrimaryAttribute)">Primary</th>
+            <th class="@GetHeaderClass(NameSelector)" @onclick="() => Sort(NameSelector)">
+                Name @SortIcon(NameSelector)
+            </th>
+
+            <th class="@GetHeaderClass(RaceSelector)" @onclick="() => Sort(RaceSelector)">
+                Race @SortIcon(RaceSelector)
+            </th>
+
+            <th class="@GetHeaderClass(PrimarySelector)" @onclick="() => Sort(PrimarySelector)">
+                Primary @SortIcon(PrimarySelector)
+            </th>
+
             <th>Strength</th>
             <th>Agility</th>
             <th>Intelligence</th>
@@ -36,20 +46,47 @@
     [Parameter] public EventCallback<Func<IHero, object>> OnSort { get; set; }
     [Parameter] public SortState<IHero> SortState { get; set; } = new();
 
+    // Shared selector instances (necessary so equality works)
+    public static readonly Func<IHero, object> NameSelector = h => h.Name;
+    public static readonly Func<IHero, object> RaceSelector = h => h.Race;
+    public static readonly Func<IHero, object> PrimarySelector = h => h.PrimaryAttribute;
+
     private void Sort(Func<IHero, object> selector)
     {
         OnSort.InvokeAsync(selector);
     }
 
+    private string GetHeaderClass(Func<IHero, object> selector)
+    {
+        return SortState.KeySelector == selector ? "sorted" : "";
+    }
+
+    private RenderFragment SortIcon(Func<IHero, object> selector) => builder =>
+    {
+        if (SortState.KeySelector != selector)
+            return;
+
+        string iconClass = SortState.Direction == SortDirectionEnum.Ascending
+            ? "sort-asc"
+            : "sort-desc";
+
+        builder.OpenElement(0, "svg");
+        builder.AddAttribute(1, "class", $"sort-icon {iconClass}");
+        builder.AddAttribute(2, "viewBox", "0 0 24 24");
+        builder.AddMarkupContent(3, "<path fill='currentColor' d='M12 4l-6 6h12z'/>");
+        builder.CloseElement();
+    };
+
     private (int str, int agi, int intl) GetAttributes(IHero hero, int level)
     {
-        if (level <= 1) return (hero.Strength, hero.Agility, hero.Intelligence);
+        if (level <= 1)
+            return (hero.Strength, hero.Agility, hero.Intelligence);
 
-        int levelsGained = level - 1;
+        int gained = level - 1;
 
-        int str = hero.Strength + (int)(hero.StrengthGain * levelsGained);
-        int agi = hero.Agility + (int)(hero.AgilityGain * levelsGained);
-        int intl = hero.Intelligence + (int)(hero.IntelligenceGain * levelsGained);
+        int str = hero.Strength + (int)(hero.StrengthGain * gained);
+        int agi = hero.Agility + (int)(hero.AgilityGain * gained);
+        int intl = hero.Intelligence + (int)(hero.IntelligenceGain * gained);
 
         return (str, agi, intl);
     }

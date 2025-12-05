@@ -1,17 +1,36 @@
-﻿@using Warcraft3PowerLevels.Entities.General
+﻿@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+
 <table class="glassy-table">
-    <thead>
+    <thead class="no-select">
         <tr>
-            <th @onclick="() => Sort(u => u.Name)">Name</th>
-            <th @onclick="() => Sort(u => u.Race)">Race</th>
-            <th @onclick="() => Sort(u => u.Tier)">Tier</th>
-            <th @onclick="() => Sort(u => u.Gold)">Gold</th>
-            <th @onclick="() => Sort(u => u.Food)">Food</th>
-            <th @onclick="() => Sort(u => u.Attack)">Attack</th>
-            <th @onclick="() => Sort(u => u.Health)">Health</th>
-            <th @onclick="() => Sort(u => u.Armor)">Armor</th>
+            <th class="@GetHeaderClass(NameSelector)" @onclick="() => Sort(NameSelector)">
+                Name @SortIcon(NameSelector)
+            </th>
+            <th class="@GetHeaderClass(RaceSelector)" @onclick="() => Sort(RaceSelector)">
+                Race @SortIcon(RaceSelector)
+            </th>
+            <th class="@GetHeaderClass(TierSelector)" @onclick="() => Sort(TierSelector)">
+                Tier @SortIcon(TierSelector)
+            </th>
+            <th class="@GetHeaderClass(GoldSelector)" @onclick="() => Sort(GoldSelector)">
+                Gold @SortIcon(GoldSelector)
+            </th>
+            <th class="@GetHeaderClass(FoodSelector)" @onclick="() => Sort(FoodSelector)">
+                Food @SortIcon(FoodSelector)
+            </th>
+            <th class="@GetHeaderClass(AttackSelector)" @onclick="() => Sort(AttackSelector)">
+                Attack @SortIcon(AttackSelector)
+            </th>
+            <th class="@GetHeaderClass(HealthSelector)" @onclick="() => Sort(HealthSelector)">
+                Health @SortIcon(HealthSelector)
+            </th>
+            <th class="@GetHeaderClass(ArmorSelector)" @onclick="() => Sort(ArmorSelector)">
+                Armor @SortIcon(ArmorSelector)
+            </th>
         </tr>
     </thead>
+
     <tbody>
         @foreach (var unit in SortState.Apply(Units))
         {
@@ -34,8 +53,39 @@
     [Parameter] public EventCallback<Func<IUnit, object>> OnSort { get; set; }
     [Parameter] public SortState<IUnit> SortState { get; set; } = new();
 
+    // Shared selector instances
+    public static readonly Func<IUnit, object> NameSelector = u => u.Name;
+    public static readonly Func<IUnit, object> RaceSelector = u => u.Race;
+    public static readonly Func<IUnit, object> TierSelector = u => u.Tier;
+    public static readonly Func<IUnit, object> GoldSelector = u => u.Gold;
+    public static readonly Func<IUnit, object> FoodSelector = u => u.Food;
+    public static readonly Func<IUnit, object> AttackSelector = u => u.Attack;
+    public static readonly Func<IUnit, object> HealthSelector = u => u.Health;
+    public static readonly Func<IUnit, object> ArmorSelector = u => u.Armor;
+
     private void Sort(Func<IUnit, object> selector)
     {
         OnSort.InvokeAsync(selector);
     }
+
+    private string GetHeaderClass(Func<IUnit, object> selector)
+    {
+        return SortState.KeySelector == selector ? "sorted" : "";
+    }
+
+    private RenderFragment SortIcon(Func<IUnit, object> selector) => builder =>
+    {
+        if (SortState.KeySelector != selector)
+            return;
+
+        var iconClass = SortState.Direction == SortDirectionEnum.Ascending
+            ? "sort-asc"
+            : "sort-desc";
+
+        builder.OpenElement(0, "svg");
+        builder.AddAttribute(1, "class", $"sort-icon {iconClass}");
+        builder.AddAttribute(2, "viewBox", "0 0 24 24");
+        builder.AddMarkupContent(3, "<path fill='currentColor' d='M12 4l-6 6h12z'/>");
+        builder.CloseElement();
+    };
 }

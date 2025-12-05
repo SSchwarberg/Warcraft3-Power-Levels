@@ -8,41 +8,63 @@
 
 <h3>Units</h3>
 
-<div class="race-filter">
-    @foreach (var race in Enum.GetValues<RaceEnum>())
-    {
-        <span class="race-item @(IsEnabled(race) ? "active" : "")"
-              @onclick="@(() => ToggleRace(race))">
-            @race
+<div class="race-filter-container">
+    <div class="race-filter no-select">
+        <span class="race-item @(IsActive(null) ? "active" : "")"
+              @onclick="@(() => SelectRace(null))">
+            All
         </span>
-    }
-</div>
 
+        @foreach (var race in Enum.GetValues<RaceEnum>())
+        {
+            <span class="race-item @(IsActive(race) ? "active" : "")"
+                  @onclick="@(() => SelectRace(race))"
+                  @key="race">
+                @race
+            </span>
+        }
+    </div>
+</div>
 
 <UnitTable Units="FilteredUnits" OnSort="HandleSort" SortState="sortState" />
 
+
 @code {
-    private HashSet<RaceEnum> enabledRaces = new(Enum.GetValues<RaceEnum>());
-    private bool IsEnabled(RaceEnum race) => enabledRaces.Contains(race);
+    private RaceEnum? selectedRace = null; // null = All
 
-    private SortState<IUnit> sortState = new();
+    private bool IsActive(RaceEnum? race) => selectedRace == race;
 
-    private void ToggleRace(RaceEnum race)
+    private void SelectRace(RaceEnum? race)
     {
-        if (enabledRaces.Contains(race))
-            enabledRaces.Remove(race);
-        else
-            enabledRaces.Add(race);
+        selectedRace = race;
     }
 
     private IEnumerable<IUnit> FilteredUnits =>
-        Repository.Units.Where(u => enabledRaces.Contains(u.Race));
+        selectedRace == null
+            ? Repository.Units
+            : Repository.Units.Where(u => u.Race == selectedRace);
+
+    private SortState<IUnit> sortState = new();
+
+    protected override void OnInitialized()
+    {
+        sortState.KeySelector = UnitTable.NameSelector;
+        sortState.Direction = SortDirectionEnum.Ascending;
+    }
 
     private void HandleSort(Func<IUnit, object> selector)
     {
-        if (sortState.KeySelector == selector)
-            sortState.Direction = sortState.Direction == SortDirectionEnum.Ascending ? SortDirectionEnum.Descending: SortDirectionEnum.Ascending;
-        else
+        if (sortState.KeySelector != selector)
+        {
             sortState.KeySelector = selector;
+            sortState.Direction = SortDirectionEnum.Ascending;
+        }
+        else
+        {
+            sortState.Direction =
+                sortState.Direction == SortDirectionEnum.Ascending
+                    ? SortDirectionEnum.Descending
+                    : SortDirectionEnum.Ascending;
+        }
     }
 }

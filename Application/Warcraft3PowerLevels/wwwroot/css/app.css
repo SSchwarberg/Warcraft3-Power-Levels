@@ -88,7 +88,7 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.15); /* adjust intensity (0–1) */
+    background: rgba(2, 0, 0, 0.15); /* adjust intensity (0–1) */
     pointer-events: none; /* ensure clicks pass through */
     z-index: -1; /* stays behind content */
 }
@@ -97,7 +97,7 @@ body::before {
 body {
     background-image: url("../images/background.png");
     background-repeat: no-repeat;
-    background-size: contain;       /* keep original proportions */
+    background-size: cover;       /* keep original proportions */
     background-position: center top; /* anchor the image */
     background-attachment: fixed;   /* keeps image static while content scrolls */
     background-color: var(--bg-color);
@@ -162,6 +162,30 @@ table {
     overflow: hidden;
 }
 
+    .glassy-table th:hover {
+        color: var(--accent);
+        text-shadow: 0 0 6px rgba(78,161,255,0.6);
+        cursor: pointer;
+    }
+
+    .glassy-table th {
+        position: relative;
+        padding-right: 1.5rem; /* reserve space for icon */
+        white-space: nowrap;
+    }
+
+/* The SVG icon container */
+.sort-icon {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.4;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
 th, td {
     padding: 0.75rem 0.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -172,8 +196,20 @@ th {
     color: var(--accent);
 }
 
+    th.sorted .sort-icon {
+        opacity: 1.0;
+    }
+
 tr:hover {
     background: rgba(255, 255, 255, 0.04);
+}
+
+.sort-asc {
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.sort-desc {
+    transform: translateY(-50%) rotate(180deg);
 }
 
 /* Inputs */
@@ -211,10 +247,18 @@ input, select {
 }
 
 /* Race filter buttons */
+.race-filter-container {
+    background: rgba(0, 0, 0, 0.40);
+    backdrop-filter: blur(10px);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
 .race-filter {
     display: flex;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 1.2rem;
 }
 
 .race-item {
@@ -228,3 +272,49 @@ input, select {
         color: var(--accent);
         text-shadow: 0 0 6px rgba(78,161,255,0.6);
     }
+
+
+/* Prevent text selection on clickable UI elements */
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+.level-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+    .level-control input[type="range"] {
+        width: 200px;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.15);
+        height: 6px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        /* Slider thumb */
+        .level-control input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+            cursor: pointer;
+        }
+
+        /* Firefox thumb */
+        .level-control input[type="range"]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent);
+            cursor: pointer;
+        }
