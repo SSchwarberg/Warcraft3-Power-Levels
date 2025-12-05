@@ -88,7 +88,7 @@ body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(2, 0, 0, 0.15); /* adjust intensity (0–1) */
+    background: rgba(2, 0, 0, 0.25); /* adjust intensity (0–1) */
     pointer-events: none; /* ensure clicks pass through */
     z-index: -1; /* stays behind content */
 }
@@ -176,8 +176,8 @@ table {
 
 /* The SVG icon container */
 .sort-icon {
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     position: absolute;
     right: 6px;
     top: 50%;
@@ -318,3 +318,61 @@ input, select {
             box-shadow: 0 0 8px var(--accent);
             cursor: pointer;
         }
+
+.details-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+}
+
+.details-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(12px);
+    padding: 1.5rem;
+    border-radius: 8px;
+    color: white;
+    z-index: 2001;
+    min-width: 350px;
+}
+
+.glassy-table tbody tr {
+    cursor: pointer;
+}
+
+    .glassy-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+.primary-nav, .context-nav {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(14px);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    width: 120px;
+}
+
+.context-nav {
+    width: 240px;
+}
+
+.sidebar-title {
+    color: var(--accent);
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.nav-item {
+    display: block;
+    padding: 0.6rem 0;
+    color: var(--text-muted);
+}
+
+    .nav-item.active {
+        color: var(--accent);
+        text-shadow: 0 0 6px rgba(78,161,255,0.6);
+    }

@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Orcs.Summons
 {
-    public class SpiritWolf_2 : IUnit
+    public class SpiritWolf_2 : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Orc;
         public string Name { get; set; } = "Spirit Wolf (Level 2)";

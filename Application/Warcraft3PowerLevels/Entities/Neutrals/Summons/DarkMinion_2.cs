@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Neutral.Summons
 {
-    public class DarkMinion_2 : IUnit
+    public class DarkMinion_2 : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Dark Minion (Black Arrow lvl 2)";

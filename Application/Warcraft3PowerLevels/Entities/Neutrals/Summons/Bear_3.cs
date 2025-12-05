@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Neutral.Summons
 {
-    public class Bear_3 : IUnit
+    public class Bear_3 : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Summoned Bear (Level 3)";

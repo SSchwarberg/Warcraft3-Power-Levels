@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.NightElves.Summons
 {
-    public class AvatarOfVengeance : IUnit
+    public class AvatarOfVengeance : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.NightElf;
         public string Name { get; set; } = "Avatar of Vengeance";

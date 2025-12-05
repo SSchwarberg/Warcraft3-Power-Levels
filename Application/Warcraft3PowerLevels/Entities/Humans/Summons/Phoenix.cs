@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Humans.Summons
 {
-    public class Phoenix : IUnit
+    public class Phoenix : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Human;
         public string Name { get; set; } = "Phoenix";

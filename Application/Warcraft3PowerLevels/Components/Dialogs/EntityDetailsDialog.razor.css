@@ -1,0 +1,62 @@
+﻿.details-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+}
+
+.details-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(18px);
+    border-radius: 12px;
+    padding: 1.8rem 2rem;
+    width: 400px;
+    max-width: 90%;
+    color: var(--text-color);
+    box-shadow: 0 0 25px rgba(78, 161, 255, 0.35);
+    animation: dialogFade 0.25s ease-out;
+    z-index: 2001;
+}
+
+@keyframes dialogFade {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+    .close-btn:hover {
+        color: var(--accent);
+        text-shadow: 0 0 8px rgba(78,161,255,0.9);
+    }
+
+.details-content p {
+    margin: 0.3rem 0;
+    font-size: 1.1rem;
+}

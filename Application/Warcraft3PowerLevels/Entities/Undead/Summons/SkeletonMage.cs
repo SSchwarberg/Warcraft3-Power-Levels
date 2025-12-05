@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Undead.Summons
 {
-    public class SkeletalMage : IUnit
+    public class SkeletalMage : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Undead;
         public string Name { get; set; } = "Skeletal Mage";

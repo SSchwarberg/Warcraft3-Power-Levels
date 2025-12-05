@@ -1,4 +1,5 @@
 ﻿@using System.Globalization
+@using Warcraft3PowerLevels.Components.Dialogs
 @using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
 
@@ -17,28 +18,65 @@
                 Primary @SortIcon(PrimarySelector)
             </th>
 
-            <th>Strength</th>
-            <th>Agility</th>
-            <th>Intelligence</th>
+            <th class="@GetHeaderClass(StrengthSelector)" @onclick="() => Sort(StrengthSelector)">
+                Strength @SortIcon(StrengthSelector)
+            </th>
+
+            <th class="@GetHeaderClass(AgilitySelector)" @onclick="() => Sort(AgilitySelector)">
+                Agility @SortIcon(AgilitySelector)
+            </th>
+
+            <th class="@GetHeaderClass(IntelligenceSelector)" @onclick="() => Sort(IntelligenceSelector)">
+                Intelligence @SortIcon(IntelligenceSelector)
+            </th>
+
+            <th class="@GetHeaderClass(HealthSelector)" @onclick="() => Sort(HealthSelector)">
+                Health @SortIcon(HealthSelector)
+            </th>
+
+            <th class="@GetHeaderClass(ArmorSelector)" @onclick="() => Sort(ArmorSelector)">
+                Armor @SortIcon(ArmorSelector)
+            </th>
+
+            <th class="@GetHeaderClass(RangeSelector)" @onclick="() => Sort(RangeSelector)">
+                Range @SortIcon(RangeSelector)
+            </th>
+
+            <th class="@GetHeaderClass(AttackSelector)" @onclick="() => Sort(AttackSelector)">
+                Attack (Avg.) @SortIcon(AttackSelector)
+            </th>
+
+            <th class="@GetHeaderClass(AttackTimeSelector)" @onclick="() => Sort(AttackTimeSelector)">
+                Attack Time @SortIcon(AttackTimeSelector)
+            </th>
         </tr>
     </thead>
 
     <tbody>
         @foreach (var hero in SortState.Apply(Heroes))
         {
-            var (str, agi, intl) = GetAttributes(hero, Level);
+            var stats = GetAttributes(hero, Level);
 
-            <tr>
+            <tr @onclick="() => ShowDetails(hero)">
                 <td>@hero.Name</td>
                 <td>@hero.Race</td>
                 <td>@hero.PrimaryAttribute</td>
-                <td>@str</td>
-                <td>@agi</td>
-                <td>@intl</td>
+
+                <td>@stats.str</td>
+                <td>@stats.agi</td>
+                <td>@stats.intl</td>
+
+                <td>@stats.health</td>
+                <td>@stats.armor.ToString("F1")</td>
+                <td>@(stats.range == -1 ? "Melee" : stats.range)</td>
+                <td>@stats.attack</td>
+                <td>@stats.atkTime.ToString("F2")</td>
             </tr>
         }
     </tbody>
 </table>
+
+<EntityDetailsDialog Entity="selectedEntity" OnClose="CloseDialog" />
 
 @code {
     [Parameter] public IEnumerable<IHero> Heroes { get; set; } = [];
@@ -50,6 +88,15 @@
     public static readonly Func<IHero, object> NameSelector = h => h.Name;
     public static readonly Func<IHero, object> RaceSelector = h => h.Race;
     public static readonly Func<IHero, object> PrimarySelector = h => h.PrimaryAttribute;
+    public static readonly Func<IHero, object> StrengthSelector = h => h.Strength;
+    public static readonly Func<IHero, object> AgilitySelector = h => h.Agility;
+    public static readonly Func<IHero, object> IntelligenceSelector = h => h.Intelligence;
+    public static readonly Func<IHero, object> HealthSelector = h => h.Health;
+    public static readonly Func<IHero, object> ArmorSelector = h => h.Armor;
+    public static readonly Func<IHero, object> RangeSelector = h => h.Range;
+    public static readonly Func<IHero, object> AttackSelector = h => h.Attack;
+    public static readonly Func<IHero, object> AttackTimeSelector = h => h.AttackTime;
+
 
     private void Sort(Func<IHero, object> selector)
     {
@@ -77,17 +124,45 @@
         builder.CloseElement();
     };
 
-    private (int str, int agi, int intl) GetAttributes(IHero hero, int level)
+    private (int str, int agi, int intl, int health, double armor, int attack, double atkTime, int range)
+    GetAttributes(IHero hero, int level)
     {
-        if (level <= 1)
-            return (hero.Strength, hero.Agility, hero.Intelligence);
-
+        if (level < 1) level = 1;
         int gained = level - 1;
 
         int str = hero.Strength + (int)(hero.StrengthGain * gained);
         int agi = hero.Agility + (int)(hero.AgilityGain * gained);
         int intl = hero.Intelligence + (int)(hero.IntelligenceGain * gained);
 
-        return (str, agi, intl);
+        int health = str * 25;
+
+        double armor = hero.Armor + agi * 0.2;
+        double attackSpeedBonus = agi * 0.02;
+        double atkTime = hero.AttackTime / (1 + attackSpeedBonus);
+
+        int primary = hero.PrimaryAttribute switch
+        {
+            PrimaryAttributeEnum.Strength => str,
+            PrimaryAttributeEnum.Agility => agi,
+            PrimaryAttributeEnum.Intelligence => intl,
+            _ => 0
+        };
+
+        int attack = hero.Attack + primary;
+        int range = hero.Range == 100 ? -1 : hero.Range;
+
+        return (str, agi, intl, health, armor, attack, atkTime, range);
+    }
+
+    private object? selectedEntity = null;
+
+    private void ShowDetails(IHero hero)
+    {
+        selectedEntity = hero;
+    }
+
+    private void CloseDialog()
+    {
+        selectedEntity = null;
     }
 }

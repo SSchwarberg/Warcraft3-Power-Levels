@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Neutral.Summons
 {
-    public class Infernal : IUnit
+    public class Infernal : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Infernal";

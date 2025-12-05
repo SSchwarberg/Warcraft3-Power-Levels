@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Undead.Summons
 {
-    public class CarrionBeetle_1 : IUnit
+    public class CarrionBeetle_1 : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Undead;
         public string Name { get; set; } = "Carrion Beetle (Level 1)";

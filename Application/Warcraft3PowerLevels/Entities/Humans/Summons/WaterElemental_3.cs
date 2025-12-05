@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Humans.Summons
 {
-    public class WaterElemental_3 : IUnit
+    public class WaterElemental_3 : IUnit, ISummon
     {
         public RaceEnum Race { get; set; } = RaceEnum.Human;
         public string Name { get; set; } = "Water Elemental (Level 3)";

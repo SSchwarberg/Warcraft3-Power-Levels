@@ -1,9 +1,24 @@
 ﻿@inherits LayoutComponentBase
+@inject Warcraft3PowerLevels.Components.Services.LayoutStateService LayoutState
+
 <div class="app-container">
-    <div class="sidebar">
-        <h3 style="color: var(--accent)">WC3 Stats</h3>
-        <NavLink href="/units">Units</NavLink>
-        <NavLink href="/heroes">Heroes</NavLink>
+
+    <!-- Primary navigation -->
+    <div class="sidebar primary-nav">
+        <h3 class="sidebar-title">WC3</h3>
+
+        <NavLink href="/HeroStats" class="nav-item">Heroes</NavLink>
+        <NavLink href="/UnitStats" class="nav-item">Units</NavLink>
+    </div>
+
+    <!-- Context navigation (dynamic per section) -->
+    <div class="sidebar context-nav">
+        <h3 class="sidebar-title">@LayoutState.ContextTitle</h3>
+
+        @foreach (var item in LayoutState.ContextLinks)
+        {
+            <NavLink href="@item.Url" class="nav-item">@item.Text</NavLink>
+        }
     </div>
 
     <div class="main-content">

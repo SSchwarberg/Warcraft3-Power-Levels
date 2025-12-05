@@ -2,6 +2,9 @@
 
 namespace Warcraft3PowerLevels.Entities.General
 {
+    /// <summary>
+    /// Interface representing a hero unit in the game.
+    /// </summary>
     public interface IHero : IUnit
     {
         int Level { get; set; }

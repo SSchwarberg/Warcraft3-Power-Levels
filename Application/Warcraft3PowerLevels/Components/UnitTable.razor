@@ -1,4 +1,5 @@
-﻿@using Warcraft3PowerLevels.Entities.Enumerations
+﻿@using Warcraft3PowerLevels.Components.Dialogs
+@using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
 
 <table class="glassy-table">
@@ -20,7 +21,10 @@
                 Food @SortIcon(FoodSelector)
             </th>
             <th class="@GetHeaderClass(AttackSelector)" @onclick="() => Sort(AttackSelector)">
-                Attack @SortIcon(AttackSelector)
+                Attack (Avg.) @SortIcon(AttackSelector)
+            </th>
+            <th class="@GetHeaderClass(AttackTime)" @onclick="() => Sort(AttackTime)">
+                Base Attack Time @SortIcon(AttackTime)
             </th>
             <th class="@GetHeaderClass(HealthSelector)" @onclick="() => Sort(HealthSelector)">
                 Health @SortIcon(HealthSelector)
@@ -34,13 +38,14 @@
     <tbody>
         @foreach (var unit in SortState.Apply(Units))
         {
-            <tr>
+            <tr @onclick="() => ShowDetails(unit)">
                 <td>@unit.Name</td>
                 <td>@unit.Race</td>
                 <td>@unit.Tier</td>
                 <td>@unit.Gold</td>
                 <td>@unit.Food</td>
                 <td>@unit.Attack</td>
+                <td>@unit.AttackTime.ToString("0.00")</td>
                 <td>@unit.Health</td>
                 <td>@unit.Armor</td>
             </tr>
@@ -48,10 +53,24 @@
     </tbody>
 </table>
 
+<EntityDetailsDialog Entity="selectedEntity" OnClose="CloseDialog" />
+
 @code {
     [Parameter] public IEnumerable<IUnit> Units { get; set; } = [];
     [Parameter] public EventCallback<Func<IUnit, object>> OnSort { get; set; }
     [Parameter] public SortState<IUnit> SortState { get; set; } = new();
+
+    private object? selectedEntity = null;
+
+    private void ShowDetails(IUnit hero)
+    {
+        selectedEntity = hero;
+    }
+
+    private void CloseDialog()
+    {
+        selectedEntity = null;
+    }
 
     // Shared selector instances
     public static readonly Func<IUnit, object> NameSelector = u => u.Name;
@@ -60,6 +79,7 @@
     public static readonly Func<IUnit, object> GoldSelector = u => u.Gold;
     public static readonly Func<IUnit, object> FoodSelector = u => u.Food;
     public static readonly Func<IUnit, object> AttackSelector = u => u.Attack;
+    public static readonly Func<IUnit, object> AttackTime = u => u.AttackTime;
     public static readonly Func<IUnit, object> HealthSelector = u => u.Health;
     public static readonly Func<IUnit, object> ArmorSelector = u => u.Armor;
 

@@ -1,0 +1,76 @@
+﻿@using Warcraft3PowerLevels.Entities.General
+
+@if (Entity is not null)
+{
+    <div class="details-backdrop" @onclick="Close"></div>
+
+    <div class="details-dialog">
+        <div class="details-header">
+            <h2>@EntityName</h2>
+        </div>
+
+        <div class="details-content">
+            @if (Entity is IHero hero)
+            {
+                <p><b>Race:</b> @hero.Race</p>
+                <p><b>Type:</b> @EntityType</p>
+                <p><b>Primary Attribute:</b> @hero.PrimaryAttribute</p>
+
+                <p><b>Strength:</b> @hero.Strength</p>
+                <p><b>Agility:</b> @hero.Agility</p>
+                <p><b>Intelligence:</b> @hero.Intelligence</p>
+
+                <p><b>Strength Gain:</b> @hero.StrengthGain</p>
+                <p><b>Agility Gain:</b> @hero.AgilityGain</p>
+                <p><b>Int Gain:</b> @hero.IntelligenceGain</p>
+
+                <p><b>Health:</b> @hero.Health</p>
+                <p><b>Armor:</b> @hero.Armor</p>
+                <p><b>Range:</b> @(hero.Range == 100 ? "Melee" : hero.Range)</p>
+                <p><b>Attack:</b> @hero.Attack</p>
+                <p><b>Attack Time:</b> @hero.AttackTime</p>
+            }
+            else if (Entity is IUnit unit)
+            {
+                <p><b>Race:</b> @unit.Race</p>
+                <p><b>Type:</b> @EntityType</p>
+                <p><b>Tier:</b> @unit.Tier</p>
+                <p><b>Gold:</b> @unit.Gold</p>
+                <p><b>Lumber:</b> @unit.Wood</p>
+                <p><b>Food:</b> @unit.Food</p>
+
+                <p><b>Attack:</b> @unit.Attack</p>
+                <p><b>Attack Type:</b> @unit.AttackType</p>
+                <p><b>Base Attack Time:</b> @unit.AttackTime</p>
+                <p><b>Range:</b> @(unit.Range == 100 ? "Melee" : unit.Range)</p>
+
+                <p><b>Health:</b> @unit.Health</p>
+                <p><b>Armor:</b> @unit.Armor</p>
+                <p><b>Armor Type:</b> @unit.ArmorType</p>
+            }
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter] public object? Entity { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private string EntityName =>
+        Entity switch
+        {
+            IUnit u => u.Name,
+            _ => "Unknown"
+        };
+
+    private string EntityType =>
+       Entity switch
+       {
+           IHero => "Hero",
+           ISummon => "Summon",
+           _ => "Unit"
+       };
+
+    private void Close() => OnClose.InvokeAsync();
+}
