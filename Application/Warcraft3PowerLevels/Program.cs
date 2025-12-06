@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Warcraft3PowerLevels.Components.Services;
+using Warcraft3PowerLevels.Services;
 
 namespace Warcraft3PowerLevels
 {

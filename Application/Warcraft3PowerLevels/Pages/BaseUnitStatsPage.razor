@@ -1,10 +1,10 @@
 ﻿@page "/unitStats"
-@using Warcraft3PowerLevels.Components.Services
+@using Warcraft3PowerLevels.Components
+@using Warcraft3PowerLevels.Services
 @using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
-@using Warcraft3PowerLevels.Components
 @inject UnitRepository Repository
-@inject Warcraft3PowerLevels.Components.Services.LayoutStateService LayoutState
+@inject Warcraft3PowerLevels.Services.LayoutStateService LayoutState
 
 <h3>Units</h3>
 
@@ -46,23 +46,6 @@
             : Repository.Units.Where(u => u.Race == selectedRace);
 
     private SortState<IUnit> sortState = new();
-
-    protected override void OnInitialized()
-    {
-        // Default sorting: Name Ascending
-        sortState.KeySelector = UnitTable.NameSelector;
-        sortState.Direction = SortDirectionEnum.Ascending;
-
-        // Context sidebar navigation
-        LayoutState.SetContext("Units", new()
-        {
-            ("Base Stats", "/UnitStats"),
-            ("Power Levels", "/UnitStats/Power"),
-            ("Power per 100g", "/UnitStats/Power100"),
-            ("Power per Supply", "/UnitStats/PowerSupply")
-        });
-    }
-
     private void HandleSort(Func<IUnit, object> selector)
     {
         if (sortState.KeySelector != selector)

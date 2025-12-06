@@ -3,7 +3,7 @@ using Warcraft3PowerLevels.Entities.Humans.Heroes;
 using Warcraft3PowerLevels.Entities.Humans.Units;
 using Warcraft3PowerLevels.Entities.Orcs.Units;
 
-namespace Warcraft3PowerLevels.Components.Services
+namespace Warcraft3PowerLevels.Services
 {
     public class UnitRepository
     {

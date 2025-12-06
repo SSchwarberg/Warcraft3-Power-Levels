@@ -1,10 +1,10 @@
 ﻿@page "/heroStats"
-@using Warcraft3PowerLevels.Components.Services
+@using Warcraft3PowerLevels.Components
+@using Warcraft3PowerLevels.Services
 @using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
-@using Warcraft3PowerLevels.Components
 @inject UnitRepository Repository
-@inject Warcraft3PowerLevels.Components.Services.LayoutStateService LayoutState
+@inject Warcraft3PowerLevels.Services.LayoutStateService LayoutState
 
 <h3>Heroes</h3>
 
@@ -41,23 +41,7 @@
     private int heroLevel = 1;
     private SortState<IHero> sortState = new();
 
-    protected override void OnInitialized()
-    {
-        // Default sorting: Name ascending
-        sortState.KeySelector = HeroTable.NameSelector;
-        sortState.Direction = SortDirectionEnum.Ascending;
-
-        // Setup sidebar dynamic menu
-        LayoutState.SetContext("Heroes", new()
-        {
-            ("Base Stats", "/HeroStats"),
-            ("Power Levels", "/HeroStats/Power"),
-            ("Growth", "/HeroStats/Growth")
-        });
-    }
-
     private bool IsSelected(RaceEnum? race) => selectedRace == race;
-
     private void SelectRace(RaceEnum? race)
     {
         selectedRace = race;

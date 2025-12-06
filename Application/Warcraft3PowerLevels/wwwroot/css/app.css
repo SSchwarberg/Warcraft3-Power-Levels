@@ -376,3 +376,51 @@ input, select {
         color: var(--accent);
         text-shadow: 0 0 6px rgba(78,161,255,0.6);
     }
+
+
+.unified-nav {
+    width: 240px;
+    padding: 1.25rem;
+    background: rgba(10, 10, 14, 0.65);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-color);
+}
+
+.sidebar-title {
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+}
+
+.nav-section {
+    margin-bottom: 2rem;
+}
+
+.section-header {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 0.4rem 0.0rem;
+    margin: 0;
+    color: var(--accent);
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+    .section-header.active {
+        color: var(--accent);
+        text-shadow: 0 0 6px rgba(78, 161, 255, 0.6);
+    }
+
+
+.sub-item {
+    display: block;
+    margin-left: 0.75rem;
+    padding: 0.25rem 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+    .sub-item:hover,
+    .sub-item.active {
+        color: var(--accent);
+    }

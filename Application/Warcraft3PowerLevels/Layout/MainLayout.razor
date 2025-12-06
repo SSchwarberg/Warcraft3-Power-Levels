@@ -1,24 +1,34 @@
-﻿@inherits LayoutComponentBase
-@inject Warcraft3PowerLevels.Components.Services.LayoutStateService LayoutState
+﻿@namespace Warcraft3PowerLevels.Layout
+@inherits MainLayoutBase
 
 <div class="app-container">
 
-    <!-- Primary navigation -->
-    <div class="sidebar primary-nav">
+    <div class="sidebar unified-nav">
         <h3 class="sidebar-title">WC3</h3>
 
-        <NavLink href="/HeroStats" class="nav-item">Heroes</NavLink>
-        <NavLink href="/UnitStats" class="nav-item">Units</NavLink>
-    </div>
+        <!-- HERO SECTION -->
+        <div class="nav-section">
+            <p class="section-header @(IsActiveGroup("Heroes") ? "active" : "")">
+                Heroes
+            </p>
 
-    <!-- Context navigation (dynamic per section) -->
-    <div class="sidebar context-nav">
-        <h3 class="sidebar-title">@LayoutState.ContextTitle</h3>
+            @foreach (var item in LayoutState.HeroLinks)
+            {
+                <NavLink href="@item.Url" class="sub-item">@item.Text</NavLink>
+            }
+        </div>
 
-        @foreach (var item in LayoutState.ContextLinks)
-        {
-            <NavLink href="@item.Url" class="nav-item">@item.Text</NavLink>
-        }
+        <!-- UNIT SECTION -->
+        <div class="nav-section">
+            <p class="section-header @(IsActiveGroup("Units") ? "active" : "")">
+                Units
+            </p>
+
+            @foreach (var item in LayoutState.UnitLinks)
+            {
+                <NavLink href="@item.Url" class="sub-item">@item.Text</NavLink>
+            }
+        </div>
     </div>
 
     <div class="main-content">
