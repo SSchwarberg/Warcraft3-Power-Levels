@@ -16,7 +16,7 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
         public int Attack { get; set; } = 40;
         public double AttackTime { get; set; } = 2.0;
-        public int Range { get; set; } = 600;
+        public int Range { get; set; } = 450;
 
         public int Health { get; set; } = 570;
         public int Mana { get; set; } = 0;

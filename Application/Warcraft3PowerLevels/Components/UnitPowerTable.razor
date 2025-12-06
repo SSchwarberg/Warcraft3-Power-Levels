@@ -1,7 +1,7 @@
-﻿@using Warcraft3PowerLevels.Components.Dialogs
+﻿@using System.Globalization
+@using Warcraft3PowerLevels.Components.Dialogs
 @using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
-@using Warcraft3PowerLevels.Services
 
 <table class="glassy-table">
     <thead class="no-select">
@@ -9,29 +9,21 @@
             <th class="@GetHeaderClass(NameSelector)" @onclick="() => Sort(NameSelector)">
                 Name @SortIcon(NameSelector)
             </th>
-
             <th class="@GetHeaderClass(RaceSelector)" @onclick="() => Sort(RaceSelector)">
                 Race @SortIcon(RaceSelector)
             </th>
-
             <th class="@GetHeaderClass(TierSelector)" @onclick="() => Sort(TierSelector)">
                 Tier @SortIcon(TierSelector)
             </th>
-
-            <th class="@GetHeaderClass(GoldSelector)" @onclick="() => Sort(GoldSelector)">
-                Gold @SortIcon(GoldSelector)
-            </th>
-
-            <th class="@GetHeaderClass(FoodSelector)" @onclick="() => Sort(FoodSelector)">
-                Food @SortIcon(FoodSelector)
-            </th>
+            <th>Gold</th>
+            <th>Food</th>
 
             <th class="@GetHeaderClass(DpsSelector)" @onclick="() => Sort(DpsSelector)">
                 DPS @SortIcon(DpsSelector)
             </th>
 
-            <th class="@GetHeaderClass(EhpSelector)" @onclick="() => Sort(EhpSelector)">
-                Effective HP @SortIcon(EhpSelector)
+            <th class="@GetHeaderClass(EffectiveHpSelector)" @onclick="() => Sort(EffectiveHpSelector)">
+                Effective HP @SortIcon(EffectiveHpSelector)
             </th>
 
             <th class="@GetHeaderClass(PowerSelector)" @onclick="() => Sort(PowerSelector)">
@@ -43,50 +35,122 @@
     <tbody>
         @foreach (var row in SortState.Apply(Rows))
         {
-            <tr @onclick="() => ShowDetails(row.Unit)">
-                <td>@row.Unit.Name</td>
-                <td>@row.Unit.Race</td>
-                <td>@row.Unit.Tier</td>
-                <td>@row.Unit.Gold</td>
-                <td>@row.Unit.Food</td>
+        <tr @onclick="() => ShowDetails(row.Unit)">
+            <td>@row.Unit.Name</td>
+            <td>@row.Unit.Race</td>
+            <td>@row.Unit.Tier</td>
+            <td>@row.Unit.Gold</td>
+            <td>@row.Unit.Food</td>
 
-                <td>@row.Dps.ToString("0.0")</td>
-                <td>@row.EffectiveHp</td>
-                <td>@row.Power.ToString("0")</td>
-            </tr>
-        }
+            <!-- DPS BAR -->
+            <td>
+                @Bar(
+                value: Safe(row.Dps),
+                                min: MinDps,
+                                max: MaxDps
+                                )
+            </td>
+
+            <!-- HP BAR -->
+            <td>
+                @Bar(
+                                value: Safe(row.EffectiveHp),
+                                min: MinHp,
+                                max: MaxHp
+                                )
+            </td>
+
+            <!-- POWER BAR -->
+            <td>
+                @Bar(
+                                value: Safe(row.Power),
+                                min: MinPower,
+                                max: MaxPower
+                                )
+            </td>
+        </tr>
+                }
     </tbody>
 </table>
 
 <EntityDetailsDialog Entity="selectedEntity" OnClose="CloseDialog" />
 
 @code {
+    /* ----------------------
+       PARAMETERS
+       ----------------------*/
+
+    private object? selectedEntity = null;
+
     [Parameter] public IEnumerable<UnitPowerRow> Rows { get; set; } = [];
+
+    // keep for compatibility, even if we no longer use them
+    [Parameter] public List<UnitPowerRow> TopDps { get; set; } = [];
+    [Parameter] public List<UnitPowerRow> BottomDps { get; set; } = [];
+    [Parameter] public List<UnitPowerRow> TopHp { get; set; } = [];
+    [Parameter] public List<UnitPowerRow> BottomHp { get; set; } = [];
+    [Parameter] public List<UnitPowerRow> TopPower { get; set; } = [];
+    [Parameter] public List<UnitPowerRow> BottomPower { get; set; } = [];
+
     [Parameter] public EventCallback<Func<UnitPowerRow, object>> OnSort { get; set; }
     [Parameter] public SortState<UnitPowerRow> SortState { get; set; } = new();
 
-    private object? selectedEntity;
 
-    private void ShowDetails(IUnit unit) => selectedEntity = unit;
-    private void CloseDialog() => selectedEntity = null;
+    /* ----------------------
+       COLUMN SELECTORS
+       ----------------------*/
 
-    // Shared selectors (must be static instances so equality works)
     public static readonly Func<UnitPowerRow, object> NameSelector = r => r.Unit.Name;
     public static readonly Func<UnitPowerRow, object> RaceSelector = r => r.Unit.Race;
     public static readonly Func<UnitPowerRow, object> TierSelector = r => r.Unit.Tier;
-    public static readonly Func<UnitPowerRow, object> GoldSelector = r => r.Unit.Gold;
-    public static readonly Func<UnitPowerRow, object> FoodSelector = r => r.Unit.Food;
     public static readonly Func<UnitPowerRow, object> DpsSelector = r => r.Dps;
-    public static readonly Func<UnitPowerRow, object> EhpSelector = r => r.EffectiveHp;
+    public static readonly Func<UnitPowerRow, object> EffectiveHpSelector = r => r.EffectiveHp;
     public static readonly Func<UnitPowerRow, object> PowerSelector = r => r.Power;
 
-    private void Sort(Func<UnitPowerRow, object> selector)
+
+    /* ----------------------
+       MIN / MAX PER METRIC
+       ----------------------*/
+
+    private double MinDps => Rows.Any() ? Rows.Min(r => Safe(r.Dps)) : 0;
+    private double MaxDps => Rows.Any() ? Rows.Max(r => Safe(r.Dps)) : 1;
+    private double MinHp => Rows.Any() ? Rows.Min(r => Safe(r.EffectiveHp)) : 0;
+    private double MaxHp => Rows.Any() ? Rows.Max(r => Safe(r.EffectiveHp)) : 1;
+    private double MinPower => Rows.Any() ? Rows.Min(r => Safe(r.Power)) : 0;
+    private double MaxPower => Rows.Any() ? Rows.Max(r => Safe(r.Power)) : 1;
+
+
+    /* ----------------------
+       SAFE NUMBERS
+       ----------------------*/
+
+    private double Safe(double value)
+        => double.IsFinite(value) && value > 0 ? value : 0;
+
+    private void ShowDetails(IUnit hero)
     {
-        OnSort.InvokeAsync(selector);
+        selectedEntity = hero;
     }
+
+    private void CloseDialog()
+    {
+        selectedEntity = null;
+    }
+
+    /* ----------------------
+       SORTING
+       ----------------------*/
+
+    private void Sort(Func<UnitPowerRow, object> selector)
+        => OnSort.InvokeAsync(selector);
 
     private string GetHeaderClass(Func<UnitPowerRow, object> selector)
         => SortState.KeySelector == selector ? "sorted" : "";
+
+
+    /* ----------------------
+       SORT ICON
+       ----------------------*/
 
     private RenderFragment SortIcon(Func<UnitPowerRow, object> selector) => builder =>
     {
@@ -103,4 +167,53 @@
         builder.AddMarkupContent(3, "<path fill='currentColor' d='M12 4l-6 6h12z'/>");
         builder.CloseElement();
     };
+
+
+    /* ----------------------
+       BAR RENDERING
+       ----------------------*/
+
+    private RenderFragment Bar(double value, double min, double max) => builder =>
+    {
+        value = Safe(value);
+
+        double span = max - min;
+        double ratio = span > 0
+            ? (value - min) / span // 0 = worst, 1 = best
+            : 0.5;
+
+        if (ratio < 0) ratio = 0;
+        if (ratio > 1) ratio = 1;
+
+        double widthPercent = ratio * 100.0;
+
+        // critical part: use invariant culture → "42.8%" instead of "42,8%"
+        string widthCss = widthPercent.ToString("0.0", CultureInfo.InvariantCulture);
+
+        string color = RankColor(ratio);
+
+        builder.OpenElement(0, "div");
+        builder.AddAttribute(1, "class", "bar-wrapper");
+
+        builder.OpenElement(2, "div");
+        builder.AddAttribute(3, "class", "bar-fill");
+        builder.AddAttribute(4, "style", $"width:{widthCss}%; background-color:{color};");
+        builder.CloseElement();
+
+        builder.OpenElement(5, "span");
+        builder.AddAttribute(6, "class", "bar-value");
+        builder.AddContent(7, ((int)value).ToString());
+        builder.CloseElement();
+
+        builder.CloseElement();
+    };
+
+    // red (worst) -> green (best) using HSL
+    private string RankColor(double ratio)
+    {
+        ratio = Math.Clamp(ratio, 0, 1);
+        // 0 = red (0°), 1 = green (120°)
+        double hue = 120.0 * ratio;
+        return $"hsl({hue:F0}, 70%, 45%)";
+    }
 }

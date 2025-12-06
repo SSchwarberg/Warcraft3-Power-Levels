@@ -6,7 +6,7 @@
 @inject UnitRepository Repository
 @inject Warcraft3PowerLevels.Services.LayoutStateService LayoutState
 
-<h3>Units</h3>
+<h3>Units - Base Stats</h3>
 
 <div class="race-filter-container">
 
@@ -106,7 +106,7 @@
         if (sortState.KeySelector != selector)
         {
             sortState.KeySelector = selector;
-            sortState.Direction = SortDirectionEnum.Ascending;
+            sortState.Direction = SortDirectionEnum.Descending;
         }
         else
         {

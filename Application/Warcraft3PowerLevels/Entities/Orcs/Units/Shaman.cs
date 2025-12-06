@@ -14,11 +14,11 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 9;
+        public int Attack { get; set; } = 11;
         public double AttackTime { get; set; } = 2.1;
         public int Range { get; set; } = 600;
 
-        public int Health { get; set; } = 335;
+        public int Health { get; set; } = 350;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Unarmored;

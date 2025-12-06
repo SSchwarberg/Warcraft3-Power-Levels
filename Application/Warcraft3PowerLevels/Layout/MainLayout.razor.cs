@@ -28,14 +28,22 @@ namespace Warcraft3PowerLevels.Layout
             if (currentUrl is null)
                 return false;
 
+            string path = Nav.ToBaseRelativePath(currentUrl).ToLower();
+
+            bool Match(string url)
+                => path == url.ToLower().TrimStart('/') ||
+                   path.EndsWith("/" + url.ToLower().TrimStart('/'));
+
             if (group == "Heroes")
-                return LayoutState.HeroLinks.Any(l => currentUrl.Contains(l.Url, StringComparison.OrdinalIgnoreCase));
+                return LayoutState.HeroLinks.Any(l => Match(l.Url));
 
             if (group == "Units")
-                return LayoutState.UnitLinks.Any(l => currentUrl.Contains(l.Url, StringComparison.OrdinalIgnoreCase));
+                return LayoutState.UnitLinks.Any(l => Match(l.Url));
 
             return false;
         }
+
+
 
         public void Dispose()
         {

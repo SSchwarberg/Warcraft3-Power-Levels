@@ -5,6 +5,22 @@
 
     <div class="sidebar unified-nav">
         <h3 class="sidebar-title">WC3</h3>
+        <!-- UNIT SECTION -->
+        <div class="nav-section">
+            <p class="section-header @(IsActiveGroup("Units") ? "active" : "")">
+                Units
+            </p>
+
+            @foreach (var item in LayoutState.UnitLinks)
+            {
+                <NavLink href="@item.Url"
+                         Match="NavLinkMatch.All"
+                         class="sub-item">
+                    @item.Text
+                </NavLink>
+            }
+
+        </div>
 
         <!-- HERO SECTION -->
         <div class="nav-section">
@@ -13,18 +29,6 @@
             </p>
 
             @foreach (var item in LayoutState.HeroLinks)
-            {
-                <NavLink href="@item.Url" class="sub-item">@item.Text</NavLink>
-            }
-        </div>
-
-        <!-- UNIT SECTION -->
-        <div class="nav-section">
-            <p class="section-header @(IsActiveGroup("Units") ? "active" : "")">
-                Units
-            </p>
-
-            @foreach (var item in LayoutState.UnitLinks)
             {
                 <NavLink href="@item.Url" class="sub-item">@item.Text</NavLink>
             }

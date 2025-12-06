@@ -8,8 +8,8 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
         public RaceEnum Race { get; set; } = RaceEnum.Orc;
         public string Name { get; set; } = "Tauren";
         public int Tier { get; set; } = 3;
-        public int Gold { get; set; } = 280;
-        public int Wood { get; set; } = 80;
+        public int Gold { get; set; } = 300;
+        public int Wood { get; set; } = 100;
         public int Food { get; set; } = 5;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;

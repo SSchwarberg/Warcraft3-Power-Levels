@@ -1,4 +1,6 @@
-﻿namespace Warcraft3PowerLevels.Services
+﻿using System.Runtime.InteropServices;
+
+namespace Warcraft3PowerLevels.Services
 {
     /// <summary>
     /// Service to manage the layout state, including the current main section and context links.
@@ -10,18 +12,18 @@
 
         public LayoutStateService()
         {
-            HeroLinks = new List<(string Text, string Url)>
-            {
-                ("Base Stats", "/HeroStats"),
-                ("Power Levels", "/HeroStats/Power"),
-            };
-
             UnitLinks = new List<(string Text, string Url)>
             {
+                ("Power", "/UnitStats/power"),
+                ("Power per 100g", "/UnitStats/power100"),
+                ("Power per Supply", "/UnitStats/powerSupply"),
                 ("Base Stats", "/UnitStats"),
-                ("Power Levels", "/UnitStats/Power"),
-                ("Power per 100g", "/UnitStats/Power100"),
-                ("Power per Supply", "/UnitStats/PowerSupply")
+            };
+
+            HeroLinks = new List<(string Text, string Url)>
+            {
+                ("Power", "/HeroStats/Power"),
+                ("Base Stats", "/HeroStats"),
             };
         }
     }

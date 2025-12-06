@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Siege;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 14;
+        public int Attack { get; set; } = 17;
         public double AttackTime { get; set; } = 1.8;
         public int Range { get; set; } = 500;
 

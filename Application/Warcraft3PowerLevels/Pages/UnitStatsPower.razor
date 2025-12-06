@@ -6,7 +6,7 @@
 
 @inject UnitRepository Repository
 
-<h3>Unit Power Levels</h3>
+<h3>Units - Power</h3>
 
 <div class="race-filter-container">
 
@@ -42,8 +42,15 @@
 </div>
 
 <UnitPowerTable Rows="PowerRows"
+                TopDps="Top5Dps"
+                BottomDps="Bottom5Dps"
+                TopHp="Top5Hp"
+                BottomHp="Bottom5Hp"
+                TopPower="Top5Power"
+                BottomPower="Bottom5Power"
                 OnSort="HandleSort"
                 SortState="sortState" />
+
 
 @code {
     private RaceEnum? selectedMainRace = null;
@@ -52,22 +59,16 @@
 
     private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
 
-    private void SelectMainRace(RaceEnum? race)
-    {
-        selectedMainRace = race;
-    }
-
+    private void SelectMainRace(RaceEnum? race) => selectedMainRace = race;
     private void ToggleNeutralUnits() => includeNeutralUnits = !includeNeutralUnits;
     private void ToggleSummons() => includeSummons = !includeSummons;
 
-    // Filtered units (same behavior as BaseUnitStatsPage)
     private IEnumerable<IUnit> FilteredUnits
     {
         get
         {
-            var units = Repository.Units;
+            var units = Repository.Units.ToList();
 
-            // Race filter (including Neutral only when explicitly toggled)
             if (selectedMainRace != null)
                 units = units.Where(u => u.Race == selectedMainRace || u.Race == RaceEnum.Neutral).ToList();
 
@@ -81,14 +82,13 @@
         }
     }
 
-    // Convert IUnit → UnitPowerRow using PowerCalculator
-    private IEnumerable<UnitPowerRow> PowerRows =>
+    private List<UnitPowerRow> PowerRows =>
         FilteredUnits.Select(u => new UnitPowerRow(
             u,
             PowerCalculator.ComputeDps(u),
             PowerCalculator.ComputeEffectiveHp(u),
             PowerCalculator.ComputePower(u)
-        ));
+        )).ToList();
 
     private SortState<UnitPowerRow> sortState = new();
 
@@ -97,7 +97,7 @@
         if (sortState.KeySelector != selector)
         {
             sortState.KeySelector = selector;
-            sortState.Direction = SortDirectionEnum.Ascending;
+            sortState.Direction = SortDirectionEnum.Descending;
         }
         else
         {
@@ -107,4 +107,24 @@
                 : SortDirectionEnum.Ascending;
         }
     }
+
+    // ---- TOP 5 / BOTTOM 5 RANKS BY IDENTITY (NOT value equality) ----
+
+    private List<UnitPowerRow> Top5Dps =>
+        PowerRows.OrderByDescending(r => r.Dps).Take(5).ToList();
+
+    private List<UnitPowerRow> Bottom5Dps =>
+        PowerRows.OrderBy(r => r.Dps).Take(5).ToList();
+
+    private List<UnitPowerRow> Top5Hp =>
+        PowerRows.OrderByDescending(r => r.EffectiveHp).Take(5).ToList();
+
+    private List<UnitPowerRow> Bottom5Hp =>
+        PowerRows.OrderBy(r => r.EffectiveHp).Take(5).ToList();
+
+    private List<UnitPowerRow> Top5Power =>
+        PowerRows.OrderByDescending(r => r.Power).Take(5).ToList();
+
+    private List<UnitPowerRow> Bottom5Power =>
+        PowerRows.OrderBy(r => r.Power).Take(5).ToList();
 }

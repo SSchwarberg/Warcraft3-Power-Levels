@@ -8,7 +8,7 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
         public RaceEnum Race { get; set; } = RaceEnum.Orc;
         public string Name { get; set; } = "Berserker";
         public int Tier { get; set; } = 3;
-        public int Gold { get; set; } = 135;
+        public int Gold { get; set; } = 140;
         public int Wood { get; set; } = 20;
         public int Food { get; set; } = 2;
 
@@ -16,9 +16,9 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
         public int Attack { get; set; } = 25;
         public double AttackTime { get; set; } = 2.31;
-        public int Range { get; set; } = 600;
+        public int Range { get; set; } = 550;
 
-        public int Health { get; set; } = 450;
+        public int Health { get; set; } = 475;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;

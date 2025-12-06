@@ -5,7 +5,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
 {
     public class Infernal : IUnit, ISummon
     {
-        public RaceEnum Race { get; set; } = RaceEnum.Neutral;
+        public RaceEnum Race { get; set; } = RaceEnum.Undead;
         public string Name { get; set; } = "Infernal";
         public int Tier { get; set; } = 5;
 
