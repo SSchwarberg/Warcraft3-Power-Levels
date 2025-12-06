@@ -14,7 +14,6 @@
             {
                 ("Base Stats", "/HeroStats"),
                 ("Power Levels", "/HeroStats/Power"),
-                ("Growth", "/HeroStats/Growth")
             };
 
             UnitLinks = new List<(string Text, string Url)>

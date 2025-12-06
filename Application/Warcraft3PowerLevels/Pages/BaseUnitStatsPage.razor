@@ -9,22 +9,38 @@
 <h3>Units</h3>
 
 <div class="race-filter-container">
+
+    <!-- MAIN RACES -->
     <div class="race-filter no-select">
-        <span class="race-item @(IsActive(null) ? "active" : "")"
-              @onclick="@(() => SelectRace(null))">
+        <span class="race-item @(IsMainRace(null) ? "active" : "")"
+              @onclick="@(() => SelectMainRace(null))">
             All
         </span>
 
-        @foreach (var race in Enum.GetValues<RaceEnum>())
+        @foreach (var race in new[] { RaceEnum.Human, RaceEnum.Orc, RaceEnum.Undead, RaceEnum.NightElf })
         {
-            <span class="race-item @(IsActive(race) ? "active" : "")"
-                  @onclick="@(() => SelectRace(race))"
+            <span class="race-item @(IsMainRace(race) ? "active" : "")"
+                  @onclick="@(() => SelectMainRace(race))"
                   @key="race">
                 @race
             </span>
         }
     </div>
+
+    <!-- NEUTRAL + SUMMONS SWITCHES -->
+    <div class="neutral-toggle no-select">
+        <span class="race-item @(includeNeutralUnits ? "active" : "")"
+              @onclick="ToggleNeutralUnits">
+            Neutral Units
+        </span>
+
+        <span class="race-item @(includeSummons ? "active" : "")"
+              @onclick="ToggleSummons">
+            Summons
+        </span>
+    </div>
 </div>
+
 
 <UnitTable Units="FilteredUnits"
            OnSort="HandleSort"
@@ -35,15 +51,54 @@
 
     private bool IsActive(RaceEnum? race) => selectedRace == race;
 
+    private RaceEnum? selectedMainRace = null;
+    private bool includeNeutralUnits = false;
+    private bool includeSummons = false;
+
+    private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+
     private void SelectRace(RaceEnum? race)
     {
         selectedRace = race;
     }
 
-    private IEnumerable<IUnit> FilteredUnits =>
-        selectedRace == null
-            ? Repository.Units
-            : Repository.Units.Where(u => u.Race == selectedRace);
+    private void SelectMainRace(RaceEnum? race)
+    {
+        selectedMainRace = race;
+    }
+
+    private void ToggleNeutralUnits()
+    {
+        includeNeutralUnits = !includeNeutralUnits;
+    }
+
+    private void ToggleSummons()
+    {
+        includeSummons = !includeSummons;
+    }
+
+    private IEnumerable<IUnit> FilteredUnits
+{
+    get
+    {
+        var units = Repository.Units;
+
+        // Apply main race filter (excluding Neutral)
+        if (selectedMainRace != null)
+            units = units.Where(u => u.Race == selectedMainRace || u.Race == RaceEnum.Neutral).ToList();
+
+        // Neutral Units toggle (Bandits, creeps, mercs → RaceEnum.Neutral)
+        if (!includeNeutralUnits)
+            units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
+
+        // Summons toggle (Elementals, Wolves → UnitType.Summon)
+        if (!includeSummons)
+            units = units.Where(u => u is not ISummon).ToList();
+
+        return units;
+    }
+}
+
 
     private SortState<IUnit> sortState = new();
     private void HandleSort(Func<IUnit, object> selector)
