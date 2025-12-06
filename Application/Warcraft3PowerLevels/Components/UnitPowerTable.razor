@@ -1,0 +1,106 @@
+﻿@using Warcraft3PowerLevels.Components.Dialogs
+@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+@using Warcraft3PowerLevels.Services
+
+<table class="glassy-table">
+    <thead class="no-select">
+        <tr>
+            <th class="@GetHeaderClass(NameSelector)" @onclick="() => Sort(NameSelector)">
+                Name @SortIcon(NameSelector)
+            </th>
+
+            <th class="@GetHeaderClass(RaceSelector)" @onclick="() => Sort(RaceSelector)">
+                Race @SortIcon(RaceSelector)
+            </th>
+
+            <th class="@GetHeaderClass(TierSelector)" @onclick="() => Sort(TierSelector)">
+                Tier @SortIcon(TierSelector)
+            </th>
+
+            <th class="@GetHeaderClass(GoldSelector)" @onclick="() => Sort(GoldSelector)">
+                Gold @SortIcon(GoldSelector)
+            </th>
+
+            <th class="@GetHeaderClass(FoodSelector)" @onclick="() => Sort(FoodSelector)">
+                Food @SortIcon(FoodSelector)
+            </th>
+
+            <th class="@GetHeaderClass(DpsSelector)" @onclick="() => Sort(DpsSelector)">
+                DPS @SortIcon(DpsSelector)
+            </th>
+
+            <th class="@GetHeaderClass(EhpSelector)" @onclick="() => Sort(EhpSelector)">
+                Effective HP @SortIcon(EhpSelector)
+            </th>
+
+            <th class="@GetHeaderClass(PowerSelector)" @onclick="() => Sort(PowerSelector)">
+                Power @SortIcon(PowerSelector)
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var row in SortState.Apply(Rows))
+        {
+            <tr @onclick="() => ShowDetails(row.Unit)">
+                <td>@row.Unit.Name</td>
+                <td>@row.Unit.Race</td>
+                <td>@row.Unit.Tier</td>
+                <td>@row.Unit.Gold</td>
+                <td>@row.Unit.Food</td>
+
+                <td>@row.Dps.ToString("0.0")</td>
+                <td>@row.EffectiveHp</td>
+                <td>@row.Power.ToString("0")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<EntityDetailsDialog Entity="selectedEntity" OnClose="CloseDialog" />
+
+@code {
+    [Parameter] public IEnumerable<UnitPowerRow> Rows { get; set; } = [];
+    [Parameter] public EventCallback<Func<UnitPowerRow, object>> OnSort { get; set; }
+    [Parameter] public SortState<UnitPowerRow> SortState { get; set; } = new();
+
+    private object? selectedEntity;
+
+    private void ShowDetails(IUnit unit) => selectedEntity = unit;
+    private void CloseDialog() => selectedEntity = null;
+
+    // Shared selectors (must be static instances so equality works)
+    public static readonly Func<UnitPowerRow, object> NameSelector = r => r.Unit.Name;
+    public static readonly Func<UnitPowerRow, object> RaceSelector = r => r.Unit.Race;
+    public static readonly Func<UnitPowerRow, object> TierSelector = r => r.Unit.Tier;
+    public static readonly Func<UnitPowerRow, object> GoldSelector = r => r.Unit.Gold;
+    public static readonly Func<UnitPowerRow, object> FoodSelector = r => r.Unit.Food;
+    public static readonly Func<UnitPowerRow, object> DpsSelector = r => r.Dps;
+    public static readonly Func<UnitPowerRow, object> EhpSelector = r => r.EffectiveHp;
+    public static readonly Func<UnitPowerRow, object> PowerSelector = r => r.Power;
+
+    private void Sort(Func<UnitPowerRow, object> selector)
+    {
+        OnSort.InvokeAsync(selector);
+    }
+
+    private string GetHeaderClass(Func<UnitPowerRow, object> selector)
+        => SortState.KeySelector == selector ? "sorted" : "";
+
+    private RenderFragment SortIcon(Func<UnitPowerRow, object> selector) => builder =>
+    {
+        if (SortState.KeySelector != selector)
+            return;
+
+        string iconClass = SortState.Direction == SortDirectionEnum.Ascending
+            ? "sort-asc"
+            : "sort-desc";
+
+        builder.OpenElement(0, "svg");
+        builder.AddAttribute(1, "class", $"sort-icon {iconClass}");
+        builder.AddAttribute(2, "viewBox", "0 0 24 24");
+        builder.AddMarkupContent(3, "<path fill='currentColor' d='M12 4l-6 6h12z'/>");
+        builder.CloseElement();
+    };
+}
