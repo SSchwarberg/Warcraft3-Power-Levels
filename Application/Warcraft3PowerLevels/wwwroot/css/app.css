@@ -469,3 +469,73 @@ input, select {
     pointer-events: none;
     background: linear-gradient( to right, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.0) 45% ); /* subtle dark strip behind text */
 }
+
+
+/* -------------------------------------
+   TOP PANEL: Race Filter + Type Filters
+   ------------------------------------- */
+
+.top-filter-panel {
+    display: flex;
+    align-items: center; /* vertically centers race card vs type card */
+    gap: 30px;
+    margin-bottom: 1rem;
+}
+
+/* Left column */
+.race-filter-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+/* Right column: attack + armor filter panel */
+.type-filter-panel {
+    background: rgba(0, 0, 0, 0.35);
+    padding: 12px 16px;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    min-width: 210px;
+}
+
+
+.icon-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.filter-icon {
+    width: 30px;
+    height: 30px;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+    .filter-icon:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .filter-icon.active {
+        opacity: 1;
+        transform: scale(1.13);
+        filter: drop-shadow(0 0 6px var(--accent));
+    }
+
+/* Enemy Attack/Armor titles – high contrast */
+.panel-title {
+    display: inline-block;
+    padding: 2px 8px 0px 37px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    color: #eeeeee;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.9);
+}

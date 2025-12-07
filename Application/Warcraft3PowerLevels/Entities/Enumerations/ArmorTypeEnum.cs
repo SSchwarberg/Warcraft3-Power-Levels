@@ -5,12 +5,12 @@
     /// </summary>
     public enum ArmorTypeEnum
     {
-        Unarmored,
-        Light,
+        None,
         Medium,
+        Light,
+        Unarmored,
         Heavy,
+        Hero,
         Fortified,
-        Heroic,
-        Invulnerable
     }
 }

@@ -21,6 +21,6 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Summons
         public int Health { get; set; } = 500;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Invulnerable;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.None;
     }
 }

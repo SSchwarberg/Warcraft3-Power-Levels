@@ -5,12 +5,12 @@
     /// </summary>
     public enum AttackTypeEnum
     {
+        None,
         Normal,
         Piercing,
-        Siege,
         Magic,
+        Siege,
+        Hero, 
         Chaos,
-        Heroic,
-        None
     }
 }

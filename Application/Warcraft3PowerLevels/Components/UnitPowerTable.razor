@@ -44,29 +44,26 @@
 
             <!-- DPS BAR -->
             <td>
-                @Bar(
-                value: Safe(row.Dps),
-                                min: MinDps,
-                                max: MaxDps
-                                )
+                @Bar(value: Safe(row.Dps),
+                     min: MinDps,
+                     max: MaxDps,
+                     true)
             </td>
 
             <!-- HP BAR -->
             <td>
-                @Bar(
-                                value: Safe(row.EffectiveHp),
-                                min: MinHp,
-                                max: MaxHp
-                                )
+                @Bar(value: Safe(row.EffectiveHp),
+                     min: MinHp,
+                     max: MaxHp,
+                     false)
             </td>
 
             <!-- POWER BAR -->
             <td>
-                @Bar(
-                                value: Safe(row.Power),
-                                min: MinPower,
-                                max: MaxPower
-                                )
+                @Bar(value: Safe(row.Power),
+                     min: MinPower,
+                     max: MaxPower,
+                     false)
             </td>
         </tr>
                 }
@@ -173,7 +170,7 @@
        BAR RENDERING
        ----------------------*/
 
-    private RenderFragment Bar(double value, double min, double max) => builder =>
+    private RenderFragment Bar(double value, double min, double max, bool showDecimals) => builder =>
     {
         value = Safe(value);
 
@@ -202,7 +199,10 @@
 
         builder.OpenElement(5, "span");
         builder.AddAttribute(6, "class", "bar-value");
-        builder.AddContent(7, ((int)value).ToString());
+        string valueText = showDecimals
+            ? value.ToString("0.00")
+            : ((int)Math.Round(value)).ToString();
+        builder.AddContent(7, valueText);
         builder.CloseElement();
 
         builder.CloseElement();
