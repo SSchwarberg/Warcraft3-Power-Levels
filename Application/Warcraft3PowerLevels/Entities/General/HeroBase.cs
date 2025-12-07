@@ -46,7 +46,7 @@ namespace Warcraft3PowerLevels.Entities.General
             set { }
         }
 
-        public int Attack
+        public double Attack
         {
             get
             {
@@ -58,7 +58,7 @@ namespace Warcraft3PowerLevels.Entities.General
                     _ => 0
                 };
 
-                return (int)(baseAttack + primaryBonus);
+                return (baseAttack + primaryBonus);
             }
             set { }
         }

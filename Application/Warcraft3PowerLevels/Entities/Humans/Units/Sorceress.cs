@@ -14,8 +14,8 @@ namespace Warcraft3PowerLevels.Entities.Humans.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 11;
-        public double AttackTime { get; set; } = 1.7;
+        public double Attack { get; set; } = 11;
+        public double AttackTime { get; set; } = 1.75;
         public int Range { get; set; } = 600;
 
         public int Health { get; set; } = 325;

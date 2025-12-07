@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 25;
+        public double Attack { get; set; } = 25;
         public double AttackTime { get; set; } = 2.31;
         public int Range { get; set; } = 550;
 

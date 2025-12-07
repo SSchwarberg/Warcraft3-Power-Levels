@@ -124,8 +124,8 @@
         builder.CloseElement();
     };
 
-    private (int str, int agi, int intl, int health, double armor, int attack, double atkTime, int range)
-    GetAttributes(IHero hero, int level)
+    private (int str, int agi, int intl, int health, double armor, double attack, double atkTime, int range)
+        GetAttributes(IHero hero, int level)
     {
         if (level < 1) level = 1;
         int gained = level - 1;
@@ -148,7 +148,7 @@
             _ => 0
         };
 
-        int attack = hero.Attack + primary;
+        double attack = hero.Attack + primary;
         int range = hero.Range == 100 ? -1 : hero.Range;
 
         return (str, agi, intl, health, armor, attack, atkTime, range);

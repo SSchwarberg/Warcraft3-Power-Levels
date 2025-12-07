@@ -26,7 +26,7 @@
 
                 <p><b>Health:</b> @hero.Health</p>
                 <p><b>Armor:</b> @hero.Armor</p>
-                <p><b>Range:</b> @(hero.Range == 100 ? "Melee" : hero.Range)</p>
+                <p><b>Range:</b> @(hero.Range <= 100 ? "Melee" : hero.Range)</p>
                 <p><b>Attack:</b> @hero.Attack</p>
                 <p><b>Base Attack Time:</b> @hero.AttackTime</p>
             }
@@ -42,7 +42,7 @@
                 <p><b>Attack:</b> @unit.Attack</p>
                 <p><b>Attack Type:</b> @unit.AttackType</p>
                 <p><b>Base Attack Time:</b> @unit.AttackTime</p>
-                <p><b>Range:</b> @(unit.Range == 100 ? "Melee" : unit.Range)</p>
+                <p><b>Range:</b> @(unit.Range <= 100 ? "Melee" : unit.Range)</p>
 
                 <p><b>Health:</b> @unit.Health</p>
                 <p><b>Armor:</b> @unit.Armor</p>

@@ -19,7 +19,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
         public int Armor { get; set; } = 1;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
 
-        public int Attack { get; set; } = 14;
+        public double Attack { get; set; } = 14;
         public double AttackTime { get; set; } = 1.9;
         public int Range { get; set; } = 100;
 

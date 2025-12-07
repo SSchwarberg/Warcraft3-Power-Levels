@@ -17,7 +17,7 @@ namespace Warcraft3PowerLevels.Entities.General
         
         public AttackTypeEnum AttackType { get; set; }
         public WeaponTypeEnum WeaponType { get; set; }
-        public int Attack { get; set; }
+        public double Attack { get; set; }
         public double AttackTime { get; set; }
         public int Range { get; set; }
 

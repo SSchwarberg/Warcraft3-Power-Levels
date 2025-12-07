@@ -13,10 +13,10 @@ namespace Warcraft3PowerLevels.Entities.Humans.Units
         public int Food { get; set; } = 3;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
-        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
-        public int Attack { get; set; } = 14;
+        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
+        public double Attack { get; set; } = 14;
         public double AttackTime { get; set; } = 1.9;
-        public int Range { get; set; } = 100;
+        public int Range { get; set; } = 250;
 
         public int Health { get; set; } = 600;
         public int Mana { get; set; } = 0;

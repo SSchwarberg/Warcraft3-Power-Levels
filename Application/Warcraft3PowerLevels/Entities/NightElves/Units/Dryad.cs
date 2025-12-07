@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 18;
+        public double Attack { get; set; } = 18;
         public double AttackTime { get; set; } = 2.0;
         public int Range { get; set; } = 500;
 

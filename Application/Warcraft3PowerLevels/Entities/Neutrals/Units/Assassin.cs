@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 21;
+        public double Attack { get; set; } = 21;
         public double AttackTime { get; set; } = 1.6;
         public int Range { get; set; } = 600;
 

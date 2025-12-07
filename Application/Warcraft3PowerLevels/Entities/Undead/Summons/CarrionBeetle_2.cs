@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.Undead.Summons
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
-        public int Attack { get; set; } = 17;
+        public double Attack { get; set; } = 17;
         public double AttackTime { get; set; } = 1.5;
         public int Range { get; set; } = 100;
 

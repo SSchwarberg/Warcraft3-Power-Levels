@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.Undead.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Siege;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 80;
+        public double Attack { get; set; } = 80;
         public double AttackTime { get; set; } = 4.0;
         public int Range { get; set; } = 1150;
 

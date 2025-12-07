@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.None;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.None;
-        public int Attack { get; set; } = 0;
+        public double Attack { get; set; } = 0;
         public double AttackTime { get; set; } = 0;
         public int Range { get; set; } = 0;
 

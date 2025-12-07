@@ -14,9 +14,9 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
-        public int Attack { get; set; } = 8;
+        public double Attack { get; set; } = 7.5;
         public double AttackTime { get; set; } = 3.0;
-        public int Range { get; set; } = 100;
+        public int Range { get; set; } = 90;
 
         public int Health { get; set; } = 250;
         public int Mana { get; set; } = 0;

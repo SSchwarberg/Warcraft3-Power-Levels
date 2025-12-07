@@ -14,11 +14,11 @@ namespace Warcraft3PowerLevels.Entities.Humans.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
-        public int Attack { get; set; } = 34;
+        public double Attack { get; set; } = 34;
         public double AttackTime { get; set; } = 1.4;
         public int Range { get; set; } = 100;
 
-        public int Health { get; set; } = 835;
+        public int Health { get; set; } = 885;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 5;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;

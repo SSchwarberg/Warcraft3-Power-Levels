@@ -3,10 +3,10 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Humans.Units
 {
-    public class SiegeEngine : IUnit
+    public class SiegeEngine_Air : IUnit
     {
         public RaceEnum Race { get; set; } = RaceEnum.Human;
-        public string Name { get; set; } = "Siege Engine";
+        public string Name { get; set; } = "Siege Engine (Air)";
         public int Tier { get; set; } = 3;
         public int Gold { get; set; } = 195;
         public int Wood { get; set; } = 60;
@@ -14,9 +14,9 @@ namespace Warcraft3PowerLevels.Entities.Humans.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Siege;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 50;
-        public double AttackTime { get; set; } = 2.1;
-        public int Range { get; set; } = 300;
+        public double Attack { get; set; } = 17.5;
+        public double AttackTime { get; set; } = 2.0;
+        public int Range { get; set; } = 500;
 
         public int Health { get; set; } = 700;
         public int Mana { get; set; } = 0;

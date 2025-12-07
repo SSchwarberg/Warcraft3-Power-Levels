@@ -15,7 +15,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
 
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Light;
 
-        public int Attack { get; set; } = 11;
+        public double Attack { get; set; } = 11;
         public double AttackTime { get; set; } = 1.7;
         public int Range { get; set; } = 450;
 

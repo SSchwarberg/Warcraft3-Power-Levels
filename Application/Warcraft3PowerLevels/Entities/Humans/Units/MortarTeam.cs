@@ -14,13 +14,13 @@ namespace Warcraft3PowerLevels.Entities.Humans.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Siege;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public int Attack { get; set; } = 58;
+        public double Attack { get; set; } = 58;
         public double AttackTime { get; set; } = 3.5;
         public int Range { get; set; } = 1150;
 
         public int Health { get; set; } = 360;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Unarmored;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
     }
 }

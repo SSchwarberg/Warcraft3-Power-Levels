@@ -14,7 +14,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
-        public int Attack { get; set; } = 13;
+        public double Attack { get; set; } = 13;
         public double AttackTime { get; set; } = 1.8;
         public int Range { get; set; } = 100;
 
