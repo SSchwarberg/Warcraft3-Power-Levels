@@ -1,4 +1,4 @@
-﻿@page "/UnitStats/Power"
+﻿@page "/UnitStats/Power100g"
 @using Warcraft3PowerLevels.Components
 @using Warcraft3PowerLevels.Services
 @using Warcraft3PowerLevels.Entities.Enumerations
@@ -6,12 +6,12 @@
 
 @inject UnitRepository Repository
 
-<h3>Units - Power</h3>
+<h3>Units – Power per 100 Gold</h3>
 
-<!-- TOP FILTER PANEL -->
+<!-- FILTER PANEL (Same as original power page except summons removed) -->
 <div class="top-filter-panel">
 
-    <!-- LEFT: RACE FILTER INSIDE ITS OWN GLASS PANEL -->
+    <!-- LEFT SIDE: RACE FILTER -->
     <div class="race-filter-container">
         <div class="race-filter-section">
 
@@ -36,17 +36,12 @@
                       @onclick="ToggleNeutralUnits">
                     Neutral Units
                 </span>
-
-                <span class="race-item @(includeSummons ? "active" : "")"
-                      @onclick="ToggleSummons">
-                    Summons
-                </span>
             </div>
 
         </div>
     </div>
 
-    <!-- RIGHT: ENEMY ATTACK / ARMOR TYPE PANEL -->
+    <!-- RIGHT SIDE: ATTACK AND ARMOR PANEL -->
     <div class="type-filter-panel">
         <div class="panel-title">Enemy Attack Type</div>
         <div class="icon-row">
@@ -79,78 +74,53 @@
 
 </div>
 
-
-<!-- TABLE -->
+<!-- REUSING YOUR EXISTING TABLE COMPONENT -->
 <UnitPowerTable Rows="PowerRows"
                 OnSort="HandleSort"
                 SortState="sortState" />
-
 
 @code {
     private RaceEnum? selectedMainRace = null;
     private AttackTypeEnum selectedAttack = AttackTypeEnum.None;
     private ArmorTypeEnum selectedArmor = ArmorTypeEnum.None;
     private bool includeNeutralUnits = false;
-    private bool includeSummons = false;
 
     private void SelectMainRace(RaceEnum? race) => selectedMainRace = race;
-
-    private void SelectAttack(AttackTypeEnum atk)
-        => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
-
-    private void SelectArmor(ArmorTypeEnum arm)
-        => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
-
+    private void SelectAttack(AttackTypeEnum atk) => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
+    private void SelectArmor(ArmorTypeEnum arm) => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
     private void ToggleNeutralUnits() => includeNeutralUnits = !includeNeutralUnits;
-    private void ToggleSummons() => includeSummons = !includeSummons;
+
     private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
-
-
-    /* -------------------------------------------------------------
-       FILTERED UNIT LIST
-       ------------------------------------------------------------- */
 
     private IEnumerable<IUnit> FilteredUnits
     {
         get
         {
-            var units = Repository.Units.ToList();
+            var units = Repository.Units.Where(u => u.Gold > 0).ToList(); // no summons here
 
             if (selectedMainRace != null)
-                units = units.Where(u =>
-                    u.Race == selectedMainRace ||
-                    u.Race == RaceEnum.Neutral
-                ).ToList();
+                units = units.Where(u => u.Race == selectedMainRace || u.Race == RaceEnum.Neutral).ToList();
 
             if (!includeNeutralUnits)
                 units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
-
-            if (!includeSummons)
-                units = units.Where(u => u is not ISummon).ToList();
 
             return units;
         }
     }
 
-
-    /* -------------------------------------------------------------
-       UNIT POWER ROWS (UPDATED CALCULATION)
-       ------------------------------------------------------------- */
     private IEnumerable<UnitPowerRow> PowerRows =>
         FilteredUnits.Select(u =>
         {
-            var dps = PowerCalculator.ComputeDpsVsTarget(u, selectedArmor);
-            var effHp = (int)PowerCalculator.ComputeEffectiveHp(u, selectedAttack);
-            var power = PowerCalculator.ComputePower(u, selectedAttack, selectedArmor);
+            double scale = 100.0 / u.Gold;
 
-            return new UnitPowerRow(u, dps, effHp, power);
+            double scaledDps = PowerCalculator.ComputeDpsVsTarget(u, selectedArmor) * scale;
+            double scaledHp = PowerCalculator.ComputeEffectiveHp(u, selectedAttack) * scale;
+
+            double scaledPower = PowerCalculator.ComputePower(
+                u, selectedAttack, selectedArmor, scale);
+
+            return new UnitPowerRow(u, scaledDps, (int)scaledHp, scaledPower);
         });
-
-
-
-    /* -------------------------------------------------------------
-       SORTING
-       ------------------------------------------------------------- */
 
     private SortState<UnitPowerRow> sortState = new();
 
@@ -163,8 +133,7 @@
         }
         else
         {
-            sortState.Direction =
-                sortState.Direction == SortDirectionEnum.Ascending
+            sortState.Direction = sortState.Direction == SortDirectionEnum.Ascending
                 ? SortDirectionEnum.Descending
                 : SortDirectionEnum.Ascending;
         }

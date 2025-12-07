@@ -80,15 +80,6 @@
     private object? selectedEntity = null;
 
     [Parameter] public IEnumerable<UnitPowerRow> Rows { get; set; } = [];
-
-    // keep for compatibility, even if we no longer use them
-    [Parameter] public List<UnitPowerRow> TopDps { get; set; } = [];
-    [Parameter] public List<UnitPowerRow> BottomDps { get; set; } = [];
-    [Parameter] public List<UnitPowerRow> TopHp { get; set; } = [];
-    [Parameter] public List<UnitPowerRow> BottomHp { get; set; } = [];
-    [Parameter] public List<UnitPowerRow> TopPower { get; set; } = [];
-    [Parameter] public List<UnitPowerRow> BottomPower { get; set; } = [];
-
     [Parameter] public EventCallback<Func<UnitPowerRow, object>> OnSort { get; set; }
     [Parameter] public SortState<UnitPowerRow> SortState { get; set; } = new();
 

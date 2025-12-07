@@ -118,39 +118,24 @@ public static class PowerCalculator
         return unit.Health / combinedMult;
     }
 
-    // ---------- 5. Original baseline power (no TFT, vs dummy) ----------
-    private static double ComputeBaselinePower(IUnit unit)
-    {
-        double unitDps = ComputeDps(unit);
-
-        // unit hitting dummy (10 armor)
-        double unitDpsVsDummy = unitDps * ArmorDamageMultiplier(DummyArmor);
-
-        // dummy hitting unit (25 DPS)
-        double dummyDpsVsUnit = DummyDps * ArmorDamageMultiplier(unit.Armor);
-
-        double timeToDie = unit.Health / dummyDpsVsUnit;
-
-        return unitDpsVsDummy * timeToDie;
-    }
-
     // ---------- 6. Power with optional enemyAttack / enemyArmor ----------
     public static double ComputePower(
-        IUnit unit,
-        AttackTypeEnum enemyAttack,
-        ArmorTypeEnum enemyArmor)
+    IUnit unit,
+    AttackTypeEnum enemyAttack,
+    ArmorTypeEnum enemyArmor,
+    double scale = 1.0)
     {
-        // No selections → EXACT old behaviour
-        if (enemyAttack == AttackTypeEnum.None &&
-            enemyArmor == ArmorTypeEnum.None)
-        {
-            return ComputeBaselinePower(unit);
-        }
+        // -----------------------------------------
+        // Scale RAW inputs (DPS + HP)
+        // -----------------------------------------
+        double scaledDps = ComputeDps(unit) * scale;
+        double scaledHealth = unit.Health * scale;
 
-        double baseDps = ComputeDps(unit);
-
-        // Outgoing damage: our attack type vs enemy armor type
+        // -----------------------------------------
+        // Outgoing damage (unit → dummy)
+        // -----------------------------------------
         double attackTypeMult = 1.0;
+
         if (enemyArmor != ArmorTypeEnum.None &&
             DamageTable.TryGetValue(unit.AttackType, out var vsArmor) &&
             vsArmor.TryGetValue(enemyArmor, out double mAtk))
@@ -158,11 +143,14 @@ public static class PowerCalculator
             attackTypeMult = mAtk;
         }
 
-        double unitDpsVsDummy =
-            baseDps * attackTypeMult * ArmorDamageMultiplier(DummyArmor);
+        double dpsVsDummy =
+            scaledDps * attackTypeMult * ArmorDamageMultiplier(DummyArmor);
 
-        // Incoming damage: enemy attack type vs our armor type
+        // -----------------------------------------
+        // Incoming damage (dummy → unit)
+        // -----------------------------------------
         double incomingTypeMult = 1.0;
+
         if (enemyAttack != AttackTypeEnum.None &&
             DamageTable.TryGetValue(enemyAttack, out var vsUnitArmor) &&
             vsUnitArmor.TryGetValue(unit.ArmorType, out double mDef))
@@ -173,7 +161,27 @@ public static class PowerCalculator
         double dummyDpsVsUnit =
             DummyDps * ArmorDamageMultiplier(unit.Armor) * incomingTypeMult;
 
-        double timeToDie = unit.Health / dummyDpsVsUnit;
+        // -----------------------------------------
+        // Time to die (uses *scaled health*)
+        // -----------------------------------------
+        double timeToDie = scaledHealth / dummyDpsVsUnit;
+
+        return dpsVsDummy * timeToDie;
+    }
+
+
+    public static double ComputePowerFromScaled(
+    double scaledDps,
+    double scaledEffectiveHp,
+    double unitArmor)
+    {
+        // DPS vs dummy (dummy has 10 armor)
+        double unitDpsVsDummy = scaledDps * ArmorDamageMultiplier(DummyArmor);
+
+        // Dummy DPS vs unit (unit has its own armor)
+        double dummyDpsVsUnit = DummyDps * ArmorDamageMultiplier(unitArmor);
+
+        double timeToDie = scaledEffectiveHp / dummyDpsVsUnit;
 
         return unitDpsVsDummy * timeToDie;
     }
