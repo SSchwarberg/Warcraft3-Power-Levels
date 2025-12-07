@@ -3,8 +3,10 @@
 @using Warcraft3PowerLevels.Services
 @using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
+
 @inject UnitRepository Repository
-@inject Warcraft3PowerLevels.Services.LayoutStateService LayoutState
+@inject LayoutStateService LayoutState
+@inject FilterStateService FilterState
 
 <h3>Heroes - Base Stats</h3>
 
@@ -43,20 +45,41 @@
            SortState="sortState" />
 
 @code {
-    private RaceEnum? selectedRace = null; // null = All races
-    private int heroLevel = 1;
-    private SortState<IHero> sortState = new();
+    private int heroLevel
+    {
+        get => FilterState.HeroLevel;
+        set => FilterState.HeroLevel = value;
+    }
+
+
+    // Shared race filter across all pages
+    private RaceEnum? selectedRace
+    {
+        get => FilterState.HeroRace;
+        set => FilterState.HeroRace = value;
+    }
+
+
+    // Shared sorting state across pages
+    private SortState<IHero> sortState = null;
+
+    protected override void OnInitialized()
+    {
+        sortState = FilterState.HeroSortState;
+    }
 
     private bool IsSelected(RaceEnum? race) => selectedRace == race;
+
     private void SelectRace(RaceEnum? race)
     {
-        selectedRace = race;
+        FilterState.HeroRace = race;
     }
 
     private void OnLevelChanged(ChangeEventArgs e)
     {
         heroLevel = int.Parse(e.Value!.ToString()!);
     }
+
 
     private IEnumerable<IHero> FilteredHeroes =>
         selectedRace == null
@@ -74,8 +97,12 @@
         {
             sortState.Direction =
                 sortState.Direction == SortDirectionEnum.Ascending
-                ? SortDirectionEnum.Descending
-                : SortDirectionEnum.Ascending;
+                    ? SortDirectionEnum.Descending
+                    : SortDirectionEnum.Ascending;
         }
+
+        // Persist sort settings
+        FilterState.HeroSortState = sortState;
     }
+
 }

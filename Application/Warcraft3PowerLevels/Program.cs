@@ -13,6 +13,7 @@ namespace Warcraft3PowerLevels
             builder.RootComponents.Add<HeadOutlet>("head::after");
             builder.Services.AddSingleton<UnitRepository>();
             builder.Services.AddSingleton<LayoutStateService>();
+            builder.Services.AddSingleton<FilterStateService>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 

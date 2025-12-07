@@ -8,7 +8,7 @@ namespace Warcraft3PowerLevels.Entities.Humans.Units
         public RaceEnum Race { get; set; } = RaceEnum.Human;
         public string Name { get; set; } = "Militia";
         public int Tier { get; set; } = 1;
-        public int Gold { get; set; } = 0;
+        public int Gold { get; set; } = 75;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 1;
 

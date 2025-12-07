@@ -5,6 +5,8 @@
 @using Warcraft3PowerLevels.Entities.General
 
 @inject UnitRepository Repository
+@inject FilterStateService FilterState
+
 
 <h3>Units - Power</h3>
 
@@ -87,23 +89,96 @@
 
 
 @code {
-    private RaceEnum? selectedMainRace = null;
-    private AttackTypeEnum selectedAttack = AttackTypeEnum.None;
-    private ArmorTypeEnum selectedArmor = ArmorTypeEnum.None;
-    private bool includeNeutralUnits = false;
-    private bool includeSummons = false;
+    private RaceEnum? selectedMainRace
+    {
+        get => FilterState.UnitRace;
+        set => FilterState.UnitRace = value;
+    }
 
-    private void SelectMainRace(RaceEnum? race) => selectedMainRace = race;
+    private AttackTypeEnum selectedAttack
+    {
+        get => FilterState.SelectedAttack;
+        set => FilterState.SelectedAttack = value;
+    }
+
+    private ArmorTypeEnum selectedArmor
+    {
+        get => FilterState.SelectedArmor;
+        set => FilterState.SelectedArmor = value;
+    }
+
+    private bool includeNeutralUnits
+    {
+        get => FilterState.UnitIncludeNeutral;
+        set => FilterState.UnitIncludeNeutral = value;
+    }
+
+    private bool includeSummons
+    {
+        get => FilterState.UnitIncludeSummons;
+        set => FilterState.UnitIncludeSummons = value;
+    }
+
+    private void SelectMainRace(RaceEnum? race)
+    {
+        selectedMainRace = race;
+        FilterState.UnitRace = race;
+    }
+
 
     private void SelectAttack(AttackTypeEnum atk)
-        => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
+    {
+        selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
+        FilterState.SelectedAttack = selectedAttack;
+    }
 
     private void SelectArmor(ArmorTypeEnum arm)
-        => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
+    {
+        selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
+        FilterState.SelectedArmor = selectedArmor;
+    }
 
-    private void ToggleNeutralUnits() => includeNeutralUnits = !includeNeutralUnits;
-    private void ToggleSummons() => includeSummons = !includeSummons;
+
+    private void ToggleNeutralUnits()
+    {
+        includeNeutralUnits = !includeNeutralUnits;
+        FilterState.UnitIncludeNeutral = includeNeutralUnits;
+    }
+
+    private void ToggleSummons()
+    {
+        includeSummons = !includeSummons;
+        FilterState.UnitIncludeSummons = includeSummons;
+    }
+
     private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+
+    protected override void OnInitialized()
+    {
+        // Restore main race filter
+        selectedMainRace = FilterState.UnitRace;
+
+        // Restore "Neutral Units" and "Summons"
+        includeNeutralUnits = FilterState.UnitIncludeNeutral;
+        includeSummons = FilterState.UnitIncludeSummons;
+
+        // Restore enemy attack/armor type filters
+        selectedAttack = FilterState.SelectedAttack;
+        selectedArmor = FilterState.SelectedArmor;
+
+        // Restore sorting for THIS PAGE only
+        // If the user never sorted before, default to Power
+        if (FilterState.UnitSortState_Power.KeySelector == null)
+        {
+            FilterState.UnitSortState_Power.KeySelector = UnitPowerTable.PowerSelector;
+            FilterState.UnitSortState_Power.Direction = SortDirectionEnum.Descending;
+        }
+
+        sortState.KeySelector = FilterState.UnitSortState_Power.KeySelector;
+        sortState.Direction = FilterState.UnitSortState_Power.Direction;
+    }
+
+
 
 
     /* -------------------------------------------------------------
@@ -168,5 +243,11 @@
                 ? SortDirectionEnum.Descending
                 : SortDirectionEnum.Ascending;
         }
+
+        // Save to shared state for this page
+        FilterState.UnitSortState_Power.KeySelector = sortState.KeySelector;
+        FilterState.UnitSortState_Power.Direction = sortState.Direction;
     }
+
+
 }

@@ -5,13 +5,14 @@
 @using Warcraft3PowerLevels.Entities.General
 
 @inject UnitRepository Repository
+@inject FilterStateService FilterState
+
 
 <h3>Units – Power per 100 Gold</h3>
 
-<!-- FILTER PANEL (Same as original power page except summons removed) -->
 <div class="top-filter-panel">
 
-    <!-- LEFT SIDE: RACE FILTER -->
+    <!-- LEFT: RACE FILTER PANEL -->
     <div class="race-filter-container">
         <div class="race-filter-section">
 
@@ -41,7 +42,7 @@
         </div>
     </div>
 
-    <!-- RIGHT SIDE: ATTACK AND ARMOR PANEL -->
+    <!-- RIGHT: ENEMY ATTACK / ARMOR SELECTION -->
     <div class="type-filter-panel">
         <div class="panel-title">Enemy Attack Type</div>
         <div class="icon-row">
@@ -74,32 +75,97 @@
 
 </div>
 
-<!-- REUSING YOUR EXISTING TABLE COMPONENT -->
+<!-- TABLE -->
 <UnitPowerTable Rows="PowerRows"
                 OnSort="HandleSort"
                 SortState="sortState" />
 
+
 @code {
-    private RaceEnum? selectedMainRace = null;
-    private AttackTypeEnum selectedAttack = AttackTypeEnum.None;
-    private ArmorTypeEnum selectedArmor = ArmorTypeEnum.None;
-    private bool includeNeutralUnits = false;
 
-    private void SelectMainRace(RaceEnum? race) => selectedMainRace = race;
-    private void SelectAttack(AttackTypeEnum atk) => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
-    private void SelectArmor(ArmorTypeEnum arm) => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
-    private void ToggleNeutralUnits() => includeNeutralUnits = !includeNeutralUnits;
+    /* ----------------------------------------
+       FILTER STATE (BACKED BY FilterStateService)
+       ---------------------------------------- */
 
-    private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+    private RaceEnum? selectedMainRace
+    {
+        get => FilterState.UnitRace;
+        set => FilterState.UnitRace = value;
+    }
+
+    private AttackTypeEnum selectedAttack
+    {
+        get => FilterState.SelectedAttack;
+        set => FilterState.SelectedAttack = value;
+    }
+
+    private ArmorTypeEnum selectedArmor
+    {
+        get => FilterState.SelectedArmor;
+        set => FilterState.SelectedArmor = value;
+    }
+
+    private bool includeNeutralUnits
+    {
+        get => FilterState.UnitIncludeNeutral;
+        set => FilterState.UnitIncludeNeutral = value;
+    }
+
+
+    /* ----------------------------------------
+       EVENT HANDLERS
+       ---------------------------------------- */
+
+    private void SelectMainRace(RaceEnum? race)
+        => selectedMainRace = race;
+
+    private void SelectAttack(AttackTypeEnum atk)
+        => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
+
+    private void SelectArmor(ArmorTypeEnum arm)
+        => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
+
+    private void ToggleNeutralUnits()
+        => includeNeutralUnits = !includeNeutralUnits;
+
+    private bool IsMainRace(RaceEnum? race)
+        => selectedMainRace == race;
+
+
+    /* ----------------------------------------
+       INITIAL LOAD — RESTORE SAVED FILTERS & SORT
+       ---------------------------------------- */
+
+    protected override void OnInitialized()
+    {
+        // Page-specific sorting state
+        if (FilterState.UnitSortState_Power100g.KeySelector == null)
+        {
+            FilterState.UnitSortState_Power100g.KeySelector = UnitPowerTable.PowerSelector;
+            FilterState.UnitSortState_Power100g.Direction = SortDirectionEnum.Descending;
+        }
+
+        sortState.KeySelector = FilterState.UnitSortState_Power100g.KeySelector;
+        sortState.Direction = FilterState.UnitSortState_Power100g.Direction;
+    }
+
+
+    /* ----------------------------------------
+       FILTERED UNIT LIST
+       ---------------------------------------- */
 
     private IEnumerable<IUnit> FilteredUnits
     {
         get
         {
-            var units = Repository.Units.Where(u => u.Gold > 0).ToList(); // no summons here
+            // gold-based scaling excludes summons automatically
+            var units = Repository.Units.Where(u => u.Gold > 0).ToList();
 
             if (selectedMainRace != null)
-                units = units.Where(u => u.Race == selectedMainRace || u.Race == RaceEnum.Neutral).ToList();
+                units = units.Where(u =>
+                    u.Race == selectedMainRace ||
+                    u.Race == RaceEnum.Neutral
+                ).ToList();
 
             if (!includeNeutralUnits)
                 units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
@@ -107,6 +173,11 @@
             return units;
         }
     }
+
+
+    /* ----------------------------------------
+       FINAL ROWS (SCALED)
+       ---------------------------------------- */
 
     private IEnumerable<UnitPowerRow> PowerRows =>
         FilteredUnits.Select(u =>
@@ -117,10 +188,19 @@
             double scaledHp = PowerCalculator.ComputeEffectiveHp(u, selectedAttack) * scale;
 
             double scaledPower = PowerCalculator.ComputePower(
-                u, selectedAttack, selectedArmor, scale);
+                u,
+                selectedAttack,
+                selectedArmor,
+                scale  // properly scale DPS & HP inside the calculation
+            );
 
             return new UnitPowerRow(u, scaledDps, (int)scaledHp, scaledPower);
         });
+
+
+    /* ----------------------------------------
+       SORTING
+       ---------------------------------------- */
 
     private SortState<UnitPowerRow> sortState = new();
 
@@ -133,9 +213,14 @@
         }
         else
         {
-            sortState.Direction = sortState.Direction == SortDirectionEnum.Ascending
+            sortState.Direction =
+                sortState.Direction == SortDirectionEnum.Ascending
                 ? SortDirectionEnum.Descending
                 : SortDirectionEnum.Ascending;
         }
+
+        // Persist specifically for this page
+        FilterState.UnitSortState_Power100g.KeySelector = sortState.KeySelector;
+        FilterState.UnitSortState_Power100g.Direction = sortState.Direction;
     }
 }

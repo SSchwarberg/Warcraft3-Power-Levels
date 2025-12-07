@@ -5,12 +5,13 @@
 @using Warcraft3PowerLevels.Entities.General
 
 @inject UnitRepository Repository
+@inject FilterStateService FilterState
 
 <h3>Units – Power per 1 Supply</h3>
 
-<!-- SAME FILTER PANEL AS MAIN PAGE -->
 <div class="top-filter-panel">
 
+    <!-- LEFT: RACE FILTER -->
     <div class="race-filter-container">
         <div class="race-filter-section">
 
@@ -31,20 +32,15 @@
             </div>
 
             <div class="neutral-toggle no-select">
-                <span class="race-item @(includeNeutralUnits ? "active" : "")"
+                <span class="race-item @(IncludeNeutralUnits ? "active" : "")"
                       @onclick="ToggleNeutralUnits">
                     Neutral Units
                 </span>
-
-                <span class="race-item @(includeSummons ? "active" : "")"
-                      @onclick="ToggleSummons">
-                    Summons
-                </span>
             </div>
-
         </div>
     </div>
 
+    <!-- RIGHT: ATTACK / ARMOR FILTERS -->
     <div class="type-filter-panel">
         <div class="panel-title">Enemy Attack Type</div>
         <div class="icon-row">
@@ -55,7 +51,7 @@
 
                 <img src="@($"/icons/attack/{atk}.png")"
                      title="@atk"
-                     class="filter-icon @(selectedAttack == atk ? "active" : "")"
+                     class="filter-icon @(SelectedAttack == atk ? "active" : "")"
                      @onclick="(() => SelectAttack(atk))" />
             }
         </div>
@@ -69,7 +65,7 @@
 
                 <img src="@($"/icons/armor/{arm}.png")"
                      title="@arm"
-                     class="filter-icon @(selectedArmor == arm ? "active" : "")"
+                     class="filter-icon @(SelectedArmor == arm ? "active" : "")"
                      @onclick="(() => SelectArmor(arm))" />
             }
         </div>
@@ -81,21 +77,73 @@
                 OnSort="HandleSort"
                 SortState="sortState" />
 
+
 @code {
-    private RaceEnum? selectedMainRace = null;
-    private AttackTypeEnum selectedAttack = AttackTypeEnum.None;
-    private ArmorTypeEnum selectedArmor = ArmorTypeEnum.None;
-    private bool includeNeutralUnits = false;
-    private bool includeSummons = false;
+    /* ----------------------------------------
+       FILTER STATE BINDINGS
+       ---------------------------------------- */
 
-    private void SelectMainRace(RaceEnum? race) => selectedMainRace = race;
-    private void SelectAttack(AttackTypeEnum atk) => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
-    private void SelectArmor(ArmorTypeEnum arm) => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
+    private RaceEnum? SelectedMainRace
+    {
+        get => FilterState.UnitRace;
+        set => FilterState.UnitRace = value;
+    }
 
-    private void ToggleNeutralUnits() => includeNeutralUnits = !includeNeutralUnits;
-    private void ToggleSummons() => includeSummons = !includeSummons;
+    private AttackTypeEnum SelectedAttack
+    {
+        get => FilterState.SelectedAttack;
+        set => FilterState.SelectedAttack = value;
+    }
 
-    private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+    private ArmorTypeEnum SelectedArmor
+    {
+        get => FilterState.SelectedArmor;
+        set => FilterState.SelectedArmor = value;
+    }
+
+    private bool IncludeNeutralUnits
+    {
+        get => FilterState.UnitIncludeNeutral;
+        set => FilterState.UnitIncludeNeutral = value;
+    }
+
+
+    /* ----------------------------------------
+       EVENT HANDLERS
+       ---------------------------------------- */
+
+    private void SelectMainRace(RaceEnum? race) => SelectedMainRace = race;
+
+    private void SelectAttack(AttackTypeEnum atk)
+        => SelectedAttack = SelectedAttack == atk ? AttackTypeEnum.None : atk;
+
+    private void SelectArmor(ArmorTypeEnum arm)
+        => SelectedArmor = SelectedArmor == arm ? ArmorTypeEnum.None : arm;
+
+    private void ToggleNeutralUnits() => IncludeNeutralUnits = !IncludeNeutralUnits;
+    private bool IsMainRace(RaceEnum? race) => SelectedMainRace == race;
+
+
+    /* ----------------------------------------
+       INITIALIZATION — PAGE-SPECIFIC SORT RESTORE
+       ---------------------------------------- */
+
+    protected override void OnInitialized()
+    {
+        if (FilterState.UnitSortState_PowerPerSupply.KeySelector == null)
+        {
+            FilterState.UnitSortState_PowerPerSupply.KeySelector = UnitPowerTable.PowerSelector;
+            FilterState.UnitSortState_PowerPerSupply.Direction = SortDirectionEnum.Descending;
+        }
+
+        sortState.KeySelector = FilterState.UnitSortState_PowerPerSupply.KeySelector;
+        sortState.Direction = FilterState.UnitSortState_PowerPerSupply.Direction;
+    }
+
+
+    /* ----------------------------------------
+       FILTERED UNITS
+       ---------------------------------------- */
 
     private IEnumerable<IUnit> FilteredUnits
     {
@@ -103,32 +151,48 @@
         {
             var units = Repository.Units.Where(u => u.Food > 0).ToList();
 
-            if (selectedMainRace != null)
-                units = units.Where(u => u.Race == selectedMainRace || u.Race == RaceEnum.Neutral).ToList();
+            if (SelectedMainRace != null)
+                units = units.Where(u =>
+                    u.Race == SelectedMainRace ||
+                    u.Race == RaceEnum.Neutral
+                ).ToList();
 
-            if (!includeNeutralUnits)
+            if (!IncludeNeutralUnits)
                 units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
 
-            if (!includeSummons)
-                units = units.Where(u => u is not ISummon).ToList();
+            units = units.Where(u => u is not ISummon).ToList();
 
             return units;
         }
     }
+
+
+    /* ----------------------------------------
+       FINAL SCALED VALUES
+       ---------------------------------------- */
 
     private IEnumerable<UnitPowerRow> PowerRows =>
         FilteredUnits.Select(u =>
         {
             double scale = 1.0 / u.Food;
 
-            double scaledDps = PowerCalculator.ComputeDpsVsTarget(u, selectedArmor) * scale;
-            double scaledHp = PowerCalculator.ComputeEffectiveHp(u, selectedAttack) * scale;
+            double scaledDps = PowerCalculator.ComputeDpsVsTarget(u, SelectedArmor) * scale;
+            double scaledHp = PowerCalculator.ComputeEffectiveHp(u, SelectedAttack) * scale;
 
             double scaledPower = PowerCalculator.ComputePower(
-                u, selectedAttack, selectedArmor, scale);
+                u,
+                SelectedAttack,
+                SelectedArmor,
+                scale
+            );
 
             return new UnitPowerRow(u, scaledDps, (int)scaledHp, scaledPower);
         });
+
+
+    /* ----------------------------------------
+       SORT HANDLING
+       ---------------------------------------- */
 
     private SortState<UnitPowerRow> sortState = new();
 
@@ -145,5 +209,9 @@
                 ? SortDirectionEnum.Descending
                 : SortDirectionEnum.Ascending;
         }
+
+        // Persist sorting for THIS PAGE only
+        FilterState.UnitSortState_PowerPerSupply.KeySelector = sortState.KeySelector;
+        FilterState.UnitSortState_PowerPerSupply.Direction = sortState.Direction;
     }
 }

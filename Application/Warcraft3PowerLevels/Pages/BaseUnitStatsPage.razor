@@ -4,6 +4,7 @@
 @using Warcraft3PowerLevels.Entities.Enumerations
 @using Warcraft3PowerLevels.Entities.General
 @inject UnitRepository Repository
+@inject FilterStateService FilterState
 @inject Warcraft3PowerLevels.Services.LayoutStateService LayoutState
 
 <h3>Units - Base Stats</h3>
@@ -51,31 +52,50 @@
 
     private bool IsActive(RaceEnum? race) => selectedRace == race;
 
-    private RaceEnum? selectedMainRace = null;
-    private bool includeNeutralUnits = false;
-    private bool includeSummons = false;
+    private RaceEnum? selectedMainRace
+    {
+        get => FilterState.UnitRace;
+        set => FilterState.UnitRace = value;
+    }
 
-    private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+    private bool includeNeutralUnits => FilterState.UnitIncludeNeutral;
+
+    private bool includeSummons => FilterState.UnitIncludeSummons;
+
+    protected override void OnInitialized()
+    {
+        // Load race filter
+        selectedMainRace = FilterState.UnitRace;
+    }
 
     private void SelectRace(RaceEnum? race)
     {
         selectedRace = race;
     }
 
+    private AttackTypeEnum selectedAttack
+    {
+        get => FilterState.SelectedAttack;
+        set => FilterState.SelectedAttack = value;
+    }
+
+    private ArmorTypeEnum selectedArmor
+    {
+        get => FilterState.SelectedArmor;
+        set => FilterState.SelectedArmor = value;
+    }
+
+
+    private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+
     private void SelectMainRace(RaceEnum? race)
-    {
-        selectedMainRace = race;
-    }
+        => selectedMainRace = race;
 
-    private void ToggleNeutralUnits()
-    {
-        includeNeutralUnits = !includeNeutralUnits;
-    }
+    private void ToggleNeutralUnits() =>
+        FilterState.UnitIncludeNeutral = !FilterState.UnitIncludeNeutral;
 
-    private void ToggleSummons()
-    {
-        includeSummons = !includeSummons;
-    }
+    private void ToggleSummons() =>
+        FilterState.UnitIncludeSummons = !FilterState.UnitIncludeSummons;
 
     private IEnumerable<IUnit> FilteredUnits
 {
