@@ -7,19 +7,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Quilbeast (Level 3)";
-        public int Tier { get; set; } = 3;
+        public int Tier { get; set; } = 0;
 
-        public int Health { get; set; } = 750;
+        public int Health { get; set; } = 600;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 3;
+        public int Armor { get; set; } = 0;
 
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
-        public double Attack { get; set; } = 31;
+        public double Attack { get; set; } = 42;
         public double AttackTime { get; set; } = 1.5;
-        public int Range { get; set; } = 100;
+        public int Range { get; set; } = 550;
 
-        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
-        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
+        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
 
         public int Gold { get; set; } = 0;
         public int Wood { get; set; } = 0;

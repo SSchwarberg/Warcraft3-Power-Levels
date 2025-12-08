@@ -7,20 +7,20 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Dark Troll Shadow Priest";
-        public int Tier { get; set; } = 1;
-        public int Gold { get; set; } = 145;
-        public int Wood { get; set; } = 0;
+        public int Tier { get; set; } = 0;
+        public int Gold { get; set; } = 175;
+        public int Wood { get; set; } = 10;
         public int Food { get; set; } = 2;
 
-        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 10;
-        public double AttackTime { get; set; } = 2.1;
+        public double Attack { get; set; } = 20.5;
+        public double AttackTime { get; set; } = 1.8;
         public int Range { get; set; } = 600;
 
-        public int Health { get; set; } = 260;
+        public int Health { get; set; } = 240;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 1;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
+        public int Armor { get; set; } = 0;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
     }
 }

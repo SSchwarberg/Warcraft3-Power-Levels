@@ -8,7 +8,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
         public Tinker()
         {
             Race = RaceEnum.Neutral;
-            Name = "Goblin Tinker";
+            Name = "Tinker";
             PrimaryAttribute = PrimaryAttributeEnum.Agility;
 
             SetBaseAttributes(

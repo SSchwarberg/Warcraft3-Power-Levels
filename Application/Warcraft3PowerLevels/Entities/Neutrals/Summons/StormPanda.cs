@@ -7,23 +7,23 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Storm Panda";
-        public int Tier { get; set; } = 3;
+        public int Tier { get; set; } = 0;
 
         public int Gold { get; set; } = 0;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 0;
 
-        public int Health { get; set; } = 900;
-        public int Mana { get; set; } = 300;
+        public int Health { get; set; } = 1200;
+        public int Mana { get; set; } = 500;
 
-        public int Armor { get; set; } = 4;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Light;
+        public int Armor { get; set; } = 2;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
 
-        public double Attack { get; set; } = 32;
+        public double Attack { get; set; } = 53;
         public double AttackTime { get; set; } = 1.5;
-        public int Range { get; set; } = 600;
+        public int Range { get; set; } = 500;
 
-        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
     }
 }

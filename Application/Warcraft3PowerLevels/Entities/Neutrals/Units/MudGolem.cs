@@ -7,20 +7,20 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
         public string Name { get; set; } = "Mud Golem";
-        public int Tier { get; set; } = 1;
-        public int Gold { get; set; } = 75;
-        public int Wood { get; set; } = 0;
-        public int Food { get; set; } = 1;
+        public int Tier { get; set; } = 0;
+        public int Gold { get; set; } = 145;
+        public int Wood { get; set; } = 10;
+        public int Food { get; set; } = 2;
 
-        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
-        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 9;
-        public double AttackTime { get; set; } = 2.2;
-        public int Range { get; set; } = 600;
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
+        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
+        public double Attack { get; set; } = 12.5;
+        public double AttackTime { get; set; } = 1.35;
+        public int Range { get; set; } = 100;
 
         public int Health { get; set; } = 240;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 3;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Unarmored;
+        public int Armor { get; set; } = 0;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
     }
 }

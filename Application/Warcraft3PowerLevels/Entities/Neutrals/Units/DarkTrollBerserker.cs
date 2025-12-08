@@ -3,10 +3,10 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
 {
-    public class ForestTrollBerserker : IUnit
+    public class DarkTrollBerserker : IUnit
     {
         public RaceEnum Race { get; set; } = RaceEnum.Neutral;
-        public string Name { get; set; } = "Forest Troll Berserker";
+        public string Name { get; set; } = "Dark Troll Berserker";
         public int Tier { get; set; } = 0;
         public int Gold { get; set; } = 245;
         public int Wood { get; set; } = 30;
