@@ -14,12 +14,12 @@ namespace Warcraft3PowerLevels.Entities.Undead.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 8;
+        public double Attack { get; set; } = 7.5;
         public double AttackTime { get; set; } = 2.1;
-        public int Range { get; set; } = 600;
+        public int Range { get; set; } = 575;
 
-        public int Health { get; set; } = 550;
-        public int Mana { get; set; } = 0;
+        public int Health { get; set; } = 500;
+        public int Mana { get; set; } = 400;
         public int Armor { get; set; } = 4;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
     }

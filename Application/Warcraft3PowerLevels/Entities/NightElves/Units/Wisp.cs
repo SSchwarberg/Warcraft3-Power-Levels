@@ -8,7 +8,7 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
         public RaceEnum Race { get; set; } = RaceEnum.NightElf;
         public string Name { get; set; } = "Wisp";
         public int Tier { get; set; } = 1;
-        public int Gold { get; set; } = 70;
+        public int Gold { get; set; } = 60;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 1;
 
@@ -18,9 +18,9 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
         public double AttackTime { get; set; } = 0;
         public int Range { get; set; } = 0;
 
-        public int Health { get; set; } = 120;
+        public int Health { get; set; } = 125;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Unarmored;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
     }
 }

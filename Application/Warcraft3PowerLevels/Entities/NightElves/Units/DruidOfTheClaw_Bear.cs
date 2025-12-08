@@ -8,13 +8,13 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
         public RaceEnum Race { get; set; } = RaceEnum.NightElf;
         public string Name { get; set; } = "Druid of the Claw (Bear)";
         public int Tier { get; set; } = 3;
-        public int Gold { get; set; } = 0;
-        public int Wood { get; set; } = 0;
+        public int Gold { get; set; } = 255;
+        public int Wood { get; set; } = 80;
         public int Food { get; set; } = 4;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
-        public double Attack { get; set; } = 37;
+        public double Attack { get; set; } = 35.5;
         public double AttackTime { get; set; } = 1.5;
         public int Range { get; set; } = 100;
 

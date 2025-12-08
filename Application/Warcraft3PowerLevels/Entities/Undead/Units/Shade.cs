@@ -8,7 +8,7 @@ namespace Warcraft3PowerLevels.Entities.Undead.Units
         public RaceEnum Race { get; set; } = RaceEnum.Undead;
         public string Name { get; set; } = "Shade";
         public int Tier { get; set; } = 2;
-        public int Gold { get; set; } = 0;
+        public int Gold { get; set; } = 75;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 1;
 

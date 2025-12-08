@@ -6,7 +6,7 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
     public class Chimaera_Magic : IUnit
     {
         public RaceEnum Race { get; set; } = RaceEnum.NightElf;
-        public string Name { get; set; } = "Chimaera";
+        public string Name { get; set; } = "Chimaera (Magic)";
         public int Tier { get; set; } = 3;
         public int Gold { get; set; } = 330;
         public int Wood { get; set; } = 70;

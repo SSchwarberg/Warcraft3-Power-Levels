@@ -14,9 +14,9 @@ namespace Warcraft3PowerLevels.Entities.Undead.Units
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 29;
+        public double Attack { get; set; } = 28.5;
         public double AttackTime { get; set; } = 2.0;
-        public int Range { get; set; } = 600;
+        public int Range { get; set; } = 550;
 
         public int Health { get; set; } = 550;
         public int Mana { get; set; } = 0;

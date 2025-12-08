@@ -24,6 +24,6 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Units
         public int Health { get; set; } = 275;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Light;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
     }
 }

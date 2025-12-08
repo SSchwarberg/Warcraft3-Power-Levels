@@ -3,24 +3,24 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Undead.Units
 {
-    public class Destroyer : IUnit
+    public class FrostWyrm_Air : IUnit
     {
         public RaceEnum Race { get; set; } = RaceEnum.Undead;
-        public string Name { get; set; } = "Destroyer";
+        public string Name { get; set; } = "Frost Wyrm (Air)";
         public int Tier { get; set; } = 3;
-        public int Gold { get; set; } = 300;
-        public int Wood { get; set; } = 85;
-        public int Food { get; set; } = 5;
+        public int Gold { get; set; } = 385;
+        public int Wood { get; set; } = 120;
+        public int Food { get; set; } = 7;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 20;
-        public double AttackTime { get; set; } = 1.35;
-        public int Range { get; set; } = 450;
+        public double Attack { get; set; } = 89;
+        public double AttackTime { get; set; } = 3.0;
+        public int Range { get; set; } = 375;
 
-        public int Health { get; set; } = 850;
+        public int Health { get; set; } = 1350;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 3;
+        public int Armor { get; set; } = 1;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Light;
     }
 }

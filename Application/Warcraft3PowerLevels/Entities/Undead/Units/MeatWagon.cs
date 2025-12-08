@@ -13,8 +13,8 @@ namespace Warcraft3PowerLevels.Entities.Undead.Units
         public int Food { get; set; } = 4;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Siege;
-        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 80;
+        public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Artillery;
+        public double Attack { get; set; } = 79.5;
         public double AttackTime { get; set; } = 4.0;
         public int Range { get; set; } = 1150;
 
