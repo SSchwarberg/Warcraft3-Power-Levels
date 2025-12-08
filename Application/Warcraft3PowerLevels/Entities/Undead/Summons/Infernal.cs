@@ -7,7 +7,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
     {
         public RaceEnum Race { get; set; } = RaceEnum.Undead;
         public string Name { get; set; } = "Infernal";
-        public int Tier { get; set; } = 5;
+        public int Tier { get; set; } = 0;
 
         public int Gold { get; set; } = 0;
         public int Wood { get; set; } = 0;
@@ -16,14 +16,14 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
         public int Health { get; set; } = 1500;
         public int Mana { get; set; } = 0;
 
-        public int Armor { get; set; } = 8;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
-
-        public double Attack { get; set; } = 56;
-        public double AttackTime { get; set; } = 1.7;
+        public int Armor { get; set; } = 6;
+        public double Attack { get; set; } = 54.5;
+        public double AttackTime { get; set; } = 1.35;
         public int Range { get; set; } = 100;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Chaos;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Melee;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
+
     }
 }

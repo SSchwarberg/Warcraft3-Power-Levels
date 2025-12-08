@@ -7,7 +7,7 @@ namespace Warcraft3PowerLevels.Entities.Humans.Summons
     {
         public RaceEnum Race { get; set; } = RaceEnum.Human;
         public string Name { get; set; } = "Phoenix";
-        public int Tier { get; set; } = 3;
+        public int Tier { get; set; } = 0;
         public int Gold { get; set; } = 0;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 0;

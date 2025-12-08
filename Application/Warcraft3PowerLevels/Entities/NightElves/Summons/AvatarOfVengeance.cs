@@ -7,16 +7,16 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Summons
     {
         public RaceEnum Race { get; set; } = RaceEnum.NightElf;
         public string Name { get; set; } = "Avatar of Vengeance";
-        public int Tier { get; set; } = 3;
+        public int Tier { get; set; } = 0;
         public int Gold { get; set; } = 0;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 0;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Normal;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 31;
+        public double Attack { get; set; } = 30.5;
         public double AttackTime { get; set; } = 1.35;
-        public int Range { get; set; } = 500;
+        public int Range { get; set; } = 450;
 
         public int Health { get; set; } = 1200;
         public int Mana { get; set; } = 0;

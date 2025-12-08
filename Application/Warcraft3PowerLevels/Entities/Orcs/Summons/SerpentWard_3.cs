@@ -7,20 +7,20 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Summons
     {
         public RaceEnum Race { get; set; } = RaceEnum.Orc;
         public string Name { get; set; } = "Serpent Ward (Level 3)";
-        public int Tier { get; set; } = 3;
+        public int Tier { get; set; } = 0;
         public int Gold { get; set; } = 0;
         public int Wood { get; set; } = 0;
         public int Food { get; set; } = 0;
 
         public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
-        public double Attack { get; set; } = 30;
+        public double Attack { get; set; } = 48;
         public double AttackTime { get; set; } = 1.5;
         public int Range { get; set; } = 600;
 
-        public int Health { get; set; } = 225;
+        public int Health { get; set; } = 200;
         public int Mana { get; set; } = 0;
         public int Armor { get; set; } = 0;
-        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
     }
 }

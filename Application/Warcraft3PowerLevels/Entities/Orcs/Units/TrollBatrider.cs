@@ -3,10 +3,10 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Entities.Orcs.Units
 {
-    public class Batrider : IUnit
+    public class TrollBatrider : IUnit
     {
         public RaceEnum Race { get; set; } = RaceEnum.Orc;
-        public string Name { get; set; } = "Batrider";
+        public string Name { get; set; } = "Troll Batrider";
         public int Tier { get; set; } = 2;
         public int Gold { get; set; } = 160;
         public int Wood { get; set; } = 40;
