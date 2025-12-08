@@ -134,9 +134,9 @@
         int agi = hero.Agility + (int)(hero.AgilityGain * gained);
         int intl = hero.Intelligence + (int)(hero.IntelligenceGain * gained);
 
-        int health = str * 25;
+        int health = 100 + (str * 25);
 
-        double armor = hero.Armor + agi * 0.2;
+        double armor = hero.Armor + (agi * 0.3);
         double attackSpeedBonus = agi * 0.02;
         double atkTime = hero.AttackTime / (1 + attackSpeedBonus);
 
