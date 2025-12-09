@@ -10,22 +10,20 @@ namespace Warcraft3PowerLevels.Entities.Humans.Heroes
             Race = RaceEnum.Human;
             Name = "Mountain King";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 25, agi: 14, intel: 15,
-                strGain: 3.0, agiGain: 1.3, intGain: 1.5
+                str: 24, agi: 11, intel: 15,
+                strGain: 3.0, agiGain: 1.5, intGain: 1.5
             );
 
             SetBaseCombat(
-                attack: 27,
-                attackTime: 1.7,
-                range: 100,
-                armor: 4
+                attack: 31,
+                attackTime: 2.22,
+                range: 128,
+                armor: -1
             );
 
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

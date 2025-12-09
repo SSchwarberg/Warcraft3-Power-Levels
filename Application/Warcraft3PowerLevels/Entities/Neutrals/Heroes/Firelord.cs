@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             Race = RaceEnum.Neutral;
             Name = "Firelord";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 18, agi: 15, intel: 20,
-                strGain: 1.8, agiGain: 1.5, intGain: 2.6
+                str: 15, agi: 20, intel: 18,
+                strGain: 2.0, agiGain: 1.6, intGain: 2.5
             );
 
             SetBaseCombat(
-                attack: 19,
-                attackTime: 1.6,
+                attack: 25,
+                attackTime: 1.8,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

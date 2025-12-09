@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             Race = RaceEnum.Neutral;
             Name = "Goblin Alchemist";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 25, agi: 19, intel: 17,
-                strGain: 2.7, agiGain: 2.0, intGain: 1.8
+                str: 25, agi: 10, intel: 18,
+                strGain: 3.3, agiGain: 1.0, intGain: 2.0
             );
 
             SetBaseCombat(
-                attack: 27,
-                attackTime: 1.7,
-                range: 100,
-                armor: 3
+                attack: 41.5,
+                attackTime: 2.50,
+                range: 128,
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

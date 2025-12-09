@@ -12,7 +12,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Mercenaries
         public int Wood { get; set; } = 10;
         public int Food { get; set; } = 2;
 
-        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Magic;
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Piercing;
         public WeaponTypeEnum WeaponType { get; set; } = WeaponTypeEnum.Ranged;
         public double Attack { get; set; } = 20.5;
         public double AttackTime { get; set; } = 1.8;

@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             Race = RaceEnum.Neutral;
             Name = "Naga Sea Witch";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 17, agi: 18, intel: 21,
-                strGain: 1.7, agiGain: 2.2, intGain: 2.7
+                str: 15, agi: 16, intel: 22,
+                strGain: 2.0, agiGain: 1.0, intGain: 3.0
             );
 
             SetBaseCombat(
-                attack: 20,
-                attackTime: 1.6,
+                attack: 29,
+                attackTime: 1.9,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

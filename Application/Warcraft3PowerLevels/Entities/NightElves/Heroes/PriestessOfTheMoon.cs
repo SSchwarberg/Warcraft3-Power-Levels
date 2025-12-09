@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Heroes
             Race = RaceEnum.NightElf;
             Name = "Priestess of the Moon";
             PrimaryAttribute = PrimaryAttributeEnum.Agility;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 17, agi: 22, intel: 18,
-                strGain: 1.7, agiGain: 2.8, intGain: 2.0
+                str: 18, agi: 19, intel: 15,
+                strGain: 1.9, agiGain: 1.5, intGain: 2.6
             );
 
             SetBaseCombat(
-                attack: 21,
-                attackTime: 1.7,
+                attack: 26,
+                attackTime: 2.33,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Piercing;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

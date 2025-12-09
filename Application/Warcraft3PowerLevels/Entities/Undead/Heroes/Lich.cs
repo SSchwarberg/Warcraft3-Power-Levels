@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Undead.Heroes
             Race = RaceEnum.Undead;
             Name = "Lich";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 16, agi: 15, intel: 22,
-                strGain: 1.5, agiGain: 1.9, intGain: 2.8
-            );
+                str: 15, agi: 14, intel: 20,
+                strGain: 2.0, agiGain: 1.0, intGain: 3.4
+                );
 
             SetBaseCombat(
-                attack: 24,
-                attackTime: 1.6,
+                attack: 25,
+                attackTime: 1.9,
                 range: 600,
-                armor: 0
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

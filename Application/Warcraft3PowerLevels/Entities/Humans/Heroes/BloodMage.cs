@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Humans.Heroes
             Race = RaceEnum.Human;
             Name = "Blood Mage";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 18, agi: 18, intel: 21,
-                strGain: 1.8, agiGain: 2.2, intGain: 2.7
+                str: 18, agi: 14, intel: 19,
+                strGain: 2.0, agiGain: 1.0, intGain: 3.0
             );
 
             SetBaseCombat(
-                attack: 23,
-                attackTime: 1.6,
+                attack: 24,
+                attackTime: 1.64,
                 range: 600,
-                armor: 0
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

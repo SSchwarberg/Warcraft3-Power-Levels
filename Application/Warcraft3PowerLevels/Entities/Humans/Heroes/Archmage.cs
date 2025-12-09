@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Humans.Heroes
             Race = RaceEnum.Human;
             Name = "Archmage";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 19, agi: 15, intel: 24,
-                strGain: 1.8, agiGain: 1.5, intGain: 3.0
+                str: 14, agi: 17, intel: 19,
+                strGain: 2.0, agiGain: 1.0, intGain: 3.2
             );
 
             SetBaseCombat(
-                attack: 20,
-                attackTime: 1.7,
+                attack: 24,
+                attackTime: 2.13,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

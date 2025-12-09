@@ -10,26 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             Race = RaceEnum.Neutral;
             Name = "Pit Lord";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 25,
-                agi: 15,
-                intel: 16,
-                strGain: 3.0,
-                agiGain: 1.5,
-                intGain: 1.8
+                str: 26, agi: 16, intel: 14,
+                strGain: 3.2, agiGain: 1.3, intGain: 1.5
             );
 
             SetBaseCombat(
-                attack: 29,
-                attackTime: 1.7,
-                range: 100,
-                armor: 4
+                attack: 33,
+                attackTime: 2.05,
+                range: 128,
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

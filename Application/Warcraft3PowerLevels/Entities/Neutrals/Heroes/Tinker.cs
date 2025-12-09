@@ -19,8 +19,8 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             SetBaseCombat(
                 attack: 25,
                 attackTime: 2.0,
-                range: 100,
-                armor: 3
+                range: 128,
+                armor: -1
             );
 
             AttackType = AttackTypeEnum.Normal;

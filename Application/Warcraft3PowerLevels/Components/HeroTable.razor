@@ -130,29 +130,55 @@
         if (level < 1) level = 1;
         int gained = level - 1;
 
-        int str = hero.Strength + (int)(hero.StrengthGain * gained);
-        int agi = hero.Agility + (int)(hero.AgilityGain * gained);
-        int intl = hero.Intelligence + (int)(hero.IntelligenceGain * gained);
+        hero.Level = level;
 
-        int health = 100 + (str * 25);
+        int str = hero.Strength;
+        int agi = hero.Agility;
+        int intl = hero.Intelligence;
 
-        double armor = hero.Armor + (agi * 0.3);
+        int health = hero.Health;
+
+        double armor = hero.Armor;
         double attackSpeedBonus = agi * 0.02;
         double atkTime = hero.AttackTime / (1 + attackSpeedBonus);
 
-        int primary = hero.PrimaryAttribute switch
-        {
-            PrimaryAttributeEnum.Strength => str,
-            PrimaryAttributeEnum.Agility => agi,
-            PrimaryAttributeEnum.Intelligence => intl,
-            _ => 0
-        };
+        double attack = hero.Attack;
+        int range = hero.WeaponType == WeaponTypeEnum.Melee ? -1 : hero.Range;
 
-        double attack = hero.Attack + primary;
-        int range = hero.Range == 100 ? -1 : hero.Range;
+        hero.Level = 1;
 
         return (str, agi, intl, health, armor, attack, atkTime, range);
     }
+
+    // private (int str, int agi, int intl, int health, double armor, double attack, double atkTime, int range)
+    //     GetAttributes(IHero hero, int level)
+    // {
+    //     if (level < 1) level = 1;
+    //     int gained = level - 1;
+
+    //     int str = hero.Strength + (int)(hero.StrengthGain * gained);
+    //     int agi = hero.Agility + (int)(hero.AgilityGain * gained);
+    //     int intl = hero.Intelligence + (int)(hero.IntelligenceGain * gained);
+
+    //     int health = 100 + (str * 25);
+
+    //     double armor = hero.Armor + (agi * 0.3);
+    //     double attackSpeedBonus = agi * 0.02;
+    //     double atkTime = hero.AttackTime / (1 + attackSpeedBonus);
+
+    //     int primary = hero.PrimaryAttribute switch
+    //     {
+    //         PrimaryAttributeEnum.Strength => str,
+    //         PrimaryAttributeEnum.Agility => agi,
+    //         PrimaryAttributeEnum.Intelligence => intl,
+    //         _ => 0
+    //     };
+
+    //     double attack = hero.Attack + primary;
+    //     int range = hero.Range == 100 ? -1 : hero.Range;
+
+    //     return (str, agi, intl, health, armor, attack, atkTime, range);
+    // }
 
     private object? selectedEntity = null;
 

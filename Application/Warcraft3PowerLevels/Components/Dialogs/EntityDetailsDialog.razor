@@ -15,38 +15,55 @@
                 <p><b>Race:</b> @hero.Race</p>
                 <p><b>Type:</b> @EntityType</p>
                 <p><b>Primary Attribute:</b> @hero.PrimaryAttribute</p>
+                <br />
 
-                <p><b>Strength:</b> @hero.Strength</p>
-                <p><b>Agility:</b> @hero.Agility</p>
-                <p><b>Intelligence:</b> @hero.Intelligence</p>
-
-                <p><b>Strength Gain:</b> @hero.StrengthGain</p>
-                <p><b>Agility Gain:</b> @hero.AgilityGain</p>
-                <p><b>Int Gain:</b> @hero.IntelligenceGain</p>
+                <p><b>Strength:</b> @hero.Strength (+@hero.StrengthGain.ToString("0.00") per lvl)</p>
+                <p><b>Agility:</b> @hero.Agility (+@hero.AgilityGain.ToString("0.00") per lvl)</p>
+                <p><b>Intelligence:</b> @hero.Intelligence (+@hero.IntelligenceGain.ToString("0.00") per lvl)</p>
+                <br />
 
                 <p><b>Health:</b> @hero.Health</p>
                 <p><b>Armor:</b> @hero.Armor</p>
-                <p><b>Range:</b> @(hero.Range <= 100 ? "Melee" : hero.Range)</p>
+                <br/>
                 <p><b>Attack:</b> @hero.Attack</p>
                 <p><b>Base Attack Time:</b> @hero.AttackTime</p>
+                <p><b>Range:</b> @(hero.Range <= 100 ? "Melee" : hero.Range)</p>
+            }
+            else if (Entity is ISummon summon)
+            {
+                IUnit unit = (IUnit)summon;
+                <p><b>Race:</b> @unit.Race</p>
+                <p><b>Type:</b> @EntityType</p>
+                <br />
+                <p><b>Health:</b> @unit.Health</p>
+                <p><b>Armor Type:</b> @unit.ArmorType</p>
+                <p><b>Armor:</b> @unit.Armor</p>
+
+                <br />
+                <p><b>Attack:</b> @unit.Attack</p>
+                <p><b>Attack Type:</b> @unit.AttackType</p>
+                <p><b>Base Attack Time:</b> @unit.AttackTime</p>
+                <p><b>Range:</b> @(unit.Range <= 100 ? "Melee" : unit.Range)</p>
             }
             else if (Entity is IUnit unit)
             {
                 <p><b>Race:</b> @unit.Race</p>
                 <p><b>Type:</b> @EntityType</p>
                 <p><b>Tier:</b> @unit.Tier</p>
+                <br/>
                 <p><b>Gold:</b> @unit.Gold</p>
                 <p><b>Lumber:</b> @unit.Wood</p>
                 <p><b>Food:</b> @unit.Food</p>
-
+                <br/>
+                <p><b>Health:</b> @unit.Health</p>
+                <p><b>Armor Type:</b> @unit.ArmorType</p>
+                <p><b>Armor:</b> @unit.Armor</p>
+                
+                <br/>
                 <p><b>Attack:</b> @unit.Attack</p>
                 <p><b>Attack Type:</b> @unit.AttackType</p>
                 <p><b>Base Attack Time:</b> @unit.AttackTime</p>
                 <p><b>Range:</b> @(unit.Range <= 100 ? "Melee" : unit.Range)</p>
-
-                <p><b>Health:</b> @unit.Health</p>
-                <p><b>Armor:</b> @unit.Armor</p>
-                <p><b>Armor Type:</b> @unit.ArmorType</p>
             }
         </div>
     </div>

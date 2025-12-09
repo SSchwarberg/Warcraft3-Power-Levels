@@ -15,7 +15,7 @@ namespace Warcraft3PowerLevels.Entities.General
         protected double gainAgi;
         protected double gainInt;
 
-        protected int baseAttack;
+        protected double baseAttack;
         protected double baseAttackTime;
         protected int baseRange;
         protected int baseArmor;
@@ -30,7 +30,7 @@ namespace Warcraft3PowerLevels.Entities.General
 
         public int Health
         {
-            get => (int)(25 * Strength);
+            get => (int)(100 + 25 * Strength);
             set { }
         }
 
@@ -42,7 +42,7 @@ namespace Warcraft3PowerLevels.Entities.General
 
         public int Armor
         {
-            get => (int)(baseArmor + (Agility * 0.2));
+            get => (int)(baseArmor + (Agility * 0.3));
             set { }
         }
 
@@ -75,8 +75,8 @@ namespace Warcraft3PowerLevels.Entities.General
             set { }
         }
 
-        public ArmorTypeEnum ArmorType { get; set; }
-        public AttackTypeEnum AttackType { get; set; }
+        public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Hero;
+        public AttackTypeEnum AttackType { get; set; } = AttackTypeEnum.Hero;
         public WeaponTypeEnum WeaponType { get; set; }
 
         // --------------------------
@@ -126,7 +126,7 @@ namespace Warcraft3PowerLevels.Entities.General
             gainInt = intGain;
         }
 
-        protected void SetBaseCombat(int attack, double attackTime, int range, int armor)
+        protected void SetBaseCombat(double attack, double attackTime, int range, int armor)
         {
             baseAttack = attack;
             baseAttackTime = attackTime;

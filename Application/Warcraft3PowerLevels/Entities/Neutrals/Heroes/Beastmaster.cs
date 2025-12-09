@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             Race = RaceEnum.Neutral;
             Name = "Beastmaster";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 23, agi: 18, intel: 16,
-                strGain: 2.8, agiGain: 2.0, intGain: 1.5
+                str: 22, agi: 14, intel: 15,
+                strGain: 2.9, agiGain: 1.3, intGain: 1.8
             );
 
             SetBaseCombat(
-                attack: 26,
-                attackTime: 1.7,
-                range: 100,
-                armor: 3
+                attack: 29,
+                attackTime: 2.20,
+                range: 128,
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

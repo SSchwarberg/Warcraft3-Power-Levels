@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Undead.Heroes
             Race = RaceEnum.Undead;
             Name = "Death Knight";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 24, agi: 16, intel: 17,
-                strGain: 2.7, agiGain: 1.6, intGain: 1.8
+                str: 23, agi: 12, intel: 17,
+                strGain: 2.7, agiGain: 1.5, intGain: 1.8
             );
-
+            
             SetBaseCombat(
-                attack: 26,
-                attackTime: 1.7,
-                range: 100,
-                armor: 3
+                attack: 30,
+                attackTime: 2.33,
+                range: 128,
+                armor: -1
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

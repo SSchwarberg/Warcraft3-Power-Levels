@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Humans.Heroes
             Race = RaceEnum.Human;
             Name = "Paladin";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 23, agi: 15, intel: 17,
-                strGain: 2.7, agiGain: 1.5, intGain: 2.0
+                str: 22, agi: 13, intel: 17,
+                strGain: 2.7, agiGain: 1.5, intGain: 1.8
             );
 
             SetBaseCombat(
-                attack: 21,
-                attackTime: 1.7,
-                range: 100,
-                armor: 3
+                attack: 29,
+                attackTime: 2.0,
+                range: 128,
+                armor: 0
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Heroes
             Race = RaceEnum.Orc;
             Name = "Far Seer";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 18, agi: 16, intel: 21,
-                strGain: 1.8, agiGain: 1.6, intGain: 2.7
+                str: 15, agi: 18, intel: 19,
+                strGain: 2.0, agiGain: 1.0, intGain: 3.0
             );
 
             SetBaseCombat(
-                attack: 21,
-                attackTime: 1.7,
+                attack: 24,
+                attackTime: 2.28,
                 range: 600,
-                armor: 2
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

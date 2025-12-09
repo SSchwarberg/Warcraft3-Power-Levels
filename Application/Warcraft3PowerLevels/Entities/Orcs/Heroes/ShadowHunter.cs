@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Heroes
             Race = RaceEnum.Orc;
             Name = "Shadow Hunter";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 17, agi: 18, intel: 19,
-                strGain: 1.8, agiGain: 2.0, intGain: 2.6
+                str: 15, agi: 20, intel: 17,
+                strGain: 2.0, agiGain: 1.5, intGain: 2.5
             );
 
             SetBaseCombat(
-                attack: 23,
-                attackTime: 1.6,
+                attack: 25,
+                attackTime: 2.28,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

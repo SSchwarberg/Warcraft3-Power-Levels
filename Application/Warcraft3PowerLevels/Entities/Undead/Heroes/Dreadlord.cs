@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Undead.Heroes
             Race = RaceEnum.Undead;
             Name = "Dreadlord";
             PrimaryAttribute = PrimaryAttributeEnum.Strength;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 22, agi: 16, intel: 16,
-                strGain: 2.6, agiGain: 1.6, intGain: 1.8
+                str: 20, agi: 16, intel: 18,
+                strGain: 2.5, agiGain: 1.0, intGain: 2.5
             );
 
             SetBaseCombat(
-                attack: 25,
-                attackTime: 1.7,
-                range: 100,
-                armor: 3
+                attack: 27,
+                attackTime: 1.8,
+                range: 128,
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

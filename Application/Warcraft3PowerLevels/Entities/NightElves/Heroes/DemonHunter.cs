@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Heroes
             Race = RaceEnum.NightElf;
             Name = "Demon Hunter";
             PrimaryAttribute = PrimaryAttributeEnum.Agility;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 22, agi: 22, intel: 16,
-                strGain: 2.4, agiGain: 2.8, intGain: 1.5
+                str: 19, agi: 21, intel: 16,
+                strGain: 2.4, agiGain: 1.5, intGain: 2.1
             );
 
             SetBaseCombat(
-                attack: 22,
-                attackTime: 1.5,
-                range: 100,
-                armor: 2
+                attack: 34,
+                attackTime: 1.7,
+                range: 128,
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

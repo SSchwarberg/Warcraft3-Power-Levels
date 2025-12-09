@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Heroes
             Race = RaceEnum.NightElf;
             Name = "Warden";
             PrimaryAttribute = PrimaryAttributeEnum.Agility;
+            WeaponType = WeaponTypeEnum.Melee;
 
             SetBaseAttributes(
-                str: 20, agi: 20, intel: 18,
-                strGain: 2.5, agiGain: 2.6, intGain: 1.9
+                str: 18, agi: 20, intel: 16,
+                strGain: 2.4, agiGain: 1.6, intGain: 2.00
             );
 
             SetBaseCombat(
-                attack: 24,
-                attackTime: 1.6,
-                range: 100,
-                armor: 2
+                attack: 32,
+                attackTime: 2.05,
+                range: 128,
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

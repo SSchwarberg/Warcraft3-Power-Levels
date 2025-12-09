@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
             Race = RaceEnum.Neutral;
             Name = "Dark Ranger";
             PrimaryAttribute = PrimaryAttributeEnum.Agility;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 16, agi: 21, intel: 18,
-                strGain: 1.8, agiGain: 2.6, intGain: 1.9
+                str: 18, agi: 21, intel: 15,
+                strGain: 1.9, agiGain: 1.5, intGain: 2.6
             );
 
             SetBaseCombat(
-                attack: 18,
-                attackTime: 1.7,
+                attack: 28,
+                attackTime: 2.42,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Piercing;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }

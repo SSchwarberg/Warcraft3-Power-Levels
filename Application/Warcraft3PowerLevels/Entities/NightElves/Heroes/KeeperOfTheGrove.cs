@@ -10,22 +10,19 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Heroes
             Race = RaceEnum.NightElf;
             Name = "Keeper of the Grove";
             PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Ranged;
 
             SetBaseAttributes(
-                str: 17, agi: 15, intel: 20,
-                strGain: 1.7, agiGain: 1.5, intGain: 2.7
+                str: 16, agi: 15, intel: 18,
+                strGain: 2.0, agiGain: 1.5, intGain: 2.7
             );
 
             SetBaseCombat(
-                attack: 20,
-                attackTime: 1.7,
+                attack: 23,
+                attackTime: 2.0,
                 range: 600,
-                armor: 1
+                armor: -2
             );
-
-            AttackType = AttackTypeEnum.Magic;
-            WeaponType = WeaponTypeEnum.Ranged;
-            ArmorType = ArmorTypeEnum.Light;
         }
     }
 }
