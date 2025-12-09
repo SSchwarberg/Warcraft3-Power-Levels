@@ -15,8 +15,14 @@
             <th class="@GetHeaderClass(TierSelector)" @onclick="() => Sort(TierSelector)">
                 Tier @SortIcon(TierSelector)
             </th>
-            <th>Gold</th>
-            <th>Food</th>
+
+            <!-- GOLD + FOOD NOW SORTABLE -->
+            <th class="@GetHeaderClass(GoldSelector)" @onclick="() => Sort(GoldSelector)">
+                Gold @SortIcon(GoldSelector)
+            </th>
+            <th class="@GetHeaderClass(FoodSelector)" @onclick="() => Sort(FoodSelector)">
+                Food @SortIcon(FoodSelector)
+            </th>
 
             <th class="@GetHeaderClass(DpsSelector)" @onclick="() => Sort(DpsSelector)">
                 DPS @SortIcon(DpsSelector)
@@ -44,26 +50,29 @@
 
             <!-- DPS BAR -->
             <td>
-                @Bar(value: Safe(row.Dps),
-                     min: MinDps,
-                     max: MaxDps,
-                     true)
+                @Bar(
+                value: Safe(row.Dps),
+                                min: MinDps,
+                                max: MaxDps,
+                                showDecimals: true)
             </td>
 
             <!-- HP BAR -->
             <td>
-                @Bar(value: Safe(row.EffectiveHp),
-                     min: MinHp,
-                     max: MaxHp,
-                     false)
+                @Bar(
+                                value: Safe(row.EffectiveHp),
+                                min: MinHp,
+                                max: MaxHp,
+                                showDecimals: false)
             </td>
 
             <!-- POWER BAR -->
             <td>
-                @Bar(value: Safe(row.Power),
-                     min: MinPower,
-                     max: MaxPower,
-                     false)
+                @Bar(
+                                value: Safe(row.Power),
+                                min: MinPower,
+                                max: MaxPower,
+                                showDecimals: false)
             </td>
         </tr>
                 }
@@ -91,6 +100,11 @@
     public static readonly Func<UnitPowerRow, object> NameSelector = r => r.Unit.Name;
     public static readonly Func<UnitPowerRow, object> RaceSelector = r => r.Unit.Race;
     public static readonly Func<UnitPowerRow, object> TierSelector = r => r.Unit.Tier;
+
+    // NEW: gold / food selectors
+    public static readonly Func<UnitPowerRow, object> GoldSelector = r => r.Unit.Gold;
+    public static readonly Func<UnitPowerRow, object> FoodSelector = r => r.Unit.Food;
+
     public static readonly Func<UnitPowerRow, object> DpsSelector = r => r.Dps;
     public static readonly Func<UnitPowerRow, object> EffectiveHpSelector = r => r.EffectiveHp;
     public static readonly Func<UnitPowerRow, object> PowerSelector = r => r.Power;
@@ -174,8 +188,6 @@
         if (ratio > 1) ratio = 1;
 
         double widthPercent = ratio * 100.0;
-
-        // critical part: use invariant culture → "42.8%" instead of "42,8%"
         string widthCss = widthPercent.ToString("0.0", CultureInfo.InvariantCulture);
 
         string color = RankColor(ratio);
@@ -203,8 +215,7 @@
     private string RankColor(double ratio)
     {
         ratio = Math.Clamp(ratio, 0, 1);
-        // 0 = red (0°), 1 = green (120°)
-        double hue = 120.0 * ratio;
+        double hue = 120.0 * ratio; // 0 = red, 120 = green
         return $"hsl({hue:F0}, 70%, 45%)";
     }
 }

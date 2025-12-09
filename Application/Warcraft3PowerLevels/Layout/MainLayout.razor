@@ -30,7 +30,9 @@
 
             @foreach (var item in LayoutState.HeroLinks)
             {
-                <NavLink href="@item.Url" class="sub-item">@item.Text</NavLink>
+                <NavLink href="@item.Url"
+                         Match="NavLinkMatch.All" 
+                         class="sub-item">@item.Text</NavLink>
             }
         </div>
     </div>
