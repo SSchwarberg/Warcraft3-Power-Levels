@@ -20,7 +20,7 @@ namespace Warcraft3PowerLevels.Entities.Humans.Summons
 
         public int Health { get; set; } = 1250;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 1;
+        public double Armor { get; set; } = 1;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Light;
     }
 }

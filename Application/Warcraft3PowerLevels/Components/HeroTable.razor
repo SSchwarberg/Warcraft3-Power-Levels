@@ -46,6 +46,10 @@
                 Attack (Avg.) @SortIcon(AttackSelector)
             </th>
 
+            <th class="@GetHeaderClass(BaseAttackTimeSelector)" @onclick="() => Sort(BaseAttackTimeSelector)">
+                Base Attack Time @SortIcon(BaseAttackTimeSelector)
+            </th>
+
             <th class="@GetHeaderClass(AttackTimeSelector)" @onclick="() => Sort(AttackTimeSelector)">
                 Attack Time @SortIcon(AttackTimeSelector)
             </th>
@@ -67,9 +71,10 @@
                 <td>@stats.intl</td>
 
                 <td>@stats.health</td>
-                <td>@stats.armor.ToString("F1")</td>
+                <td>@stats.armor.ToString("F2")</td>
                 <td>@(stats.range == -1 ? "Melee" : stats.range)</td>
                 <td>@stats.attack</td>
+                <td>@stats.baseAtkTime.ToString("F2")</td>
                 <td>@stats.atkTime.ToString("F2")</td>
             </tr>
         }
@@ -95,7 +100,8 @@
     public static readonly Func<IHero, object> ArmorSelector = h => h.Armor;
     public static readonly Func<IHero, object> RangeSelector = h => h.Range;
     public static readonly Func<IHero, object> AttackSelector = h => h.Attack;
-    public static readonly Func<IHero, object> AttackTimeSelector = h => h.AttackTime;
+    public static readonly Func<IHero, object> BaseAttackTimeSelector = h => h.AttackTime;
+    public static readonly Func<IHero, object> AttackTimeSelector = h => h.ModifiedAttackTime;
 
 
     private void Sort(Func<IHero, object> selector)
@@ -124,7 +130,7 @@
         builder.CloseElement();
     };
 
-    private (int str, int agi, int intl, int health, double armor, double attack, double atkTime, int range)
+    private (int str, int agi, int intl, int health, double armor, double attack, double baseAtkTime, double atkTime, int range)
         GetAttributes(IHero hero, int level)
     {
         if (level < 1) level = 1;
@@ -139,46 +145,16 @@
         int health = hero.Health;
 
         double armor = hero.Armor;
-        double attackSpeedBonus = agi * 0.02;
-        double atkTime = hero.AttackTime / (1 + attackSpeedBonus);
+        double atkTime = hero.ModifiedAttackTime;
+        double baseAtkTime = hero.AttackTime;
 
         double attack = hero.Attack;
         int range = hero.WeaponType == WeaponTypeEnum.Melee ? -1 : hero.Range;
 
         hero.Level = 1;
 
-        return (str, agi, intl, health, armor, attack, atkTime, range);
+        return (str, agi, intl, health, armor, attack, baseAtkTime, atkTime, range);
     }
-
-    // private (int str, int agi, int intl, int health, double armor, double attack, double atkTime, int range)
-    //     GetAttributes(IHero hero, int level)
-    // {
-    //     if (level < 1) level = 1;
-    //     int gained = level - 1;
-
-    //     int str = hero.Strength + (int)(hero.StrengthGain * gained);
-    //     int agi = hero.Agility + (int)(hero.AgilityGain * gained);
-    //     int intl = hero.Intelligence + (int)(hero.IntelligenceGain * gained);
-
-    //     int health = 100 + (str * 25);
-
-    //     double armor = hero.Armor + (agi * 0.3);
-    //     double attackSpeedBonus = agi * 0.02;
-    //     double atkTime = hero.AttackTime / (1 + attackSpeedBonus);
-
-    //     int primary = hero.PrimaryAttribute switch
-    //     {
-    //         PrimaryAttributeEnum.Strength => str,
-    //         PrimaryAttributeEnum.Agility => agi,
-    //         PrimaryAttributeEnum.Intelligence => intl,
-    //         _ => 0
-    //     };
-
-    //     double attack = hero.Attack + primary;
-    //     int range = hero.Range == 100 ? -1 : hero.Range;
-
-    //     return (str, agi, intl, health, armor, attack, atkTime, range);
-    // }
 
     private object? selectedEntity = null;
 

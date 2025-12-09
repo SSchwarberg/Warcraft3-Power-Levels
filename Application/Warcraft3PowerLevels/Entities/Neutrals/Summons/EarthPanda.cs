@@ -16,7 +16,7 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Summons
         public int Health { get; set; } = 1700;
         public int Mana { get; set; } = 0;
 
-        public int Armor { get; set; } = 5;
+        public double Armor { get; set; } = 5;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
 
         public double Attack { get; set; } = 53;

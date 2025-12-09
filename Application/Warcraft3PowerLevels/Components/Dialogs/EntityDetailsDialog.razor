@@ -23,10 +23,10 @@
                 <br />
 
                 <p><b>Health:</b> @hero.Health</p>
-                <p><b>Armor:</b> @hero.Armor</p>
+                <p><b>Armor:</b> @hero.Armor.ToString("0.00")</p>
                 <br/>
                 <p><b>Attack:</b> @hero.Attack</p>
-                <p><b>Base Attack Time:</b> @hero.AttackTime</p>
+                <p><b>Attack Time:</b> @hero.ModifiedAttackTime.ToString("0.00") (Base: @hero.AttackTime.ToString("0.00"))</p>
                 <p><b>Range:</b> @(hero.Range <= 100 ? "Melee" : hero.Range)</p>
             }
             else if (Entity is ISummon summon)

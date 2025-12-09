@@ -20,7 +20,7 @@ namespace Warcraft3PowerLevels.Entities.NightElves.Summons
 
         public int Health { get; set; } = 1200;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 2;
+        public double Armor { get; set; } = 2;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Heavy;
     }
 }

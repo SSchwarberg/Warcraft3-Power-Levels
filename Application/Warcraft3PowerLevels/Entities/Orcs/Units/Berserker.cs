@@ -20,7 +20,7 @@ namespace Warcraft3PowerLevels.Entities.Orcs.Units
 
         public int Health { get; set; } = 475;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 0;
+        public double Armor { get; set; } = 0;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Medium;
     }
 }

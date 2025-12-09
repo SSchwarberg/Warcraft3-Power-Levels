@@ -18,12 +18,12 @@ namespace Warcraft3PowerLevels.Entities.General
         protected double baseAttack;
         protected double baseAttackTime;
         protected int baseRange;
-        protected int baseArmor;
+        protected double baseArmor;
 
         public RaceEnum Race { get; set; }
         public string Name { get; set; } = "";
 
-        public int Tier { get; set; } = 3;
+        public int Tier { get; set; }
         public int Gold { get; set; }
         public int Wood { get; set; }
         public int Food { get; set; } = 5;
@@ -40,9 +40,9 @@ namespace Warcraft3PowerLevels.Entities.General
             set { }
         }
 
-        public int Armor
+        public double Armor
         {
-            get => (int)(baseArmor + (Agility * 0.3));
+            get => (baseArmor + (Agility * 0.3));
             set { }
         }
 
@@ -69,6 +69,16 @@ namespace Warcraft3PowerLevels.Entities.General
             set { }
         }
 
+
+        /// <summary>
+        /// Calculates the modified attack time based on the hero's agility.
+        /// </summary>
+        public double ModifiedAttackTime => Math.Round(AttackTime / (1 + Agility * 0.02),2);
+
+
+        /// <summary>
+        /// The attack range of the hero.
+        /// </summary>
         public int Range
         {
             get => baseRange;

@@ -18,6 +18,7 @@ namespace Warcraft3PowerLevels.Entities.General
         double StrengthGain { get; }
         double AgilityGain { get; }
         double IntelligenceGain { get; }
+        double ModifiedAttackTime { get; }
     }
 
 }

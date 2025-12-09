@@ -9,7 +9,9 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
         {
             Race = RaceEnum.Neutral;
             Name = "Tinker";
-            PrimaryAttribute = PrimaryAttributeEnum.Agility;
+            PrimaryAttribute = PrimaryAttributeEnum.Intelligence;
+            WeaponType = WeaponTypeEnum.Melee;
+
 
             SetBaseAttributes(
                 str: 20, agi: 15, intel: 20,
@@ -22,10 +24,6 @@ namespace Warcraft3PowerLevels.Entities.Neutral.Heroes
                 range: 128,
                 armor: -1
             );
-
-            AttackType = AttackTypeEnum.Normal;
-            WeaponType = WeaponTypeEnum.Melee;
-            ArmorType = ArmorTypeEnum.Heavy;
         }
     }
 }

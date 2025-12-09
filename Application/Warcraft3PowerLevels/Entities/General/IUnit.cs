@@ -23,7 +23,7 @@ namespace Warcraft3PowerLevels.Entities.General
 
         public int Health { get; set; }
         public int Mana { get; set; }
-        public int Armor { get; set; }
+        public double Armor { get; set; }
         public ArmorTypeEnum ArmorType { get; set; }
     }
 }

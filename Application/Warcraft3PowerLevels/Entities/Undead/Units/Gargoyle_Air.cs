@@ -20,7 +20,7 @@ namespace Warcraft3PowerLevels.Entities.Undead.Units
 
         public int Health { get; set; } = 410;
         public int Mana { get; set; } = 0;
-        public int Armor { get; set; } = 3;
+        public double Armor { get; set; } = 3;
         public ArmorTypeEnum ArmorType { get; set; } = ArmorTypeEnum.Unarmored;
     }
 }
