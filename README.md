@@ -18,3 +18,10 @@ The project uses three core metrics to determine a unit’s strength:
   Enemy profile: infinite health, 10 armor, 25 DPS.
   
 Each of these metrics is further influenced by the enemy’s attack and armor types, allowing users to see how effective a unit is against specific target profiles.  
+
+At the moment, it does not contain an unit or hero abilities, nor items.
+There are still various updates planned like:
+- Adding hero items.
+- Adding abilities.
+- Improve UI for Smartphones.
+- etc.
