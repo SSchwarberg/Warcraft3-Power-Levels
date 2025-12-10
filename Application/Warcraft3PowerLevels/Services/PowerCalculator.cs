@@ -3,12 +3,21 @@ using Warcraft3PowerLevels.Entities.General;
 
 namespace Warcraft3PowerLevels.Services;
 
+/// <summary>
+/// Calculator for unit power levels based on DPS and Effective HP.
+/// </summary>
 public static class PowerCalculator
 {
+    /// <summary>
+    /// Dummy target stats for power calculations.
+    /// </summary>
     private const double DummyDps = 25;   // 50 DPS / 2 attacks, etc – your original choice
     private const double DummyArmor = 10;
 
-    // ---------- 1. TFT damage table ----------
+
+    /// <summary>
+    /// Damage multiplier table based on attack type vs armor type
+    /// </summary>
     private static readonly Dictionary<AttackTypeEnum, Dictionary<ArmorTypeEnum, double>> DamageTable =
         new()
         {
@@ -68,7 +77,12 @@ public static class PowerCalculator
             }
         };
 
-    // ---------- 2. Armor formula (unchanged) ----------
+
+    /// <summary>
+    /// Computes the damage multiplier based on armor value.
+    /// </summary>
+    /// <param name="armor"></param>
+    /// <returns></returns>
     private static double ArmorDamageMultiplier(double armor)
     {
         if (armor >= 0)
@@ -81,10 +95,21 @@ public static class PowerCalculator
         return 2.0 - Math.Pow(0.94, -armor);
     }
 
+    /// <summary>
+    /// Computes the raw DPS of a unit (without armor considerations).
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns></returns>
     public static double ComputeDps(IUnit unit) =>
         ((double)unit.Attack) / unit.AttackTime;
 
-    // ---------- 3. DPS vs target armor type (for the DPS column) ----------
+
+    /// <summary>
+    /// Computes the DPS of a unit against a target with specific armor type.
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="targetArmor"></param>
+    /// <returns></returns>
     public static double ComputeDpsVsTarget(IUnit unit, ArmorTypeEnum targetArmor)
     {
         double baseDps = ComputeDps(unit);
@@ -101,7 +126,13 @@ public static class PowerCalculator
         return baseDps;
     }
 
-    // ---------- 4. Effective HP vs a given enemy ATTACK type ----------
+
+    /// <summary>
+    /// Computes the Effective HP of a unit against an enemy attack type.
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="enemyAttack"></param>
+    /// <returns></returns>
     public static double ComputeEffectiveHp(IUnit unit, AttackTypeEnum enemyAttack)
     {
         double baseMult = ArmorDamageMultiplier(unit.Armor);
@@ -118,12 +149,16 @@ public static class PowerCalculator
         return unit.Health / combinedMult;
     }
 
-    // ---------- 6. Power with optional enemyAttack / enemyArmor ----------
-    public static double ComputePower(
-    IUnit unit,
-    AttackTypeEnum enemyAttack,
-    ArmorTypeEnum enemyArmor,
-    double scale = 1.0)
+
+    /// <summary>
+    /// Computes the Power of a unit against an enemy with specific attack and armor types.
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="enemyAttack"></param>
+    /// <param name="enemyArmor"></param>
+    /// <param name="scale"></param>
+    /// <returns></returns>
+    public static double ComputePower(IUnit unit, AttackTypeEnum enemyAttack, ArmorTypeEnum enemyArmor, double scale = 1.0)
     {
         // -----------------------------------------
         // Scale RAW inputs (DPS + HP)
@@ -170,15 +205,16 @@ public static class PowerCalculator
     }
 
 
-    public static double ComputePowerFromScaled(
-    double scaledDps,
-    double scaledEffectiveHp,
-    double unitArmor)
+    /// <summary>
+    /// Computes the Power from already scaled DPS and Effective HP values.
+    /// </summary>
+    /// <param name="scaledDps"></param>
+    /// <param name="scaledEffectiveHp"></param>
+    /// <param name="unitArmor"></param>
+    /// <returns></returns>
+    public static double ComputePowerFromScaled(double scaledDps, double scaledEffectiveHp, double unitArmor)
     {
-        // DPS vs dummy (dummy has 10 armor)
         double unitDpsVsDummy = scaledDps * ArmorDamageMultiplier(DummyArmor);
-
-        // Dummy DPS vs unit (unit has its own armor)
         double dummyDpsVsUnit = DummyDps * ArmorDamageMultiplier(unitArmor);
 
         double timeToDie = scaledEffectiveHp / dummyDpsVsUnit;

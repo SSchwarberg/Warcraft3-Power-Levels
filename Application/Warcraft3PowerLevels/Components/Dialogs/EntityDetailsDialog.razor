@@ -68,26 +68,3 @@
         </div>
     </div>
 }
-
-
-@code {
-    [Parameter] public object? Entity { get; set; }
-    [Parameter] public EventCallback OnClose { get; set; }
-
-    private string EntityName =>
-        Entity switch
-        {
-            IUnit u => u.Name,
-            _ => "Unknown"
-        };
-
-    private string EntityType =>
-       Entity switch
-       {
-           IHero => "Hero",
-           ISummon => "Summon",
-           _ => "Unit"
-       };
-
-    private void Close() => OnClose.InvokeAsync();
-}

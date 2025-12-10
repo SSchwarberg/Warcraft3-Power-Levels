@@ -1,0 +1,78 @@
+﻿@page "/Unit/PowerPerSupply"
+@using Warcraft3PowerLevels.Components
+@using Warcraft3PowerLevels.Services
+@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+
+@inject UnitRepository Repository
+@inject FilterStateService FilterState
+
+<h3>Units - Power per 1 Supply</h3>
+
+<div class="top-filter-panel">
+
+    <!-- LEFT: RACE FILTER -->
+    <div class="race-filter-container">
+        <div class="race-filter-section">
+
+            <div class="race-filter no-select">
+                <span class="race-item @(IsMainRace(null) ? "active" : "")"
+                      @onclick="@(() => SelectMainRace(null))">
+                    All
+                </span>
+
+                @foreach (var race in new[] { RaceEnum.Human, RaceEnum.Orc, RaceEnum.Undead, RaceEnum.NightElf })
+                {
+                    <span class="race-item @(IsMainRace(race) ? "active" : "")"
+                          @onclick="@(() => SelectMainRace(race))"
+                          @key="race">
+                        @race
+                    </span>
+                }
+            </div>
+
+            <div class="neutral-toggle no-select">
+                <span class="race-item @(IncludeNeutralUnits ? "active" : "")"
+                      @onclick="ToggleNeutralUnits">
+                    Neutral Units
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: ATTACK / ARMOR FILTERS -->
+    <div class="type-filter-panel">
+        <div class="panel-title">Enemy Attack Type</div>
+        <div class="icon-row">
+            @foreach (var atk in Enum.GetValues<AttackTypeEnum>())
+            {
+                if (atk == AttackTypeEnum.None)
+                    continue;
+
+                <img src="@($"/icons/attack/{atk}.png")"
+                     title="@atk"
+                     class="filter-icon @(SelectedAttack == atk ? "active" : "")"
+                     @onclick="(() => SelectAttack(atk))" />
+            }
+        </div>
+
+        <div class="panel-title">Enemy Armor Type</div>
+        <div class="icon-row">
+            @foreach (var arm in Enum.GetValues<ArmorTypeEnum>())
+            {
+                if (arm == ArmorTypeEnum.None)
+                    continue;
+
+                <img src="@($"/icons/armor/{arm}.png")"
+                     title="@arm"
+                     class="filter-icon @(SelectedArmor == arm ? "active" : "")"
+                     @onclick="(() => SelectArmor(arm))" />
+            }
+        </div>
+    </div>
+
+</div>
+
+<UnitPowerTable Rows="PowerRows"
+                OnSort="HandleSort"
+                SortState="sortState" />

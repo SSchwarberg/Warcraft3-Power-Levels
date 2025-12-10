@@ -1,0 +1,44 @@
+﻿@page "/Hero/Power"
+@using Warcraft3PowerLevels.Components
+@using Warcraft3PowerLevels.Services
+@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+
+@inject UnitRepository Repository
+@inject FilterStateService FilterState
+
+<h3>Heroes - Power</h3>
+
+<div class="race-filter-container">
+    <div class="race-filter no-select">
+        <span class="race-item @(IsSelected(null) ? "active" : "")"
+              @onclick="@(() => SelectRace(null))">
+            All
+        </span>
+
+        @foreach (var race in Enum.GetValues<RaceEnum>())
+        {
+            <span class="race-item @(IsSelected(race) ? "active" : "")"
+                  @onclick="@(() => SelectRace(race))"
+                  @key="race">
+                @race
+            </span>
+        }
+    </div>
+
+    <div class="level-control no-select">
+        <label>Level:</label>
+        <input type="range"
+               min="1"
+               max="10"
+               value="@heroLevel"
+               @oninput="OnLevelChanged" />
+
+        <span class="level-value">@heroLevel</span>
+    </div>
+</div>
+
+<!-- ✅ Only pass what HeroPowerTable actually exposes -->
+<HeroPowerTable Rows="PowerRows"
+                SortState="sortState"
+                OnSort="HandleSort" />

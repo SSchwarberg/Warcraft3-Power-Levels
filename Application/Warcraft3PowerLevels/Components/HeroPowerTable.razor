@@ -33,175 +33,40 @@
     <tbody>
         @foreach (var row in SortState.Apply(Rows))
         {
-        <tr @onclick="() => ShowDetails(row.Hero)">
-            <td>@row.Hero.Name</td>
-            <td>@row.Hero.Race</td>
-            <td>@row.Level</td>
+            <tr @onclick="() => ShowDetails(row.Hero)">
+                <td>@row.Hero.Name</td>
+                <td>@row.Hero.Race</td>
+                <td>@row.Level</td>
 
-            <!-- DPS BAR -->
-            <td>
-                @Bar(
-                value: Safe(row.Dps),
-                                min: MinDps,
-                                max: MaxDps,
-                                showDecimals: true)
-            </td>
+                <!-- DPS BAR -->
+                <td>
+                    @Bar(
+                        value: Safe(row.Dps),
+                        min: MinDps,
+                        max: MaxDps,
+                        showDecimals: true)
+                </td>
 
-            <!-- HP BAR -->
-            <td>
-                @Bar(
-                                value: Safe(row.EffectiveHp),
-                                min: MinHp,
-                                max: MaxHp,
-                                showDecimals: false)
-            </td>
+                <!-- HP BAR -->
+                <td>
+                    @Bar(
+                        value: Safe(row.EffectiveHp),
+                        min: MinHp,
+                        max: MaxHp,
+                        showDecimals: false)
+                </td>
 
-            <!-- POWER BAR -->
-            <td>
-                @Bar(
-                                value: Safe(row.Power),
-                                min: MinPower,
-                                max: MaxPower,
-                                showDecimals: false)
-            </td>
-        </tr>
-                }
+                <!-- POWER BAR -->
+                <td>
+                    @Bar(
+                        value: Safe(row.Power),
+                        min: MinPower,
+                        max: MaxPower,
+                        showDecimals: false)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 <EntityDetailsDialog Entity="selectedEntity" OnClose="CloseDialog" />
-
-@code {
-    /* ----------------------
-       PARAMETERS
-       ----------------------*/
-
-    private object? selectedEntity = null;
-
-    [Parameter] public IEnumerable<HeroPowerRow> Rows { get; set; } = [];
-    [Parameter] public EventCallback<Func<HeroPowerRow, object>> OnSort { get; set; }
-    [Parameter] public SortState<HeroPowerRow> SortState { get; set; } = new();
-
-
-    /* ----------------------
-       COLUMN SELECTORS
-       ----------------------*/
-
-    public static readonly Func<HeroPowerRow, object> NameSelector = r => r.Hero.Name;
-    public static readonly Func<HeroPowerRow, object> RaceSelector = r => r.Hero.Race;
-    public static readonly Func<HeroPowerRow, object> LevelSelector = r => r.Level;
-    public static readonly Func<HeroPowerRow, object> DpsSelector = r => r.Dps;
-    public static readonly Func<HeroPowerRow, object> EffectiveHpSelector = r => r.EffectiveHp;
-    public static readonly Func<HeroPowerRow, object> PowerSelector = r => r.Power;
-
-
-    /* ----------------------
-       MIN / MAX PER METRIC
-       ----------------------*/
-
-    private double MinDps => Rows.Any() ? Rows.Min(r => Safe(r.Dps)) : 0;
-    private double MaxDps => Rows.Any() ? Rows.Max(r => Safe(r.Dps)) : 1;
-    private double MinHp => Rows.Any() ? Rows.Min(r => Safe(r.EffectiveHp)) : 0;
-    private double MaxHp => Rows.Any() ? Rows.Max(r => Safe(r.EffectiveHp)) : 1;
-    private double MinPower => Rows.Any() ? Rows.Min(r => Safe(r.Power)) : 0;
-    private double MaxPower => Rows.Any() ? Rows.Max(r => Safe(r.Power)) : 1;
-
-
-    /* ----------------------
-       SAFE NUMBERS
-       ----------------------*/
-
-    private double Safe(double value)
-        => double.IsFinite(value) && value > 0 ? value : 0;
-
-    private void ShowDetails(IHero hero)
-    {
-        selectedEntity = hero;
-    }
-
-    private void CloseDialog()
-    {
-        selectedEntity = null;
-    }
-
-
-    /* ----------------------
-       SORTING
-       ----------------------*/
-
-    private void Sort(Func<HeroPowerRow, object> selector)
-        => OnSort.InvokeAsync(selector);
-
-    private string GetHeaderClass(Func<HeroPowerRow, object> selector)
-        => SortState.KeySelector == selector ? "sorted" : "";
-
-
-    /* ----------------------
-       SORT ICON
-       ----------------------*/
-
-    private RenderFragment SortIcon(Func<HeroPowerRow, object> selector) => builder =>
-    {
-        if (SortState.KeySelector != selector)
-            return;
-
-        string iconClass = SortState.Direction == SortDirectionEnum.Ascending
-            ? "sort-asc"
-            : "sort-desc";
-
-        builder.OpenElement(0, "svg");
-        builder.AddAttribute(1, "class", $"sort-icon {iconClass}");
-        builder.AddAttribute(2, "viewBox", "0 0 24 24");
-        builder.AddMarkupContent(3, "<path fill='currentColor' d='M12 4l-6 6h12z'/>");
-        builder.CloseElement();
-    };
-
-
-    /* ----------------------
-       BAR RENDERING
-       ----------------------*/
-
-    private RenderFragment Bar(double value, double min, double max, bool showDecimals) => builder =>
-    {
-        value = Safe(value);
-
-        double span = max - min;
-        double ratio = span > 0
-            ? (value - min) / span
-            : 0.5;
-
-        if (ratio < 0) ratio = 0;
-        if (ratio > 1) ratio = 1;
-
-        double widthPercent = ratio * 100.0;
-        string widthCss = widthPercent.ToString("0.0", CultureInfo.InvariantCulture);
-
-        string color = RankColor(ratio);
-
-        builder.OpenElement(0, "div");
-        builder.AddAttribute(1, "class", "bar-wrapper");
-
-        builder.OpenElement(2, "div");
-        builder.AddAttribute(3, "class", "bar-fill");
-        builder.AddAttribute(4, "style", $"width:{widthCss}%; background-color:{color};");
-        builder.CloseElement();
-
-        builder.OpenElement(5, "span");
-        builder.AddAttribute(6, "class", "bar-value");
-        string valueText = showDecimals
-            ? value.ToString("0.00")
-            : ((int)Math.Round(value)).ToString();
-        builder.AddContent(7, valueText);
-        builder.CloseElement();
-
-        builder.CloseElement();
-    };
-
-    // red (worst) -> green (best) using HSL
-    private string RankColor(double ratio)
-    {
-        ratio = Math.Clamp(ratio, 0, 1);
-        double hue = 120.0 * ratio;
-        return $"hsl({hue:F0}, 70%, 45%)";
-    }
-}

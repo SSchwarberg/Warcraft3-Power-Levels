@@ -1,0 +1,45 @@
+﻿@page "/Hero/Stats"
+@using Warcraft3PowerLevels.Components
+@using Warcraft3PowerLevels.Services
+@using Warcraft3PowerLevels.Entities.Enumerations
+@using Warcraft3PowerLevels.Entities.General
+
+@inject UnitRepository Repository
+@inject LayoutStateService LayoutState
+@inject FilterStateService FilterState
+
+<h3>Heroes - Base Stats</h3>
+
+<div class="race-filter-container">
+    <div class="race-filter no-select">
+        <span class="race-item @(IsSelected(null) ? "active" : "")"
+              @onclick="@(() => SelectRace(null))">
+            All
+        </span>
+
+        @foreach (var race in Enum.GetValues<RaceEnum>())
+        {
+            <span class="race-item @(IsSelected(race) ? "active" : "")"
+                  @onclick="@(() => SelectRace(race))"
+                  @key="race">
+                @race
+            </span>
+        }
+    </div>
+
+    <div class="level-control no-select">
+        <label>Level:</label>
+        <input type="range"
+               min="1"
+               max="10"
+               value="@heroLevel"
+               @oninput="OnLevelChanged" />
+
+        <span class="level-value">@heroLevel</span>
+    </div>
+</div>
+
+<HeroTable Heroes="FilteredHeroes"
+           Level="heroLevel"
+           OnSort="HandleSort"
+           SortState="sortState" />

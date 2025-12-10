@@ -4,12 +4,14 @@ using System;
 
 namespace Warcraft3PowerLevels.Services;
 
+/// <summary>
+/// Service to hold the current filter state for heroes and units across different pages.
+/// </summary>
 public class FilterStateService
 {
     /* ---------------------------------------------------------
        HERO FILTERS
        --------------------------------------------------------- */
-
     // Heroes can legitimately select Neutral as race
     public RaceEnum? HeroRace { get; set; } = null;
 
@@ -37,7 +39,6 @@ public class FilterStateService
     /* ---------------------------------------------------------
        DAMAGE FILTER STATE FOR ALL UNIT PAGES
        --------------------------------------------------------- */
-
     public AttackTypeEnum SelectedAttack { get; set; } = AttackTypeEnum.None;
     public ArmorTypeEnum SelectedArmor { get; set; } = ArmorTypeEnum.None;
 }

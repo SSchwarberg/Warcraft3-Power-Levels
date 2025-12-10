@@ -1,10 +1,10 @@
 ﻿using Warcraft3PowerLevels.Entities.General;
-using Warcraft3PowerLevels.Entities.Humans.Heroes;
-using Warcraft3PowerLevels.Entities.Humans.Units;
-using Warcraft3PowerLevels.Entities.Orcs.Units;
 
 namespace Warcraft3PowerLevels.Services
 {
+    /// <summary>
+    /// Repository to load and hold all units and heroes implementing the IUnit and IHero interfaces.
+    /// </summary>
     public class UnitRepository
     {
         public IReadOnlyList<IUnit> Units { get; }
@@ -30,7 +30,7 @@ namespace Warcraft3PowerLevels.Services
                 .SelectMany(a =>
                 {
                     try { return a.GetTypes(); }
-                    catch { return Array.Empty<Type>(); } // prevents WASM crash
+                    catch { return Array.Empty<Type>(); }
                 })
                 .Where(t =>
                     unitType.IsAssignableFrom(t)
