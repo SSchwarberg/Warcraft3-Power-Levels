@@ -97,9 +97,9 @@ body::before {
 body {
     background-image: url("../images/background.png");
     background-repeat: no-repeat;
-    background-size: cover;       /* keep original proportions */
+    background-size: cover; /* keep original proportions */
     background-position: center top; /* anchor the image */
-    background-attachment: fixed;   /* keeps image static while content scrolls */
+    background-attachment: fixed; /* keeps image static while content scrolls */
     background-color: var(--bg-color);
     color: var(--text-color);
     margin: 0;

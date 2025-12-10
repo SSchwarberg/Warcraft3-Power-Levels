@@ -10,7 +10,7 @@
         /// </summary>
         protected override void OnInitialized()
         {
-            Nav.NavigateTo("/Unit/power", false);
+            Nav.NavigateTo("Unit/power", false);
         }
     }
 }
