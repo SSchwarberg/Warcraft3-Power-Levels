@@ -14,16 +14,16 @@ namespace Warcraft3PowerLevels.Services
         {
             UnitLinks = new List<(string Text, string Url)>
             {
-                ("Power", "/Unit/power"),
-                ("Power per 100g", "/Unit/power100g"),
-                ("Power per Supply", "/Unit/PowerPerSupply"),
-                ("Base Stats", "/Unit/Stats"),
+                ("Power", "Unit/power"),
+                ("Power per 100g", "Unit/power100g"),
+                ("Power per Supply", "Unit/PowerPerSupply"),
+                ("Base Stats", "Unit/Stats"),
             };
 
             HeroLinks = new List<(string Text, string Url)>
             {
-                ("Power", "/Hero/Power"),
-                ("Base Stats", "/Hero/Stats"),
+                ("Power", "Hero/Power"),
+                ("Base Stats", "Hero/Stats"),
             };
         }
     }

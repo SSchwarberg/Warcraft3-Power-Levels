@@ -57,7 +57,7 @@
                 if (atk == AttackTypeEnum.None)
                     continue;
 
-                <img src="@($"icons/attack/{atk}.png")"
+                <img src="@($"icons/attack/{atk.ToString().ToLower()}.png")"
                      title="@atk"
                      class="filter-icon @(selectedAttack == atk ? "active" : "")"
                      @onclick="(() => SelectAttack(atk))" />
@@ -71,7 +71,7 @@
                 if (arm == ArmorTypeEnum.None)
                     continue;
 
-                <img src="@($"icons/armor/{arm}.png")"
+                <img src="@($"icons/armor/{arm.ToString().ToLower()}.png")"
                      title="@arm"
                      class="filter-icon @(selectedArmor == arm ? "active" : "")"
                      @onclick="(() => SelectArmor(arm))" />
