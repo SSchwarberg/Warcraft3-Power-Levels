@@ -30,23 +30,20 @@ jobs:
 
       - name: Publish
         run: dotnet publish ./Application/Warcraft3PowerLevels -c Release -o dist
-      
+
       - name: Fix base href
         run: |
           sed -i "s|<base href=\"/\" />|<base href=\"/${REPO_NAME}/\" />|g" dist/wwwroot/index.html
           cp dist/wwwroot/index.html dist/wwwroot/404.html
-      
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist/wwwroot
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
+      
