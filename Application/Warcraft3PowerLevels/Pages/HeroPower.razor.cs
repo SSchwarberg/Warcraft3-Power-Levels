@@ -19,13 +19,13 @@ namespace Warcraft3PowerLevels.Pages
         /// </summary>
         private SortState<HeroPowerRow> sortState = new();
 
-        private int heroLevel
+        private int HeroLevel
         {
             get => FilterState.HeroLevel;
             set => FilterState.HeroLevel = value;
         }
 
-        private RaceEnum? selectedRace
+        private RaceEnum? SelectedRace
         {
             get => FilterState.HeroRace;
             set => FilterState.HeroRace = value;
@@ -36,7 +36,7 @@ namespace Warcraft3PowerLevels.Pages
         /// </summary>
         /// <param name="race"></param>
         /// <returns></returns>
-        private bool IsSelected(RaceEnum? race) => selectedRace == race;
+        private bool IsSelected(RaceEnum? race) => SelectedRace == race;
 
         /// <summary>
         /// Selects the given race as filter.
@@ -44,7 +44,7 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="race"></param>
         private void SelectRace(RaceEnum? race)
         {
-            selectedRace = race;
+            SelectedRace = race;
         }
 
         /// <summary>
@@ -53,16 +53,16 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="e"></param>
         private void OnLevelChanged(ChangeEventArgs e)
         {
-            heroLevel = int.Parse(e.Value!.ToString()!);
+            HeroLevel = int.Parse(e.Value!.ToString()!);
         }
 
         /// <summary>
         /// Gets the list of heroes filtered by
         /// </summary>
         private IEnumerable<IHero> FilteredHeroes =>
-            selectedRace == null
+            SelectedRace == null
                 ? Repository.Heroes
-                : Repository.Heroes.Where(h => h.Race == selectedRace);
+                : Repository.Heroes.Where(h => h.Race == SelectedRace);
 
         /// <summary>
         /// Gets the list of hero power rows to display.
@@ -77,7 +77,7 @@ namespace Warcraft3PowerLevels.Pages
         /// <returns></returns>
         private HeroPowerRow BuildPowerRow(IHero hero)
         {
-            int level = heroLevel < 1 ? 1 : heroLevel;
+            int level = HeroLevel < 1 ? 1 : HeroLevel;
             int originalLevel = hero.Level;
 
             try

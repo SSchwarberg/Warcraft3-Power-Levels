@@ -10,34 +10,22 @@ namespace Warcraft3PowerLevels.Pages
     /// </summary>
     public partial class UnitPowers
     {
-        private RaceEnum? selectedMainRace
+        private RaceEnum? SelectedMainRace
         {
             get => FilterState.UnitRace;
             set => FilterState.UnitRace = value;
         }
 
-        private AttackTypeEnum selectedAttack
+        private AttackTypeEnum SelectedAttack
         {
             get => FilterState.SelectedAttack;
             set => FilterState.SelectedAttack = value;
         }
 
-        private ArmorTypeEnum selectedArmor
+        private ArmorTypeEnum SelectedArmor
         {
             get => FilterState.SelectedArmor;
             set => FilterState.SelectedArmor = value;
-        }
-
-        private bool includeNeutralUnits
-        {
-            get => FilterState.UnitIncludeNeutral;
-            set => FilterState.UnitIncludeNeutral = value;
-        }
-
-        private bool includeSummons
-        {
-            get => FilterState.UnitIncludeSummons;
-            set => FilterState.UnitIncludeSummons = value;
         }
 
         /// <summary>
@@ -46,7 +34,7 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="race"></param>
         private void SelectMainRace(RaceEnum? race)
         {
-            selectedMainRace = race;
+            SelectedMainRace = race;
             FilterState.UnitRace = race;
         }
 
@@ -56,8 +44,8 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="atk"></param>
         private void SelectAttack(AttackTypeEnum atk)
         {
-            selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
-            FilterState.SelectedAttack = selectedAttack;
+            SelectedAttack = SelectedAttack == atk ? AttackTypeEnum.None : atk;
+            FilterState.SelectedAttack = SelectedAttack;
         }
 
         /// <summary>
@@ -66,23 +54,8 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="arm"></param>
         private void SelectArmor(ArmorTypeEnum arm)
         {
-            selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
-            FilterState.SelectedArmor = selectedArmor;
-        }
-
-        /// <summary>
-        /// Toggles the inclusion of neutral units in the filter.
-        /// </summary>
-        private void ToggleNeutralUnits()
-        {
-            includeNeutralUnits = !includeNeutralUnits;
-            FilterState.UnitIncludeNeutral = includeNeutralUnits;
-        }
-
-        private void ToggleSummons()
-        {
-            includeSummons = !includeSummons;
-            FilterState.UnitIncludeSummons = includeSummons;
+            SelectedArmor = SelectedArmor == arm ? ArmorTypeEnum.None : arm;
+            FilterState.SelectedArmor = SelectedArmor;
         }
 
         /// <summary>
@@ -90,7 +63,35 @@ namespace Warcraft3PowerLevels.Pages
         /// </summary>
         /// <param name="race"></param>
         /// <returns></returns>
-        private bool IsMainRace(RaceEnum? race) => selectedMainRace == race;
+        private bool IsMainRace(RaceEnum? race) => SelectedMainRace == race;
+
+        /// <summary>
+        /// Toggles the inclusion of neutral units in the filter.
+        /// </summary>
+        private void CycleNeutral()
+        {
+            FilterState.NeutralState = FilterState.NeutralState switch
+            {
+                ToggleStateEnum.Off => ToggleStateEnum.On,
+                ToggleStateEnum.On => ToggleStateEnum.Exclusive,
+                ToggleStateEnum.Exclusive => ToggleStateEnum.Off,
+                _ => ToggleStateEnum.Off
+            };
+        }
+
+        /// <summary>
+        /// Toggles the inclusion of summons in the filter.
+        /// </summary>
+        private void CycleSummons()
+        {
+            FilterState.SummonState = FilterState.SummonState switch
+            {
+                ToggleStateEnum.Off => ToggleStateEnum.On,
+                ToggleStateEnum.On => ToggleStateEnum.Exclusive,
+                ToggleStateEnum.Exclusive => ToggleStateEnum.Off,
+                _ => ToggleStateEnum.Off
+            };
+        }
 
         /// <summary>
         /// OnInitialized lifecycle method to restore filter and sort state.
@@ -98,15 +99,11 @@ namespace Warcraft3PowerLevels.Pages
         protected override void OnInitialized()
         {
             // Restore main race filter
-            selectedMainRace = FilterState.UnitRace;
-
-            // Restore "Neutral Units" and "Summons"
-            includeNeutralUnits = FilterState.UnitIncludeNeutral;
-            includeSummons = FilterState.UnitIncludeSummons;
+            SelectedMainRace = FilterState.UnitRace;
 
             // Restore enemy attack/armor type filters
-            selectedAttack = FilterState.SelectedAttack;
-            selectedArmor = FilterState.SelectedArmor;
+            SelectedAttack = FilterState.SelectedAttack;
+            SelectedArmor = FilterState.SelectedArmor;
 
             // Restore sorting for THIS PAGE only
             // If the user never sorted before, default to Power
@@ -127,19 +124,22 @@ namespace Warcraft3PowerLevels.Pages
         {
             get
             {
-                var units = Repository.Units.ToList();
+                var units = Repository.Units;
 
-                if (selectedMainRace != null)
-                    units = units.Where(u =>
-                        u.Race == selectedMainRace ||
-                        u.Race == RaceEnum.Neutral
-                    ).ToList();
+                if (SelectedMainRace != null)
+                    units = units.Where(u => u.Race == SelectedMainRace || u.Race == RaceEnum.Neutral).ToList();
 
-                if (!includeNeutralUnits)
+                if (FilterState.NeutralState == ToggleStateEnum.Exclusive)
+                    units = units.Where(u => u.Race == RaceEnum.Neutral).ToList();
+
+                if (FilterState.NeutralState == ToggleStateEnum.Off)
                     units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
 
-                if (!includeSummons)
+                if (FilterState.SummonState == ToggleStateEnum.Off)
                     units = units.Where(u => u is not ISummon).ToList();
+
+                if (FilterState.SummonState == ToggleStateEnum.Exclusive)
+                    units = units.Where(u => u is ISummon).ToList();
 
                 return units;
             }
@@ -151,9 +151,9 @@ namespace Warcraft3PowerLevels.Pages
         private IEnumerable<UnitPowerRow> PowerRows =>
             FilteredUnits.Select(u =>
             {
-                var dps = PowerCalculator.ComputeDpsVsTarget(u, selectedArmor);
-                var effHp = (int)PowerCalculator.ComputeEffectiveHp(u, selectedAttack);
-                var power = PowerCalculator.ComputePower(u, selectedAttack, selectedArmor);
+                var dps = PowerCalculator.ComputeDpsVsTarget(u, SelectedArmor);
+                var effHp = (int)PowerCalculator.ComputeEffectiveHp(u, SelectedAttack);
+                var power = PowerCalculator.ComputePower(u, SelectedAttack, SelectedArmor);
 
                 return new UnitPowerRow(u, dps, effHp, power);
             });

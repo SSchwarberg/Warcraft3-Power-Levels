@@ -15,57 +15,67 @@ namespace Warcraft3PowerLevels.Pages
         /// </summary>
         private SortState<UnitPowerRow> sortState = new();
 
-        private RaceEnum? selectedMainRace
+        /// <summary>
+        /// Selected main race for filtering units.
+        /// </summary>
+        private RaceEnum? SelectedMainRace
         {
             get => FilterState.UnitRace;
             set => FilterState.UnitRace = value;
         }
 
-        private AttackTypeEnum selectedAttack
+        /// <summary>
+        /// Selected attack type for filtering units.
+        /// </summary>
+        private AttackTypeEnum SelectedAttack
         {
             get => FilterState.SelectedAttack;
             set => FilterState.SelectedAttack = value;
         }
 
-        private ArmorTypeEnum selectedArmor
+        /// <summary>
+        /// Selected armor type for filtering units.
+        /// </summary>
+        private ArmorTypeEnum SelectedArmor
         {
             get => FilterState.SelectedArmor;
             set => FilterState.SelectedArmor = value;
         }
-
-        private bool includeNeutralUnits
-        {
-            get => FilterState.UnitIncludeNeutral;
-            set => FilterState.UnitIncludeNeutral = value;
-        }
-
 
         /// <summary>
         /// Selects the main race for filtering units.
         /// </summary>
         /// <param name="race"></param>
         private void SelectMainRace(RaceEnum? race)
-            => selectedMainRace = race;
+            => SelectedMainRace = race;
 
         /// <summary>
         /// Selects the attack type for filtering units.
         /// </summary>
         /// <param name="atk"></param>
         private void SelectAttack(AttackTypeEnum atk)
-            => selectedAttack = selectedAttack == atk ? AttackTypeEnum.None : atk;
+            => SelectedAttack = SelectedAttack == atk ? AttackTypeEnum.None : atk;
 
         /// <summary>
         /// Selects the armor type for filtering units.
         /// </summary>
         /// <param name="arm"></param>
         private void SelectArmor(ArmorTypeEnum arm)
-            => selectedArmor = selectedArmor == arm ? ArmorTypeEnum.None : arm;
+            => SelectedArmor = SelectedArmor == arm ? ArmorTypeEnum.None : arm;
 
         /// <summary>
         /// Toggles the inclusion of neutral units in the filter.
         /// </summary>
-        private void ToggleNeutralUnits()
-            => includeNeutralUnits = !includeNeutralUnits;
+        private void CycleNeutral()
+        {
+            FilterState.NeutralState = FilterState.NeutralState switch
+            {
+                ToggleStateEnum.Off => ToggleStateEnum.On,
+                ToggleStateEnum.On => ToggleStateEnum.Exclusive,
+                ToggleStateEnum.Exclusive => ToggleStateEnum.Off,
+                _ => ToggleStateEnum.Off
+            };
+        }
 
         /// <summary>
         /// Checks if the given race is the currently selected main race for filtering.
@@ -73,7 +83,7 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="race"></param>
         /// <returns></returns>
         private bool IsMainRace(RaceEnum? race)
-            => selectedMainRace == race;
+            => SelectedMainRace == race;
 
         /// <summary>
         /// OnInitialized lifecycle method to set up initial sort state.
@@ -98,16 +108,16 @@ namespace Warcraft3PowerLevels.Pages
         {
             get
             {
-                // gold-based scaling excludes summons automatically
-                var units = Repository.Units.Where(u => u.Gold > 0).ToList();
+                var units = Repository.Units;
+                units = units.Where(u => u is not ISummon).ToList();
 
-                if (selectedMainRace != null)
-                    units = units.Where(u =>
-                        u.Race == selectedMainRace ||
-                        u.Race == RaceEnum.Neutral
-                    ).ToList();
+                if (SelectedMainRace != null)
+                    units = units.Where(u => u.Race == SelectedMainRace || u.Race == RaceEnum.Neutral).ToList();
 
-                if (!includeNeutralUnits)
+                if (FilterState.NeutralState == ToggleStateEnum.Exclusive)
+                    units = units.Where(u => u.Race == RaceEnum.Neutral).ToList();
+
+                if (FilterState.NeutralState == ToggleStateEnum.Off)
                     units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
 
                 return units;
@@ -122,13 +132,13 @@ namespace Warcraft3PowerLevels.Pages
             {
                 double scale = 100.0 / u.Gold;
 
-                double scaledDps = PowerCalculator.ComputeDpsVsTarget(u, selectedArmor) * scale;
-                double scaledHp = PowerCalculator.ComputeEffectiveHp(u, selectedAttack) * scale;
+                double scaledDps = PowerCalculator.ComputeDpsVsTarget(u, SelectedArmor) * scale;
+                double scaledHp = PowerCalculator.ComputeEffectiveHp(u, SelectedAttack) * scale;
 
                 double scaledPower = PowerCalculator.ComputePower(
                     u,
-                    selectedAttack,
-                    selectedArmor,
+                    SelectedAttack,
+                    SelectedArmor,
                     scale  // properly scale DPS & HP inside the calculation
                 );
 

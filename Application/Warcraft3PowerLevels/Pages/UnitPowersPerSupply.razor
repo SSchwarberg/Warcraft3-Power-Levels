@@ -32,8 +32,9 @@
             </div>
 
             <div class="neutral-toggle no-select">
-                <span class="race-item @(IncludeNeutralUnits ? "active" : "")"
-                      @onclick="ToggleNeutralUnits">
+                <span class="race-item @(FilterState.NeutralState == ToggleStateEnum.On ? "active"
+                                                            : FilterState.NeutralState == ToggleStateEnum.Exclusive ? "exclusive" : "")"
+                      @onclick="CycleNeutral">
                     Neutral Units
                 </span>
             </div>

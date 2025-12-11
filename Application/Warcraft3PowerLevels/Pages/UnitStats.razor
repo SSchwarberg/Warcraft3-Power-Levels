@@ -30,14 +30,16 @@
 
     <!-- NEUTRAL + SUMMONS SWITCHES -->
     <div class="neutral-toggle no-select">
-        <span class="race-item @(includeNeutralUnits ? "active" : "")"
-              @onclick="ToggleNeutralUnits">
-            Neutral Units
+        <span class="race-item @(FilterState.SummonState == ToggleStateEnum.On ? "active" 
+                : FilterState.SummonState == ToggleStateEnum.Exclusive ? "exclusive" : "")"
+            @onclick="CycleSummons"> 
+            Summons
         </span>
 
-        <span class="race-item @(includeSummons ? "active" : "")"
-              @onclick="ToggleSummons">
-            Summons
+        <span class="race-item @(FilterState.NeutralState == ToggleStateEnum.On ? "active"
+                : FilterState.NeutralState == ToggleStateEnum.Exclusive ? "exclusive" : "")"
+              @onclick="CycleNeutral">
+              Neutral Units
         </span>
     </div>
 </div>

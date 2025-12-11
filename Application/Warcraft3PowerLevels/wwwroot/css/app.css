@@ -162,6 +162,17 @@ table {
     overflow: hidden;
 }
 
+
+    /* Darken the blurred background behind the table */
+    .glassy-table::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.30); /* adjust darkness */
+        pointer-events: none;
+        z-index: -1;
+    }
+
     .glassy-table th:hover {
         color: var(--accent);
         text-shadow: 0 0 6px rgba(78,161,255,0.6);
@@ -273,6 +284,34 @@ input, select {
         text-shadow: 0 0 6px rgba(78,161,255,0.6);
     }
 
+    .race-item.exclusive {
+        position: relative; /* allows absolute positioning inside */
+        color: var(--accent);
+        text-shadow: 0 0 8px rgba(78,161,255,1);
+    }
+
+        .race-item.exclusive::after {
+            content: "";
+            position: absolute;
+            right: 0px;
+            top: 35%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background-image: url("../icons/general/lock.png"); /* << fixed path */
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.95;
+            filter: drop-shadow(0 0 3px black); /* optional for visibility */
+            pointer-events: none;
+        }
+
+        /*.race-item.exclusive::after {
+            content: "★";
+            font-size: 0.7rem;
+            margin-left: 2px;
+            opacity: 0.9;
+        }*/
 
 /* Prevent text selection on clickable UI elements */
 .no-select {

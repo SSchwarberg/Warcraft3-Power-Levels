@@ -14,13 +14,13 @@ namespace Warcraft3PowerLevels.Pages
         /// </summary>
         private SortState<IHero> sortState = null;
 
-        private int heroLevel
+        private int HeroLevel
         {
             get => FilterState.HeroLevel;
             set => FilterState.HeroLevel = value;
         }
 
-        private RaceEnum? selectedRace
+        private RaceEnum? SelectedRace
         {
             get => FilterState.HeroRace;
             set => FilterState.HeroRace = value;
@@ -34,7 +34,7 @@ namespace Warcraft3PowerLevels.Pages
             sortState = FilterState.HeroSortState;
         }
 
-        private bool IsSelected(RaceEnum? race) => selectedRace == race;
+        private bool IsSelected(RaceEnum? race) => SelectedRace == race;
 
         /// <summary>
         /// Selects the race for filtering heroes.
@@ -51,7 +51,7 @@ namespace Warcraft3PowerLevels.Pages
         /// <param name="e"></param>
         private void OnLevelChanged(ChangeEventArgs e)
         {
-            heroLevel = int.Parse(e.Value!.ToString()!);
+            HeroLevel = int.Parse(e.Value!.ToString()!);
         }
 
 
@@ -59,9 +59,9 @@ namespace Warcraft3PowerLevels.Pages
         /// Gets the filtered heroes based on the selected race.
         /// </summary>
         private IEnumerable<IHero> FilteredHeroes =>
-            selectedRace == null
+            SelectedRace == null
                 ? Repository.Heroes
-                : Repository.Heroes.Where(h => h.Race == selectedRace);
+                : Repository.Heroes.Where(h => h.Race == SelectedRace);
 
         /// <summary>
         /// Handles sorting when a column header is clicked.

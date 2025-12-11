@@ -16,28 +16,31 @@ namespace Warcraft3PowerLevels.Pages
         /// </summary>
         private SortState<UnitPowerRow> sortState = new();
 
+        /// <summary>
+        /// Selected main
+        /// </summary>
         private RaceEnum? SelectedMainRace
         {
             get => FilterState.UnitRace;
             set => FilterState.UnitRace = value;
         }
 
+        /// <summary>
+        /// Selected attack type for filtering units.
+        /// </summary>
         private AttackTypeEnum SelectedAttack
         {
             get => FilterState.SelectedAttack;
             set => FilterState.SelectedAttack = value;
         }
 
+        /// <summary>
+        /// Selected armor type for filtering units.
+        /// </summary>
         private ArmorTypeEnum SelectedArmor
         {
             get => FilterState.SelectedArmor;
             set => FilterState.SelectedArmor = value;
-        }
-
-        private bool IncludeNeutralUnits
-        {
-            get => FilterState.UnitIncludeNeutral;
-            set => FilterState.UnitIncludeNeutral = value;
         }
 
         /// <summary>
@@ -63,8 +66,17 @@ namespace Warcraft3PowerLevels.Pages
         /// <summary>
         /// Toggles the inclusion of neutral units in the filter.
         /// </summary>
-        private void ToggleNeutralUnits() => IncludeNeutralUnits = !IncludeNeutralUnits;
-        
+        private void CycleNeutral()
+        {
+            FilterState.NeutralState = FilterState.NeutralState switch
+            {
+                ToggleStateEnum.Off => ToggleStateEnum.On,
+                ToggleStateEnum.On => ToggleStateEnum.Exclusive,
+                ToggleStateEnum.Exclusive => ToggleStateEnum.Off,
+                _ => ToggleStateEnum.Off
+            };
+        }
+
         /// <summary>
         /// Checks if the given race is the currently selected main race for filtering.
         /// </summary>
@@ -87,6 +99,7 @@ namespace Warcraft3PowerLevels.Pages
             sortState.Direction = FilterState.UnitSortState_PowerPerSupply.Direction;
         }
 
+    
         /// <summary>
         /// Gets the filtered units based on the selected main race and neutral inclusion.
         /// </summary>
@@ -94,18 +107,17 @@ namespace Warcraft3PowerLevels.Pages
         {
             get
             {
-                var units = Repository.Units.Where(u => u.Food > 0).ToList();
+                var units = Repository.Units;
+                units = units.Where(u => u is not ISummon).ToList();
 
                 if (SelectedMainRace != null)
-                    units = units.Where(u =>
-                        u.Race == SelectedMainRace ||
-                        u.Race == RaceEnum.Neutral
-                    ).ToList();
+                    units = units.Where(u => u.Race == SelectedMainRace || u.Race == RaceEnum.Neutral).ToList();
 
-                if (!IncludeNeutralUnits)
+                if (FilterState.NeutralState == ToggleStateEnum.Exclusive)
+                    units = units.Where(u => u.Race == RaceEnum.Neutral).ToList();
+
+                if (FilterState.NeutralState == ToggleStateEnum.Off)
                     units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
-
-                units = units.Where(u => u is not ISummon).ToList();
 
                 return units;
             }

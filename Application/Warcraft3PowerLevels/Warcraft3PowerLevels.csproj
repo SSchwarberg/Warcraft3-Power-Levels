@@ -15,6 +15,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\icons\armor\" />
     <Folder Include="wwwroot\icons\attack\" />
+    <Folder Include="wwwroot\icons\general\" />
   </ItemGroup>
 
 </Project>

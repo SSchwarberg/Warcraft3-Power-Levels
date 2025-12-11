@@ -23,16 +23,6 @@ namespace Warcraft3PowerLevels.Pages
         }
 
         /// <summary>
-        /// Indicates whether neutral units are included in the filter.
-        /// </summary>
-        private bool includeNeutralUnits => FilterState.UnitIncludeNeutral;
-
-        /// <summary>
-        /// Indicates whether summons are included in the filter.
-        /// </summary>
-        private bool includeSummons => FilterState.UnitIncludeSummons;
-
-        /// <summary>
         /// OnInitialized lifecycle method to set up initial filter state.
         /// </summary>
         protected override void OnInitialized()
@@ -58,14 +48,30 @@ namespace Warcraft3PowerLevels.Pages
         /// <summary>
         /// Toggles the inclusion of neutral units in the filter.
         /// </summary>
-        private void ToggleNeutralUnits() =>
-            FilterState.UnitIncludeNeutral = !FilterState.UnitIncludeNeutral;
+        private void CycleNeutral()
+        {
+            FilterState.NeutralState = FilterState.NeutralState switch
+            {
+                ToggleStateEnum.Off => ToggleStateEnum.On,
+                ToggleStateEnum.On => ToggleStateEnum.Exclusive,
+                ToggleStateEnum.Exclusive => ToggleStateEnum.Off,
+                _ => ToggleStateEnum.Off
+            };
+        }
 
         /// <summary>
         /// Toggles the inclusion of summons in the filter.
         /// </summary>
-        private void ToggleSummons() =>
-            FilterState.UnitIncludeSummons = !FilterState.UnitIncludeSummons;
+        private void CycleSummons()
+        {
+            FilterState.SummonState = FilterState.SummonState switch
+            {
+                ToggleStateEnum.Off => ToggleStateEnum.On,
+                ToggleStateEnum.On => ToggleStateEnum.Exclusive,
+                ToggleStateEnum.Exclusive => ToggleStateEnum.Off,
+                _ => ToggleStateEnum.Off
+            };
+        }
 
         /// <summary>
         /// Gets the filtered units based on the selected filters.
@@ -76,17 +82,20 @@ namespace Warcraft3PowerLevels.Pages
             {
                 var units = Repository.Units;
 
-                // Apply main race filter (excluding Neutral)
                 if (selectedMainRace != null)
                     units = units.Where(u => u.Race == selectedMainRace || u.Race == RaceEnum.Neutral).ToList();
 
-                // Neutral Units toggle (Bandits, creeps, mercs → RaceEnum.Neutral)
-                if (!includeNeutralUnits)
+                if (FilterState.NeutralState == ToggleStateEnum.Exclusive)
+                    units = units.Where(u => u.Race == RaceEnum.Neutral).ToList();
+
+                if (FilterState.NeutralState == ToggleStateEnum.Off)
                     units = units.Where(u => u.Race != RaceEnum.Neutral).ToList();
 
-                // Summons toggle (Elementals, Wolves → UnitType.Summon)
-                if (!includeSummons)
+                if (FilterState.SummonState == ToggleStateEnum.Off)
                     units = units.Where(u => u is not ISummon).ToList();
+
+                if (FilterState.SummonState == ToggleStateEnum.Exclusive)
+                    units = units.Where(u => u is ISummon).ToList();
 
                 return units;
             }
